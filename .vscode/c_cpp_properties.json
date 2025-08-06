@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "BL616",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/../bouffalo_sdk/**",
+                "${workspaceFolder}/../bouffalo_sdk/components/**",
+                "${workspaceFolder}/../bouffalo_sdk/drivers/**"
+            ],
+            "defines": [
+                "CHIP=bl616",
+                "BOARD=bl616dk",
+                "CONFIG_DEBUG=y"
+            ],
+            "compilerPath": "${workspaceFolder}/../toolchain_gcc_t-head_windows/bin/riscv64-unknown-elf-gcc.exe",
+            "cStandard": "gnu99",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "gcc-x64",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json"
+        }
+    ],
+    "version": 4
+}

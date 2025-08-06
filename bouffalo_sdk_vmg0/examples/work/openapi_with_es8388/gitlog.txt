@@ -1,0 +1,644 @@
+14141d42 多轮对话一次崩溃bug彻底解决，实现长达30次对话未崩溃！
+abea0141 优化音频播放逻辑，确保DMA缓冲区清理和重启过程的安全性
+972e9f88 解决DMA尾巴，播放完立刻静音，优化日志
+f1d8c70f 目前播放ai音断断续续，但是检测声音已经臻于完美
+6e201547 成功实现通话功能，几乎完美
+70a73eef 成功实现反复通话，精确录音
+07fad567 成功实现MQTT精准语音识别
+4a39a338 解决重大bug，重新上电后依然可以正常初始化codec音频功能
+4ed75da6 another change! 已经实现了通过信号量同步使得传输的录音无损同步，下一步，修改python后端实现接收并转换文字
+b8d05287 feat: 实现ES8388音频模块化及局域网流式传输验证
+d5945653 feat(audio/bsp): Port ES8388 audio codec to BL618 SDK from BL616DK
+9c0ecea0 OpenAPI更换新后端
+d61018cf 权限全部0755,防止无法编译
+158b7029 修复SDK unix权限
+91f65322 重新添加bl616g0的bsp和examples
+66815376 移除request_demo，现在是openapi
+1a166f3d 更新博流官方SDK并重新适配OpenAPI
+e4629d29 删除无用文件
+aa4bbe64 删除缓存
+53962d51 清除无用文件，为合并主线做准备
+1316cceb 为合并bouffalolab/bouffalo_sdk主线作准备
+d8dd99f4 取消跟踪cpp配置文件
+8e0eb4c2 更新cpp配置文件
+ff0d42da emoji思路代码
+3146276c Merge branch 'main' of github.com:cagedbird043/bouffalo_sdk_vmg0
+ebb9f475 feat: 实现了云端记忆和上下文以及联网搜索和向量化记忆等功能（MCU  + 服务器后端）
+42d7e279 Merge branch 'main' of github.com:cagedbird043/bouffalo_sdk_vmg0
+92834022 no message
+39420697 Merge branch 'main' of github.com:cagedbird043/bouffalo_sdk_vmg0
+f6a7b41a 更新 CMakeLists.txt 中的注释，修改为中文；清理 main.py 中的多余注释
+0593cf78 删除一行
+10eec386 Merge branch 'main' of github.com:cagedbird043/bouffalo_sdk_vmg0
+444e1bc5 测试cpp_properties.json
+95a63a22 Merge branch 'main' of github.com:cagedbird043/bouffalo_sdk_vmg0
+8e9576e8 更新 .gitignore 文件，添加通配符以忽略所有文件，同时保留 .gitignore 和 .gitattributes 文件
+2222b9a2 删除 VSCode 配置文件 c_cpp_properties.json 和 settings.json
+0f0370d2 删除settings.json
+4e566355 更新 CMakeLists.txt，不再需要绝对路径添加 port_time.c 和 sntp.c 源文件
+fefdd208 Completed SDK
+33303c02 Refactor main.c: Clean up code structure and improve readability
+94df18dd Completed the SDK
+4dfe99a3 更新 deepseek_client.c
+270e2550 Add DeepSeek client implementation for asynchronous chat messaging
+d749dd79 refactor: sort functions and add Doxygen-style comments for better maintainability
+13d69b7a Merge branch 'main' of github.com:cagedbird043/bouffalo_sdk_vmg0
+845c0586 Enhance HTTPS functionality and SNTP integration
+1d0f9e7b Justin commit test
+0122a1dd Implement HTTP/S client functionality with unified request handling
+b6f6e788 Add HTTPS client implementation with POST request support
+3189059e Add HTTP client implementation and integrate HTTP POST test command
+aa707d92 Remove cmake_install.cmake files from various components in the wifi_https_demo project. This includes components such as lzma, mm, net, os, shell, usb, utils, wireless, and drivers. The changes streamline the build process by eliminating unnecessary installation scripts that are no longer needed.
+0ecfe29c Add WiFi auto-connect functionality
+e8f5125f Refactor: Remove useless pikapython module
+6f68048a first commit
+1a22400d Initial commit: Add auto WiFi connect, shell commands, and HTTPS POST test
+f03e1e96 add fatfs demo to vmg0
+954dce82 change fatfs 1bit BUS
+1e98ab9a Update the camera output format to YUYV
+6fd66e68 add mjpeg to vmg0
+22d40703 add mjpeg for vmg0
+c52a50cf add apk
+c1c4cd65 add bt example
+faa6bcae update vmg0 board
+41af365c update gitignore
+871f1606 update vmg0board & bh1750 driver
+71e1c961 [fix][lhal] fix cam clock, fix uart switch case, add new flash config
+72339f6e update vmg0
+c1f44d6a [fix][adc] fix adc millivolt caculation
+17ea32ce Revert "Implement proper I2C bus NAK condition handling for unresponsive devices"
+e69578ae add MQTT example for vmg0
+bd89296b [fix] fix warning
+9f865403 [chore] update makefile build demo
+0efb54f1 [chore] update gitignore
+3598c1d5 [chore] update debug memory setting
+51a5dbdb [update] misc update * update fatfs buffer to align64 * update usb cdc and hid callback api * fix shell arg num * update libc for snprintf & sprintf * update mbedtls demo to use hw acc * update wifi demo, add https and mqtt demo
+bd1188e9 [chore] add gdbinit
+be3ec021 [update] update tickless for lwip and freertos
+f9d6f6b5 [update][lvgl] update to v8.3.7
+7a81b9c2 [update][mbedtls] sync from master commit:89f040a, update hw acc port
+af070da0 [chore][bflb_tools] update flash tool to v1.0.6, remove all flash conf files
+a037ede3 [chore][cmake] rename variable name
+3af67995 [update] update drivers * fix bl602 & bl702 efuse cfg * clear bl616 wifi bss * disable pmp * add some clock and pm api * fix bl702 gpio init for gpio9~gpio13,gpio23~gpio28 * some update for bl628
+37d3073b [style] format code
+ee823f95 [update] add __cplusplus for drivers
+d748e1c3 Fix using register value instead of it's address.
+b4c576b3 Restricted GLB_GPIO_USE_PSRAM__IO_OFFSET_ADDR processing only for BL702 build
+eae54357 Fix for GPIO9...GPI13 and GPIO23...GPI28 parameters initialization: pull-up/pull-down/smt and input enable modes.
+e687e88a Add support for GET_REPORT HID requests with lengths greater than 1 byte.
+530f1aa1 Fix compilation warnings
+64388f9c Implement proper I2C bus NAK condition handling for unresponsive devices
+ee61ddf9 Fix invalid double inclusion definition macro
+ba0e8364 Fix compilation warnings
+05bd13eb Fix compilation warning
+cafca666 add BH1750
+51073dee [fix][uart] remove rts setting
+10605bc0 Set HBN clock source to external 32M XTAL. This is mandatory requirement of BLE subsystem.
+5d01b61a [chore] remove ununsed INPUT(-lc), remove unused lcd port
+804a0e83 [sync] sync code
+565f6b87 [doc] update debug link
+aad5b6ab add onenet_tcp
+67558ba7 add onenet
+0c6bc421 remove test file
+83ad5425 del 软件高低字节反序
+754aae99 debug_lcd
+e59ed2b2 debug_lcd
+ad7f5bcf ES8388的readme
+eae8f797 add cam_g0
+bd417e2c 校准触摸屏，添加lvgl显示摄像头图像
+efec7662 add lvgl_cam_for_g0
+647ea9ea sync
+410376f6 add touch_g0
+6dff8bd1 add vmg0 example
+97b9afd7 add ES8388
+9389e5df add ES8388
+949a9d4b add ES8388
+407f7232 适配g0
+862debfa 适配g0
+4241afd1 README
+4690a950 add lcd_g0
+8767b06e add vmg0
+0752b3bb add vmg0
+95657d43 Update build_all.yml
+6e8440aa [fix][wifi] reduce test buf size in order to use ocram
+88cf6ac5 [style] format code
+0e5b14cf [update][wifi] disable psram for common
+0b387f03 [doc] update toolchain url
+10cea536 [feat][audio] add auadc & audac demo
+e6e8da79 [sync] release sdk2.0
+721f30b7 cancel PIKA_DEBUG_ENABLE
+9e6f3643 fit for m0p and verimake
+0f4a319e [pikapython]support USB_CDC, add README
+ad1da0ec [update][cherryusb] sync code from master
+9b5177d9 [fix] fix lp group config
+801b4b89 [update][board] move kmem_init before print
+0ea7c2f9 [doc] update rst
+dd65238e [chore][cmake] update CMAKE_SYSTEM_NAME
+d076b848 [update][bflb_tools] update flash tool v1.0.4
+053467be Revert "Revert "[chore][bflb_tools] update bflb_fw_post_proc,add mac support""
+8580efc6 Revert "[chore][bflb_tools] update bflb_fw_post_proc,add mac support"
+74ae4ab2 [chore] add CONFIG_POSIX macro
+8d14d5b2 [chore][bflb_tools] update bflb_fw_post_proc,add mac support
+ae6fc9e5 [fix][libc] use default pthread type when not define CONFIG_POSIX
+5d9883cd [chore] add flash ini for bl808 triplecore
+d79a3e70 [chore] fix flash tool permission
+fa2a70d0 [chore] revert ai subdirectory
+ec2c0386 [update][mjpeg] update mjpeg with cam demo
+99e1d885 [chore][bflb_tool] update flash tool, add gui support, add mac support
+9e129300 [update][lhal] update gpio, dbi, mjpeg api
+0f3280aa [update] init psram before kmem_init
+12d9e69f fix gpio_set/reset for BL602/702/702L
+eaab54e4 (example/pikapython) default build bl616
+361dea1a enable lp core of bl808 and change example name to triplecore
+cb9f97a4 [comment] fix bl616 gpio pinmux
+11ae7fb2 add lcd_conf_user.h
+bfa32448 Update build_all.yml
+930424bd Create flash_prog_cfg.ini
+1a20313d update pikapython kernal, install more packages
+512b7e3f All Apps to override clean and menuconfig targets in makefile
+eddc028e [chore] add mingw32-make for win11
+e0f02cb5 [chore] add missing bins ignored by .gitignore
+1250d63d [doc] update doc url
+317a3c38 [chore][cmake] fix escape
+55d0d1c4 [fix][pka] do not link pka in d0 cpu
+02bccd8d [fix][lhal/config] remove duplicate check
+e432edd2 [doc] fix typo
+4ef81bf2 [chore] ignore pack
+d0acd342 [doc] update demo rst
+6a4d89bf [sync] sync code from internal
+81035406 [update][board] enable fw header for new flash tool
+4289966f [chore] add new flash command tool
+ee902217 [chore] enable AlignConsecutiveMacros
+2136857c Add tools flash instructions for blisp
+e4506225 [fix][usbd] define missing usb_dc_deinit function
+fe68c2eb [feat][usbd] add support for suspend and resume usbd interrupts
+653b3dc1 [feat] add mbedtls ignore
+9d810e6c [update] add missing littlefs by gitigore
+a9ebfdae [update] disable bflog default
+8604318e [update][flash] ignore flash mid value
+106fc994 [fix][board] halt d0 when flash init
+89f21848 [sync] sync from internal repo
+d2002f98 [refactor][components] Restructure the catalogue, sync from internal repo
+a154ed1a [fix][flash] revert bl808 flash config
+84bd3227 [chore][openocd] add openocd config
+747ca733 [update][cherryusb] sync from cherryusb master
+c9207d1a [fix] fix typos
+efbf5b80 add pikapython example
+56827b4b [doc] update ds and rm url
+8b5c5701 [fix] fix cmake filemode
+f5429852 [doc] update rst
+9558a6b8 [fix] fix build error
+76d1183e [chore][cmake] support extern board
+38c1275e if using TLSF, reconfigure freertos to use heap_3 instead of heap5
+f1e85455 Fix compile error when using TLSF memory manager
+a78ab9fe [doc] update lhal support
+14d2d0b2 [doc] update version
+2462b102 [update][boot2] update boot2 demo
+c84e9b77 [refactor] move std/port/startup into std dir, in order to free space for rf
+fce6ce53 [chore][cmake] move app target source into board
+fb718ae0 [update][examples] update demos
+0ea925c3 [update][soc] update efuse api, add some drivers for boot2
+a77b0dc8 [update][lhal] update lhal
+185805cb [update][bsp_common] update common driver, add dvp sensor driver
+ce469743 [update][board] update board init
+633d9d1e [refactor][freertos] split port into common and c906
+16d3a819 [refactor][soc] modify delay with arch_delay_us and arch_delay_ms
+906a9aaa [fix][ef_ctrl] replace bflb_mtimer_delay_us with arch_delay_us
+34a5fe8e [fix] fix build error
+9ad915ef [feat][lcd] add st7789v support, demo used sipeed m1sdock
+223589e8 [update][fatfs] add write read test
+05e40306 [feat][tlsf] add tlsf component
+d9adf219 [refactor] move utils into component
+d4473020 [refactor] move component port from common into component
+44c8bf85 [doc] fix command
+4cdef316 [doc] update readme and rst
+3f480f08 [update][shell] support shell with os
+2db77dee [chore][eclipse] update memory and add build target
+beaa5db6 [fix][board] fix ef_ctrl_get_device_info api
+fcf07aa3 [fix][startup] fix __Vectors section
+7e1e3a09 [fix] fix project name
+75abaf7f [chore][cmake] update cmake to v2.25
+93116cbb [chore] add ninja support
+f7af90c9 [fix][board] fix sdh mcu_reset macro
+8a97e115 [fix][lhal] fix kys macro missing
+fe3c57a6 [fix][flash] fix flash init, move bflb_ef_ctrl_get_device_info before flash config
+f83c0655 [refactor][uart] rename uart_rts to uart_sw_rts
+844809bc [style] format code
+d30a09dc [fix][libc] strongly link _malloc_r to avoid using system libc
+f5541d1a [chore][make] add make Dependency Libraries in windows
+769349f2 [feat][dma] add dma cycle mode case
+40f154ca [chore][ld] update 808 m0 memory
+3c225cac [chore] update cmake api and macros, update makefile for build all case
+41750c31 [feat][util] add vsnprintf nano, reduce codesize for boot2
+53323e2c [update][bflog] update bflog macro
+8d635241 [feat][boot2] add bl616 boot2 iap demo
+1b358809 [update][lhal] update lhal
+f13440fc [feat][ef_ctrl] add ef_ctrl lhal driver
+3c19b600 [fix][gpio] disable gpio int when gpio init
+6fb5e2d8 [fix][board] enable usb clock
+9f0a36a3 [fix] fix compile error
+21529d6a [update][util] update vlibc
+eef2ce18 [fix][util] fix printf, use alias bflb_printf to reduce size
+d906c9e3 [chore][makefile] avoid 'Entering|Leaving directory' messages
+23102b69 [fix] format and build fix
+5133d0f5 [feat][flash] add bflb_flash_get_image_offset api
+a093cca2 Rename "bflb_flash_get_jedecid()" to bflb_flash_get_jedec_id() (in bl602_flash.c) to be consistent with the declaration in bflb_flash.h.
+5f9b8e8b [chore] add 702 dualuart firmware
+8942c4d3 [feat][flash] add flash read write demo
+aa5a88a8 [doc] update readme and rst
+d763463e [chore][cmake] ignore format warning
+d6fab307 [update] update lhal, soc and demos
+9f241971 [update][util] add ringbuffer, bflb_block_pool and bflb_timestamp
+a65f86a7 [feat] add tensorflowlite component and demo
+57bda6c4 [feat] add tinymaix component and demo
+b46115f1 Add MJPEG to device table only for D0 core
+bb5b89aa [doc] update readme and rst
+0e3e59af [chore][eclipse] modify pc start address
+1c163838 [update][libc] enable float printf as default
+b7aa2e1d [feat][examples] add some samples
+c70a3cd8 [update] update lhal, soc and demos
+d44726c7 [feat] add bl702 cklink firmware
+be00c589 [chore][cmake] add static lib register function
+e569567c [fix][cmake] disable bflb_block_pool
+11f0c98a [chore][makefile] add CPU_ID and CONFIG_USB_HS as default
+b1fafb81 [doc] update readme and rst
+5ce60f5c [update][freertos] update configASSERT
+b53a02f2 [update][utils] update api
+011ffb88 [feat][xz] add xz component
+703fb5d8 [update][lhal] update lhal and demos
+251da8c4 [chore][eclipse] update debug memory
+7c8010e3 [fix][shell] fix uart macro
+39fc0d73 [update][wdg] update wdg demo
+d0750713 [feat][bl602] add bl602 support
+05b93d80 [update][board] config i2c clock
+44a68b3a [feat][psram] enable 808 psram
+bea01b55 [doc] update cklink debug rst
+a527cf77 [doc] update readme icons
+664c605a [refactor] refactor mcu sdk framework, add BL702,BL616,BL808 CHIP support
+4b4e4c95 [fix][ble_pds] modify O2 to Os
+b83e5226 [chore][ld] update linkscript
+e2665472 [fix][hal] update dac adc config
+ca1d0cbc [feat][mcu_lcd] add st7796 lcd driver
+e1cd24b8 [fix][clock] enable dma clock when defined BSP_USING_DMA
+3e4b0d0d [doc] release sdk 1.4.4
+08beed18 [update][ble] update ble stack, build controllerlib with t-head toolchain as default
+7d249564 [chore][bflb_flash_tool] update flash tool to 1.7.1
+7d157441 [refactor][examples] delete timer_basic and dac_from_flash demo
+d0092f87 [refactor][dma] rename DMA_BURST_xBYTE with DMA_BURST_INCRx
+c65ae0f8 [fix][drivers/pm] set higher ldo level
+daca77ab [refactor][examples/tensorflow] move demos into subdir
+e8c2b6a4 [feat][examples/at] add at demo with 602 to get hefeng weather
+15257f87 [feat][examples/dma] add uart p2p dma demo
+014113cd [feat][examples] add tensorflow-lite vww demo detection person
+21621d54 [fix][dma] set dma_ctrl_cfg.bits.i false when do not enable irq
+8742503a [doc] update doc
+5ff36fc8 [update][boot2] update boot2 driver
+45be9d77 [feat][common] add no cache ram section macros
+fe348011 [feat][adc_dma] add adc dma driver and demo
+8428b62b [fix][usb_video] delete undefine function
+f63fb6b5 [doc] update build cmd
+7ff8f123 [fix][examples] modify dma control api
+50a9091e [doc] update download link
+c46a68fe [chore][makefile] fix build command
+a1238187 [fix][board] automatic switching uart sig and funciton to avoid the same uart function
+6b11ba03 [update][board] update peripheral config
+ffdd9d70 [update][drivers] update drivers
+c9a587c4 [chore][eclipse] add cklink and jlink launch file for 702
+851fc488 [chore][freertos] add CPU_ID ignore for 602 and 702
+7aa02881 [chore][cmake] update generate_library to support interface library,add git info generation
+0240b5d7 [chore][cmake] change Os to O2,add -Wtype-limits c flag
+d02d405d [feat][mac154] add mac154 component
+b25a219f [update][ble_pds] update ble pds param
+1f4fd906 [update][bsp_common][examples] sync demo and bsp common with hal driver"
+b6c09e3e [update][drivers] update bl602 and bl702 drivers
+b71a70ec [fix][common] fix warning on 64bit cpu
+61ca34f7 [update][board] update board config
+f9012a5a [chore][cdk] update header file path
+9896d8cd [update][shell] modify mm_monitor with mm_trace,add read write regs num
+4d1b476a [doc] move development_guide rst html files out,update doc url in readme
+5a29530f [update][drivers] update bl602 and bl702 std driver
+48fbbbbc [feat][zephyr] Drop arch includes at blx02.h files
+3bbbab5e add pikascript components and example
+d43977f4 [feat][clock] move rc32m init into hal_clock.c
+4efd11c6 [doc] update release V1.4.2
+b0b7a0b1 [doc] update readme
+aa4bec37 [feat][bl702_driver] set some bits zero in xtal_cfg at default
+68977a16 [refactor][usb] set ep0 ack in irq instead of read write function
+160d4444 [comment][usb] modify print log
+5d5c6a2f [refactor][dma] refactor dma driver,add DMA_SI,DMA_DI and dma burst size config
+a31ce132 [refactor][dac] refactor dac driver and dac clock config
+70d8bbde [update][drivers] add misc functions
+a9ea7151 [feat][common] add arch_ffsll、arch_ctzll、arch_clzll function
+b51bfd7b [refactor][usb_stack] refactor scsi driver,add sense code for requestsense cmd
+3ce09ee6 [chore][cdk] modify board select
+de9ab77a [doc][dac] update dac demo readme
+1ad87868 [doc] update dma and rst style in hardware connection
+c3a7fc52 [doc] update reference mannul
+ccc552ba [feat][zephyr] Enable bl_mcu_sdk as zephyr module
+88356e0e [fix][bflb_flash_tool] Fix linux apps file mode
+9dd86001 [feat][device] add DEVICE_CHECK_PARAM macro for on or off
+a76692f6 [fix][bl702_driver] delete unused including header files, reset registers in xxx_close function
+1ffe3b83 [fix][bsp_common/fatfs] fix pointer assigning type in disk_ioctl function when cmd equal GET_SECTOR_SIZE or GET_BLOCK_SIZE
+e27aedac [refactor][cam] refactor camera driver,add standard interfaces for camera
+9792e36a [feat][rt-thread] add cmakelists and modify riscv_encoding including path
+bac418ea [fix][ld] update camera ld section
+79f1680a [doc] update release 1.4.1
+1a226e5a [feat][bsp_common/usb] sync usb_event_type in usb_stack to reduce Conditional judgement
+31564a9b [feat][bsp_common/platform] complete calloc function that float print needs
+626c6f3f [feat][board] add XTAL_32K_TYPE macro
+9c67a54e [refactor] remove bflb_platform.h from bl602 and bl702 driver,include it in anywhere used
+e212f9de [fix][common] Add CHECK_PARAM definition guard
+e6edfa71 [fix][common] Drop duplicated NULL definition
+b5da7d33 [feat][common] Allow customize ld sections
+24cde316 [fix][common] dos2unix common/misc/compiler/common.h
+236f714b [style][usb_stack] modify class request debug log
+49a20821 [feat][examples/ble] add ble pds31 demo
+00a000d1 [feat][examples/freertos] add freertos tickless demo
+25127f5d [feat][examples/mbedtls] add aes demo
+3722131d [doc] update ble pds31 rst
+dd10abb8 [refactor][i2s] set I2S_MONO_CHANNEL with right channel default
+dfb46a98 [feat][clock] update clock frequence get function
+bc1b8dff [chore][cmake] add HAL API definition for using or not
+fa7c811b [fix][gpio] modify gpio function macro value,which caused uart if statement error judgement
+096b2ade [feat][usb] add ep isoc interrupt support
+8f233e91 [fix][pm] enable gpio ie in pds31 mode when pds pin reawakens
+8b587dbe [doc] update flash,usb,pm,fatfs rst
+d66a28da [chore][cdk] add syscall.c into cdk project compiling
+a6a7f077 [feat][emac] add lwip component,add phy_8720 driver,add emac demo
+908102c0 [doc] add emac Chapter
+6c5470d8 [feat][clock] add XTAL_32K_TYPE macro
+2be4cea4 [feat][examples/audio_cube] add audio_cube demo
+205e179d [fix][spi_sd] modify pointer strong rotation macro
+e3449aab [feat][pm] add pm util for pds31 that ble needs
+28de9560 [chore][camke] add -fno-jump-tables c compile flag
+4e9f1c11 [chore][cmake] fix CONFIG_PRINT_FLOAT macro
+83987050 [fix][hal_dma] fix dma transfer lli config,optimise if statement
+9f2e63e0 [refactor][examples/adc] use gpio12 for adc channel4 default
+89c4df77 [doc] update nn and dsp readme
+2bdacbc6 [feat][adc] add overrun and underrun event
+e63cf769 [fix][clock] fix mtimer clock div get,fix peripheral clock source and div get,make standard for div with (div+1)
+3c464a6c [fix][examples/pwm] fix pwm div description
+ce6f77a9 [doc] update release V1.4.0
+eb1d6402 [chore][cdk] update cdk setting,add all hal source into cdk,delete unused include path
+f8336fd0 [feat][examples/cxx] add cxx basic demo
+4a306340 [feat][examples/pka] add system prng demo
+62783d60 [feat][examples/adc] add adc int read volt demo
+5b50669a [feat][examples/usb] add usb msc flash and ota demo
+bec13de7 [feat][platform] add cxx new interface support
+ecb43ef0 [feat][examples/usb] add USB HS control for descriptor
+48479d0e [fix][examples] modify some demos peripheral init parameters,update ld file
+ee03cdc8 [feat][examples/boot2_iap] add usb iap feature
+c555e79e [feat][examples/ble] update ble ld file,add mbedtls for oad,add capcode setting for ble
+82ddd766 [refactor][examples/adc] refactor adc channel volt reading process
+55bd19da [chore][eclipse] add COMx=xxx command
+0b9b45a9 [chore][cmake] delete project.build and Preload.cmake,refactor make build command process,fix searching demo path bug
+66ec1107 [refactor][bl702_driver] refactor std and hal common include file, drop some flash api
+26c22a0e [refactor][bl602_driver] refactor std and hal common include file, drop some flash api, add boot2 and sec eng driver
+88dc2547 [feat][fatfs] add usb port
+5d1126d0 [feat][nmsis] add nmsis component and nn,dsp demo
+b2aada47 [fix][lvgl][romfs] modfiy lvgl and romfs config
+c8b80283 [feat][freertos] set portUSING_MPU_WRAPPERS zero default,add tickless idle config
+e0aacb57 [feat][ble] update blecontroller lib,add prng support,add mbedtls sha256 for oad
+05c61225 [feat][common] update mmheap driver which costs less ram,update gcc section
+53aa1152 [fix][board] delete gpio13 config,delete repeated pins config,enable all peripherals default
+c367faa6 [fix][bsp_common] modify some drivers config
+65c7e523 [fix][fatfs] add user macro FS_MAX_SS,fix pDiskioDriver register when using one more interface
+2bbc0486 [feat][usb_stack] add usb hs support,add bos and msosv2 descriptor process
+f0982722 [feat][mbedtls] add mbedtls component
+b0e709d9 [feat][rt-thread] add rt-thread component and msh demo
+e45eecfa [doc] update release version 1.3.0
+936f3347 [doc] update gitignore
+6c2393fb [feat][hid] add hid request callback register
+eb3767dc [chore] delete unused files
+867ad6ef [feat][bl702_driver] update bl702 driver
+7105b561 [feat][bl602_driver] update bl602 driver
+d8a91f43 [feat][examples/usb] add usb audio with mic and speaker dmo,add usb cdc shell demo
+fae3c81a [feat][examples/wdt] add wdt demo
+5ce9d886 [feat][examples/i2c] add i2c ssd1306 demo
+6bf3e173 [feat][examples/acomp] add acomp demo
+20b9f44f [feat][examples/spi] add spi ws2812,spi ssd1306,spi lcd display images using tinyjpeg demo
+a65e345b [feat][examples/pm] add power management demo,replace lowpower test demo
+9fb0591d [fix][examples] improve some cases process
+da549faf [chore][ld] update ld config
+5d9e51d8 [fix][examples] add while(1) when case fail
+6ee666be [refactor][boot2_iap] refactor boot2 iap interface
+208622ab [chore][cdk] update cdk project setting
+cdbbb1b4 [feat][tinyjpeg] add tinyjpeg component
+f0211e72 [feat][romfs] add romfs component
+dfe0516d [feat][usb] add some weak function for hid and audio
+19b5a059 [feat][fatfs] add posix api support
+a155fb5e [feat][shell] add shell color support,add shell user print and prompt interface
+67c8532a [style][ble] format ble files
+da07eee6 [feat] add boot2 config for boot2_iap demo
+9f749237 [refactor][board] refactor gpio wakeup init
+e9361d58 [refactor] rename some macro names in xxx_config.h
+93dcb73d [feat][wm8978] add wm8978 driver
+5c313699 [fix] optimise some function process
+5db2f4ab [refactor][mcu_lcd] standardize mcu lcd driver
+dea22ca5 [fix][common] fix some macro redefinitions
+1171218c [chore][cmake] add romapi support,refactor project compile workflow,add user own demo compile feature in extern path not in sdk
+571b40cc [chore][flash_tool] update flash tool config
+2ec02357 [chore][openocd] update openocd tool,add openocd rule and exe in linux
+9d772dc3 [chore] modify eclipse openocd path
+0927bee2 [doc] add toolchain and sdk submodule usage instruction
+a75cac00 [fix] Update README.md url
+dc34d62a [feat][examples/spi] add oled ssd1306 driver and badapple demo
+97760e36 handle STREQUAL when variable is not defined
+2d438d8c [feat][wakeup] add gpio wakeup config process
+6bfe2a9b fix bl702_iot as target board
+92063f00 [fix][flash] flash auto identify if mid != 0xff
+1c26e68b [refactor] rename NVIC as CPU_Interrupt
+7e77a26d [fix][usb2uart] fix irq name and delete pin32-pin37
+ac418d27 [feat][docs] add english docs
+0d9f65c1 [docs] update docs
+8d46c475 [feat][examples/pm] add hbn gpio wakeup and hbn rtc wakeup case
+48f270d6 [feat][crc] add BFLB_Soft_CRC32_Ex api
+ee5bc44d [fix][memheap] fix memheap warning
+d1e7c320 [fix][device] add return error for device function
+402092ad [feat][examples/boot2_iap] update boot2 iap case
+bb941e3b [feat][examples/rtc] add rtc calendar case
+80131117 [feat][examples/rtc] add rtc wakeup case
+0ca17e29 [feat][pm] add hal power manage driver
+40b7b275 [feat][rtc] add hal rtc driver
+432b7b46 [fix][hbn] fix rtc int func name
+42dab3ef [fix][i2s] fix i2s fifo config
+c05ee5a9 [feat][power] update hal power and add lowpower level setting
+7accc39e [feat][pds] add pds gpio_9 wakeup function back
+d3a4c33b [fix][interrupt] fix interrupt vector
+b95b3c02 [feat][gpio] add gpio wakeup fun and delete unused gpio pin
+93c8f3dd [feat][l1c] update flush cache external api
+34a81fbe [feat][uart] add uart de-glitch value setting
+41def8e8 [feat][emac] update hal emac phy config
+078afbd3 [feat][clock] update hal clock
+5880cebc [feat][flash] update flash driver
+07924c62 [refactor][boot2_iap] refactor bl702 hal boot2 iap
+d32c3358 [chore] fix boot2 iap linkscript
+c0518d0e [chore] fix bl702 ram linkscript
+1b1acc85 [fix][clock] fix get system clock function,make fclk become system clock instead of root clock
+5c1a2e12 [docs] update release 1.2.6
+130e1c3b [docs] update board,i2s,timer rst
+54bb05cb [chore] update bl70x_init ,add mono reset for flash programming
+929a2591 [feat][pid] add pid algorithm
+3bb692cf [fix][shell] fix shell fs enable error in compile which causes no such file
+789618b2 [fix][common] using romapi memcpy instead
+97df7834 [fix][irq] add nesting process for enable irq and disable irq
+d92d1e90 [chore] fix library check bug
+cee97fe0 [chore] fix helloworld cdk setting
+ff131e47 [refactor][boot2_iap] add bl702 hal wrapper and cmake flag for boot2
+1d485a83 [refactor][flash] delete unused include
+69f237b2 [feat][spi] update spi standard write and read poll function
+75fe79b1 [feat][qdec] add qdec hal driver and demo
+691db880 [refactor][i2s] refactor shell support and device ctrl tx dma definition
+45bad8b2 [refactor][examples/timer] refactor timer demo
+cbedd52d [fix] fix some code bugs
+291ab326 [feat][glb] add qdec led gpio_fun type
+56dca947 [feat][adc] add adc irq function
+cc7e3b5d [refactor][usb] refactor usb irq process,add rdy free judging,let usb_dc_ep_write and usb_dc_ep_read become asynchronous
+d7576235 [refactor] because of using -DBFLB_USE_HAL_DRIVER,so irq register can be removed
+1c70b10c [feat][global_irq] add nesting for global irq enable and disable
+5a869fed [feat][timer] add timer clock config ,refactor hal timer code
+8a5aa9c0 [refactor][sensor] using new timer config instead
+46ed669b [chore][cmake] refactor cmake building style,remove all components support,using auto component building instead
+a1912eee [fix][pwm] fix device ctrl definition
+2d4df8a2 [chore] modify default board definition for gpio、helloworld and uart demo
+e1546ab9 [chore] add default board definition for ble
+eccaa8ad [feat][timer][qdec] add timer clock config,add timer and qdec perpherial config
+3f8f00e4 [fix][examples/adc/boot/i2s] delete unused flag noun in xxx_register
+c932e33c [chore][cdk] rename project name
+a703cb54 [docs] update doc
+ee237e81 [chore] update flash tool
+fd40d1de [feat][board] add bl702 mcu board
+c804bf18 [docs][keyscan] fix keyscan clock source comment
+6531fecf [docs] fix readme translation
+5b949513 [fix][timer] fix timing that cause inaccurate
+673ba04e [feat][system] add internal and external flash selection when mcu run
+147df677 [feat][sf] add 2 line flash program support
+21e2591a [refactor][make] enable cpu float default
+b2112aa2 [fix] fix flash erase sector number that will case erase over next sector
+50d13007 [refactor] delete unused flag noun in device_register
+66635f84 [refactor][board] rename bl70x with bl702
+8dca249d [refactor][board] refactor board directory structure
+411776be [fix][keyscan] fix keyscan default clk setting and array index warning
+ca541682 [docs] update release 1.2.5
+d8cab5bc [docs] fix pwm device ctrl definition,update clock enum
+3c15ef48 [feat] update es8388 dual channel,touch,il9341 config
+039d7e7c [refactor][board] refactor board pinmux init and clock config
+9ab0b4c7 [fix][usb_msc] fix msc first interface num
+e7bdfee4 [feat][shell] add shell fs support
+26d11a01 [chore][freertos] fix cmakelist add_srcs for port and portASM.S
+6a018326 [feat][common] add crc32_ex,add device oflag default definition
+b0704bbe [feat][tensorflow] add tensorflow library
+78900c5a [feat][tensorflow] add tensorflow demo
+e5f1ef82 [feat][keyscan] add keyscan demo and hal driver
+bb026b1d [fix][examples/adc] add adc demo float support
+3c53f41c [fix][timer][flash] add more status judge
+c5392e44 [feat][keyscan] add keyscan gpio func definition and clock config
+006e4bfa [fix][uart][spi] fix uart and spi device oflag in device control dma
+98043ff1 [fix][adc] fix adc device channel table for ch6 and ch7
+2c6382a4 [fix][pwm] fix pwm device control definition
+16517b9f [feat][gpio] add gpio hz mode
+91f7d9bc [fix][flash] rename flash api
+20b12ac4 [chore] add tflite library,modify cpu_id default value
+163c679e [style] disable afternamespace
+9a12d1a6 [fix][flash]fix flash demo with new flash erase read write API
+d7d10aa4 [docs] update release 1.2.4
+116457f1 [docs] update usb_cdc_video & usb_msc_ram readme & update gitignore
+c9850845 [feat][examples/i2s] update i2s case to support dual channel
+9a2e6b78 [feat][examples] update ble & lvgl & boot2 iap case
+1f492d6a [feat][examples/adc] update adc case
+1e4265ff [feat][examples/ble] add ble cdk project
+732f9a90 [fix][examples/flash] fix flash case bug & cdkproj enable romapi
+3f976db6 [chore][freertos] fix cmakelists parameter error
+835952e3 [fix][examples/cam] modify pingpong buff size
+702cc580 [chore] update iopenocd cfg in openocd 0.1
+838c1881 [refactor][examples/usb_cdc] simplify usb out and in tranfer process
+f93a4898 [feat][examples/cam] add camera pingpong buffer case
+a556eac8 [fix][examples/pwm] modify clock source in readme
+d2507acb [feat][bsp_common] add image sensor config,add bootrom log
+cfb6233d [fix][board] delete gpio32-gpio37 init
+13b4ba91 [feat][bl702_driver] add some api and delete unused api
+ab8a6561 [fix][freertos] rename atomic.h which conflict with ble
+5fca99bc [feat][math] add math library
+1e5f80ab [docs] update pwm and get_start rst
+3235d20a Fix a typo in FreeRTOS CMakeLists.txt
+8b6a2d7a Add missing files related to FreeRTOS for the BL602. Needed when building with -DCHIP=bl602, -DBOARD=bl602_iot and -DSUPPORT_FREERTOS=y. These file are copied from bl702.
+8990e8c9 Add missing declarations (Efuse_Ldo11VoutSelTrim_Info_Type and Efuse_TxPower_Info_Type) in bl602_ef_ctrl.h to build with -DCHIP=bl602. These declarations come from https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_ef_ctrl.h.
+a62e7a56 [docs] release V1.2.3
+c98d0ec7 [chore] update cdkws and usb cdk project setting
+af049a8e [docs] update api rst
+21e87ac8 [fix][ld] fix ocram memory size
+d0b959f9 [refactor][examples] add case success message
+72e16855 [chore] update cdk project settings
+c8be7280 [refactor] update platform and usb driver
+5a811531 [fix][drivers] fix hal driver and entry.s bug when main return
+d9413fae [docs] fix readme translation
+f0cf9ffc [refactor] replace system libc with local libc
+27447f52 [fix][docs]fix english readme file name
+e6e363da [docs] add english readme
+cec78e10 [feat][sec] add sec trng driver
+25789007 [fix][emac] fix emac init return type
+20ac7943 [fix][adc] fix adc read channel value at first
+f08e171d [docs] add ble timer usb api & usb demo rst
+9d3effa2 [chore][cdk] delete local libc & update other cdkporj config
+cb91cc37 [docs] update case readme description
+4d599044 [feat][examples/sec_trng] add sec trng demo
+4649d6ce [fix][examples/ble] fix ble rx assert error
+a0d4520a [chore][flash tool] update bflb flash tool
+2fd69672 [fix] delete unused files
+ed2e70c8 [docs] update linux quick start rst
+1a7d02ee [feat] update makefile
+c9924b3f [style] delete trailing whitespace
+bdf17c5e [docs] update quick start rst
+38a8f4e0 [fix] update cdkproj settings
+67a94065 [feat]chaneg mtvt into CSR_MTVT to make old compiler build pass
+51ecbfbc [fix]remove old shell files which are not used any more
+c39ba09f Fix build errors in entry.S. allows helloworld to compile and link.
+1223e91a [refactor] delete unused file
+c883bfb8 [docs] update readme and release note v1.2.2
+5b18a072 [fix] fix __riscv_float_abi_single warning
+79ff3993 [chore] update tools
+aa110592 [style] add clang-format
+fa599c30 [feat] add usb custom hid demo
+a8c56e2d [feat] add pwm motor demo
+929b5543 [feat] add dht11 demo
+4d70ca13 [feat] add shell demo
+4eaa5849 [fix] delete emac demo
+6c4c5e87 [feat] make cdk project for examples
+d427e7fd [style] format files by clang-format
+47ce9f87 [docs] update api rst and demo rst
+bcf3862e [docs] update chip spec
+41854d05 [fix] delete unused library
+d8985b68 [feat] update release note 1.2.1
+579ed433 [feat] add demo readme for command line compile
+3fcd3c73 [fix] update cdk_flashloader
+8cff3e39 [fix] replace openocd cfg
+3e01bbe0 [fix] solve ble lib requirement
+21c88802 [feat] modify cmake build stream
+8da1479a [fix] fix pinmux_init and while(1) process
+322bbbe1 [update] update doc&errata
+ee8ed272 [feat] update releasenote 1.2.0
+f3e7d8f8 [feat] update flash tool and openocd cfg
+0860ef4d [feat] add new examples
+bc120c88 [feat] add bl602 driver and board
+8db230f7 [feat] add usb xz component
+4115724d [feat] add usb audio and video driver
+5cca7f01 [fix] update examples cdk project
+c2f30724 [fix] fix hal driver
+634de901 [feat] update freertos component for ble
+91a930f8 [feat] add ble component
+28f6fa8c [fix] fix some definitions
+8b74fe87 [fix] fix some bsp driver
+a11dcbed [feat] update peripheral api and demo
+658b0761 [fix][drivers/bl702_driver] fix hal adc
+bac48426 [fix] fix doc warning
+05328711 [feat] add avb demo user description
+ba3b9835 [feat] update readme and add release note
+ca849b3e [fix] fix adc/usb/spi/i2s demo
+d98495bb [fix] fix some definitions
+a64ead12 [feat] add freertos port and demo
+064e9c91 [fix] fix cmake files
+72ccc03b [feat] add XXX_DEV definition
+8f7b0919 [fix] fix docs
+83471b43 [feat] add lvgl components,port and demo
+8aed5965 [feat] add shell filesystem
+a2fca7a3 first commit

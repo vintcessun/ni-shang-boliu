@@ -36,6 +36,10 @@ static void lcd_task(void *pvParameters) {
 	uint8_t point_num = 0;
 	touch_coord_t touch_coord;
 
+	while (!WIFI_CONNECTED) {
+		LOG_I("[LCD] Waiting for WIFI\n");
+		bflb_mtimer_delay_ms(1000);
+	}
 	while (1) {
 		touch_read(&point_num, &touch_coord, 1);
 		if (point_num) {
@@ -46,14 +50,13 @@ static void lcd_task(void *pvParameters) {
 			if (last_x > 100 && last_x < 400 && last_y > 100 && last_y < 400) {
 				if (j[1] + f[1] > 2) {
 					LOG_I("[VOICE] 小朋友，每次只能两个人同时过河哦\n");
-					// clang-format off
-					audio_play(%E5%B0%8F%E6%9C%8B%E5%8F%8B%EF%BC%8C%E6%AF%8F%E6%AC%A1%E5%8F%AA%E8%83%BD%E4%B8%A4%E4%B8%AA%E4%BA%BA%E5%90%8C%E6%97%B6%E8%BF%87%E6%B2%B3%E5%93%A6);
-					// clang-format on
+					audio_play(
+						"%E5%B0%8F%E6%9C%8B%E5%8F%8B%EF%BC%8C%E6%AF%8F%E6%AC%"
+						"A1%E5%8F%AA%E8%83%BD%E4%B8%A4%E4%B8%AA%E4%BA%BA%E5%90%"
+						"8C%E6%97%B6%E8%BF%87%E6%B2%B3%E5%93%A6");
 				} else {
 					LOG_I("[VOICE] 开始过河\n");
-					// clang-format off
-                    audio_play(%E5%BC%80%E5%A7%8B%E8%BF%87%E6%B2%B3);
-					// clang-format on
+					audio_play("%E5%BC%80%E5%A7%8B%E8%BF%87%E6%B2%B3");
 					char url[100] = BASE_URL(game?route=);
 					if (!lr) {
 						sprintf(url, "%s%s&data=%d,%d,%d,%d,%d,%d,%d", url,
@@ -67,10 +70,7 @@ static void lcd_task(void *pvParameters) {
 					http_get(url, response, 500);
 					sprintf(url,"%s%s&data=%s",BASE_URL(direction?route=),route,response);
 					http_get(url, response, 500);
-					LOG_I("[VOICE] 过河成功\n");
-					// clang-format off
-                    audio_play(%E8%BF%87%E6%B2%B3%E6%88%90%E5%8A%9F);
-					// clang-format on
+					audio_play(response);
 					lr = !lr;
 				}
 				int cnt = 0;
@@ -102,6 +102,8 @@ static void lcd_task(void *pvParameters) {
 
 	vTaskDelete(NULL);
 }
+
+extern bool WIFI_CONNECTED;
 
 int lcd_main(void) {
 	printf("Start LCD MAIN\n");

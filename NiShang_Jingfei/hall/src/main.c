@@ -2,9 +2,9 @@
 #include "board.h"
 #include "hall.h"
 #include "http.h"
-#include "log.h"
-
 #define DBG_TAG "HALL"
+#include "log.h"
+#include "rtos.h"
 
 #define j0 25
 #define j1 26
@@ -63,9 +63,10 @@ static void hall_update_task(void *p) {
 			LOG_D("[HALL] Hall Update Response: %s\n", response);
 			if (j[2] + f[2] == 6) {
 				LOG_I("[AUDIO] 游戏结束，请到平台上生成测评报告。\n");
-				// clang-format off
-            audio_play(%E6%B8%B8%E6%88%8F%E7%BB%93%E6%9D%9F%EF%BC%8C%E8%AF%B7%E5%88%B0%E5%B9%B3%E5%8F%B0%E4%B8%8A%E7%94%9F%E6%88%90%E6%B5%8B%E8%AF%84%E6%8A%A5%E5%91%8A%E3%80%82);
-				// clang-format on
+				audio_play(
+					"%E6%B8%B8%E6%88%8F%E7%BB%93%E6%9D%9F%EF%BC%8C%E8%AF%B7%E5%"
+					"88%B0%E5%B9%B3%E5%8F%B0%E4%B8%8A%E7%94%9F%E6%88%90%E6%B5%"
+					"8B%E8%AF%84%E6%8A%A5%E5%91%8A%E3%80%82");
 				break;
 			}
 			memcpy(gpio_data_last, gpio_data, sizeof(gpio_data));

@@ -1,0 +1,1573 @@
+--- START OF PROJECT CODE BUNDLE (for Opus Module) ---
+--- Generated on 2025年 07月 03日 星期四 20:11:33 CST ---
+
+================================================================================
+--- START OF FILE: proj.conf ---
+================================================================================
+
+# Components
+set(CONFIG_VLIBC 0)
+set(CONFIG_BFLOG 1)
+set(CONFIG_FREERTOS 1)
+set(CONFIG_POSIX 1)
+set(CONFIG_TLSF 1)
+set(CONFIG_SHELL 1)
+set(CONFIG_LWIP 1)
+set(CONFIG_WIFI6 1)
+set(CONFIG_RF 1)
+set(CONFIG_MBEDTLS 1)
+set(CONFIG_VFS 1)
+set(CONFIG_PSRAM 1)
+set(CONFIG_DHCPD 1)
+set(CONFIG_PING 1)
+set(CONFIG_MQTT 1)
+set(CONFIG_BFLB_MTD 1)      # For bt status save
+set(CONFIG_PARTITION 1)     # For bt status save
+set(CONFIG_EASYFLASH4 1)    # For bt status save
+
+## audio
+set(CONFIG_MULTIMEDIA 1)
+set(CONFIG_ALGRTC 1)
+
+set(CONFIG_AACDEC 1)
+set(CONFIG_AMRNB 1)
+set(CONFIG_AMRWB 1)
+set(CONFIG_FLAC 1)
+set(CONFIG_PVMP3DEC 1)
+set(CONFIG_OGG 1)
+set(CONFIG_OPUS 1)
+set(CONFIG_VORBIS 1)
+set(CONFIG_SPEEX 1)
+
+set(CONFIG_MINIALSA 1)
+set(CONFIG_SONIC 1)
+set(CONFIG_SPEEXDSP 1)
+set(CONFIG_USERVICE 1)
+set(CONFIG_SONA_AEF 1)
+
+set(CONFIG_AV 1)
+set(CONFIG_XCODEC 1)
+set(CONFIG_XPORT 1)
+set(CONFIG_XUTILS 1)
+set(CONFIG_XRECORD 1)
+set(CONFIG_XWEBSOCKET 1)
+
+set(CONFIG_VSNPRINTF_FLOAT      1)
+set(CONFIG_VSNPRINTF_FLOAT_EX   1)
+set(CONFIG_VSNPRINTF_LONG_LONG  1)
+
+# Config
+## mbedtls
+set(CONFIG_MBEDTLS_AES_USE_HW 1)
+set(CONFIG_MBEDTLS_BIGNUM_USE_HW 1)
+set(CONFIG_MBEDTLS_ECC_USE_HW 1)
+set(CONFIG_MBEDTLS_SHA1_USE_HW 1)
+set(CONFIG_MBEDTLS_SHA256_USE_HW 1)
+set(CONFIG_MBEDTLS_SHA512_USE_HW 1)
+
+# wifi
+set(CONFIG_VIF_MAX 2)
+set(CONFIG_STA_MAX 4)
+set(CONFIG_MAC_TXQ_DEPTH 32)
+set(CONFIG_MAC_RXQ_DEPTH 12)
+
+# bl616g0
+set(CONFIG_BSP_LCD 0)
+set(CONFIG_BSP_TOUCH 0)
+set(CONFIG_LVGL 0)
+set(CONFIG_BSP_IMAGE_SENSOR 0)
+set(CONFIG_BSP_ES8388 1)
+
+# other
+set(CONFIG_COREDUMP 0)
+set(CONFIG_CODEC_USE_I2S_TX 0)
+set(CONFIG_CODEC_USE_I2S_RX 0)
+set(CONFIG_MSP_USE_STATIC_RAM 0)
+
+--- END OF FILE: proj.conf ---
+
+
+================================================================================
+--- START OF FILE: CMakeLists.txt ---
+================================================================================
+
+cmake_minimum_required(VERSION 3.15)
+include(proj.conf)
+find_package(bouffalo_sdk REQUIRED HINTS $ENV{BL_SDK_BASE})
+
+# User
+sdk_add_compile_definitions(-DCONFIG_CLI_CMD_ENABLE)
+sdk_add_compile_definitions(-DBL_VERIFY)
+#sdk_add_compile_definitions(-DBL616_DHCP_DEBUG)
+
+file(GLOB AUTO_CONNECT_SOURCES ./modules/auto_connect/src/*.c)
+file(GLOB HTTPS_SOURCES ./modules/https/src/*.c)
+file(GLOB CLI_CMDS_SOURCES ./modules/cli_cmds/src/*.c)
+file(GLOB COMMON_UTILS_SOURCES ./modules/common/src/*.c)
+file(GLOB REQUESTS_SOURCES ./modules/requests/src/*.c) 
+file(GLOB OPENAPI_SOURCES ./modules/openapi/src/*.c)
+file(GLOB UNIFIED_CLIENT_SOURCES ./modules/unified_gateway_client/src/*.c)
+file(GLOB ES8388_DRIVER_SOURCES ./modules/audio_es8388/src/*.c)
+
+
+target_sources(
+    app PRIVATE
+    ${AUTO_CONNECT_SOURCES}
+    ${HTTPS_SOURCES}
+    ${CLI_CMDS_SOURCES}
+    ${COMMON_UTILS_SOURCES}
+    ${REQUESTS_SOURCES}
+    ${OPENAPI_SOURCES}
+    ${ES8388_DRIVER_SOURCES}
+    ${UNIFIED_CLIENT_SOURCES}
+)
+
+sdk_add_include_directories(
+    .
+    modules/auto_connect/include
+    modules/https/include
+    modules/cli_cmds/include
+    modules/common/include
+    modules/requests/include
+    modules/openapi/include
+    modules/unified_gateway_client/include
+    modules/audio_es8388/include
+)
+
+sdk_set_main_file(./src/main.c)
+
+project(openapi)
+
+--- END OF FILE: CMakeLists.txt ---
+
+
+================================================================================
+--- START OF FILE: FreeRTOSConfig.h ---
+================================================================================
+
+/*
+ * FreeRTOS Kernel V10.2.1
+ * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * http://www.FreeRTOS.org
+ * http://aws.amazon.com/freertos
+ *
+ * 1 tab == 4 spaces!
+ */
+
+#ifndef FREERTOS_CONFIG_H
+#define FREERTOS_CONFIG_H
+
+/*-----------------------------------------------------------
+ * Application specific definitions.
+ *
+ * These definitions should be adjusted for your particular hardware and
+ * application requirements.
+ *
+ * THESE PARAMETERS ARE DESCRIBED WITHIN THE 'CONFIGURATION' SECTION OF THE
+ * FreeRTOS API DOCUMENTATION AVAILABLE ON THE FreeRTOS.org WEB SITE.
+ *
+ * See http://www.freertos.org/a00110.html.
+ *----------------------------------------------------------*/
+#include "stdio.h"
+
+#ifdef BL702
+#define configMTIME_BASE_ADDRESS    (0x02000000UL + 0xBFF8UL)
+#define configMTIMECMP_BASE_ADDRESS (0x02000000UL + 0x4000UL)
+#else
+#define configMTIME_BASE_ADDRESS    (0xE0000000UL + 0xBFF8UL)
+#define configMTIMECMP_BASE_ADDRESS (0xE0000000UL + 0x4000UL)
+#endif
+
+#define configSUPPORT_STATIC_ALLOCATION         1
+#define configUSE_PREEMPTION                    1
+#define configUSE_IDLE_HOOK                     0
+#define configUSE_TICK_HOOK                     0
+#define configCPU_CLOCK_HZ                      ((uint32_t)(1 * 1000 * 1000))
+#define configTICK_RATE_HZ                      ((TickType_t)1000)
+#define configMAX_PRIORITIES                    (32)
+#define configMINIMAL_STACK_SIZE                ((unsigned short)128) /* Only needs to be this high as some demo tasks also use this constant.  In production only the idle task would use this. */
+#define configTOTAL_HEAP_SIZE                   ((size_t)100 * 1024)
+#define configMAX_TASK_NAME_LEN                 (16)
+#define configUSE_TRACE_FACILITY                1
+#define configUSE_STATS_FORMATTING_FUNCTIONS    1
+#define configUSE_16_BIT_TICKS                  0
+#define configIDLE_SHOULD_YIELD                 0
+#define configUSE_MUTEXES                       1
+#define configQUEUE_REGISTRY_SIZE               8
+#define configCHECK_FOR_STACK_OVERFLOW          2
+#define configUSE_RECURSIVE_MUTEXES             1
+#define configUSE_MALLOC_FAILED_HOOK            1
+#define configUSE_APPLICATION_TASK_TAG          1
+#define configUSE_COUNTING_SEMAPHORES           1
+#define configGENERATE_RUN_TIME_STATS           0
+#define configUSE_PORT_OPTIMISED_TASK_SELECTION 1
+#define configUSE_TICKLESS_IDLE                 0
+#define configUSE_POSIX_ERRNO                   1
+
+/* Co-routine definitions. */
+#define configUSE_CO_ROUTINES                   0
+#define configMAX_CO_ROUTINE_PRIORITIES         (2)
+
+/* Software timer definitions. */
+#define configUSE_TIMERS                        1
+#define configTIMER_TASK_PRIORITY               (configMAX_PRIORITIES - 1)
+#define configTIMER_QUEUE_LENGTH                4
+#define configTIMER_TASK_STACK_DEPTH            (1024)
+
+/* Task priorities.  Allow these to be overridden. */
+#ifndef uartPRIMARY_PRIORITY
+#define uartPRIMARY_PRIORITY (configMAX_PRIORITIES - 3)
+#endif
+
+/* Set the following definitions to 1 to include the API function, or zero
+to exclude the API function. */
+#define INCLUDE_vTaskPrioritySet         1
+#define INCLUDE_uxTaskPriorityGet        1
+#define INCLUDE_vTaskDelete              1
+#define INCLUDE_vTaskCleanUpResources    1
+#define INCLUDE_vTaskSuspend             1
+#define INCLUDE_vTaskDelayUntil          1
+#define INCLUDE_vTaskDelay               1
+#define INCLUDE_eTaskGetState            1
+#define INCLUDE_xTimerPendFunctionCall   1
+#define INCLUDE_xTaskAbortDelay          1
+#define INCLUDE_xTaskGetHandle           1
+#define INCLUDE_xSemaphoreGetMutexHolder 1
+
+/* Normal assert() semantics without relying on the provision of an assert.h
+header file. */
+void vApplicationMallocFailedHook(void);
+void vAssertCalled(void);
+#define configASSERT(x)                        \
+    if ((x) == 0) {                            \
+        printf("file [%s]\r\n", __FILE__);     \
+        printf("func [%s]\r\n", __FUNCTION__); \
+        printf("line [%d]\r\n", __LINE__);     \
+        printf("%s\r\n", (const char *)(#x));  \
+        vAssertCalled();                       \
+    }
+
+#if (configUSE_TICKLESS_IDLE != 0)
+void vApplicationSleep(uint32_t xExpectedIdleTime);
+#define portSUPPRESS_TICKS_AND_SLEEP(xExpectedIdleTime) vApplicationSleep(xExpectedIdleTime)
+#endif
+
+// #define portUSING_MPU_WRAPPERS
+
+#endif /* FREERTOS_CONFIG_H */
+
+--- END OF FILE: FreeRTOSConfig.h ---
+
+
+================================================================================
+--- START OF FILE: modules/cli_cmds/src/my_cli_cmds.c ---
+================================================================================
+
+// my_cli_cmds.c - Shell 命令实现与网络请求测试
+#include "requests.h"
+#include "my_cli_cmds.h"
+#include "log.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include <string.h>
+#include <stdlib.h>
+#include "semphr.h"
+#include "https.h"
+#include "wifi_mgmr_ext.h"
+#include "http_client.h"
+#include "https_client.h"
+#include "simpleopenapi_client.h"
+#include "url_parser.h"
+#include "es8388_driver.h"
+#include "unified_gateway_client.h"
+#ifdef CONFIG_SHELL
+#include "shell.h"
+#endif
+
+#define TEST_RESP_BUF_SIZE      4096
+#define TASK_STACK_SIZE_NET     8192
+#define CURL_MAX_HEADERS_LEN    512
+#define CURL_DEFAULT_TIMEOUT_MS 15000
+
+extern volatile uint32_t wifi_state;
+
+int check_wifi_state(void)
+{
+    return (wifi_state == 1) ? 0 : 1;
+}
+
+// 固定参数网络请求任务
+typedef struct {
+    const char *method;
+    const char *url;
+    const char *content_type;
+    const char *body;
+    int timeout_ms;
+} fixed_request_args_t;
+static void request_test_task(void *pvParameters);
+static void http_get_test_task(void *pvParameters);
+static void https_get_test_task(void *pvParameters);
+static void http_post_test_task(void *pvParameters);
+static void https_post_test_task(void *pvParameters);
+
+static void request_test_task(void *pvParameters)
+{
+    fixed_request_args_t *args = (fixed_request_args_t *)pvParameters;
+    uint8_t *resp_buf_ptr = NULL;
+    int final_status = REQ_ERR_INTERNAL;
+
+    if (check_wifi_state() != 0) {
+        LOG_E("%s %s Task Error: WiFi not connected!\r\n", args->method, args->url);
+        goto task_exit_fixed;
+    }
+
+    LOG_I("%s %s Test Task Started (using send_request)...\r\n", args->method, args->url);
+    resp_buf_ptr = malloc(TEST_RESP_BUF_SIZE);
+    if (!resp_buf_ptr) {
+        LOG_E("Failed to allocate response buffer (%d bytes)\r\n", TEST_RESP_BUF_SIZE);
+        goto task_exit_fixed;
+    }
+    LOG_D("Response buffer allocated (%d bytes) at %p\r\n", TEST_RESP_BUF_SIZE, resp_buf_ptr);
+    resp_buf_ptr[0] = '\0';
+
+    RequestOptions opts = {
+        .method = args->method,
+        .url = args->url,
+        .timeout_ms = args->timeout_ms,
+        .content_type = args->content_type,
+        .request_body = args->body,
+        .body_len = args->body ? strlen(args->body) : 0,
+        .custom_headers = NULL
+    };
+    Response resp = {
+        .response_buf = resp_buf_ptr,
+        .response_buf_len = TEST_RESP_BUF_SIZE,
+        .status_code = 0,
+        .actual_resp_len = 0
+    };
+
+    final_status = send_request(&opts, &resp);
+
+    LOG_I("send_request returned: %d\r\n", final_status);
+    LOG_I("Response status_code: %d, Actual length: %d\r\n", resp.status_code, resp.actual_resp_len);
+
+    if (resp.status_code >= 200 && resp.status_code < 300) {
+        LOG_I("%s %s Success! Status Code: %d\r\n", args->method, args->url, resp.status_code);
+        if (resp.actual_resp_len > 0) {
+            printf("--- Start Response Body (%d bytes, newlines replaced with space) ---\r\n", resp.actual_resp_len);
+            for (int i = 0; i < resp.actual_resp_len; i++) {
+                char current_char = resp.response_buf[i];
+                if (current_char != '\n' && current_char != '\r') {
+                    printf("%c", current_char);
+                } else {
+                    printf(" ");
+                }
+            }
+            printf("\r\n--- End Response Body ---\r\n");
+        } else {
+            LOG_I("Response body is empty.\r\n");
+        }
+    } else if (resp.status_code > 0) {
+        LOG_E("%s %s Failed! HTTP Status Code: %d\r\n", args->method, args->url, resp.status_code);
+        if (resp.actual_resp_len > 0) {
+            printf("--- Start Error Body (%d bytes, newlines replaced with space) ---\r\n", resp.actual_resp_len);
+            for (int i = 0; i < resp.actual_resp_len; i++) {
+                char current_char = resp.response_buf[i];
+                if (current_char != '\n' && current_char != '\r') {
+                    printf("%c", current_char);
+                } else {
+                    printf(" ");
+                }
+            }
+            printf("\r\n--- End Error Body ---\r\n");
+        }
+    } else {
+        LOG_E("%s %s Client Failed! Error code: %d (%s)\r\n", args->method, args->url, resp.status_code,
+              resp.status_code == REQ_ERR_TIMEOUT        ? "Timeout" :
+              resp.status_code == REQ_ERR_CONNECT        ? "Connection/TLS Failed" :
+              resp.status_code == REQ_ERR_DNS            ? "DNS Failed" :
+              resp.status_code == REQ_ERR_BAD_REQUEST    ? "Bad Request/URL Parse Failed" :
+              resp.status_code == REQ_ERR_MEM            ? "Memory Allocation Failed" :
+              resp.status_code == REQ_ERR_RESP_TOO_LARGE ? "Response Too Large" :
+              resp.status_code == REQ_ERR_RESP_PARSE     ? "Response Parse Failed" :
+                                                           "Other Client Error");
+    }
+
+task_exit_fixed:
+    if (resp_buf_ptr) {
+        LOG_D("Freeing fixed request response buffer at %p\r\n", resp_buf_ptr);
+        free(resp_buf_ptr);
+    }
+    LOG_I("%s %s Test Task Finished.\r\n", args->method, args->url);
+    vTaskDelete(NULL);
+}
+
+static void http_get_test_task(void *pvParameters)
+{
+    static fixed_request_args_t args = { "GET", "http://httpbin.org/get?source=bl618_send_request_http", NULL, NULL, 15000 };
+    request_test_task(&args);
+}
+
+static void https_get_test_task(void *pvParameters)
+{
+    static fixed_request_args_t args = { "GET", "https://httpbin.org/get", NULL, NULL, 20000 };
+    request_test_task(&args);
+}
+
+static void http_post_test_task(void *pvParameters)
+{
+    static fixed_request_args_t args = { "POST", "http://httpbin.org/post", "application/json", "{\"chip\":\"BL618_send_req_http\", \"message\":\"Hello again!\"}", 15000 };
+    request_test_task(&args);
+}
+
+static void https_post_test_task(void *pvParameters)
+{
+    static fixed_request_args_t args = { "POST", "https://httpbin.org/post", "application/json", "{\"source\":\"BL618_send_request\", \"secure\":true}", 20000 };
+    request_test_task(&args);
+}
+
+#ifdef CONFIG_SHELL
+
+// Shell 命令：打印问候语
+enum { GREET_OK = 0,
+       GREET_ARGERR = -1 };
+static int cmd_greet(int argc, char **argv)
+{
+    if (argc == 1) {
+        LOG_I("Hello from your companion robot!\r\n");
+    } else if (argc == 2) {
+        LOG_I("Hello %s, nice to meet you!\r\n", argv[1]);
+    } else {
+        LOG_E("Usage: greet [name]\r\n");
+        return GREET_ARGERR;
+    }
+    return GREET_OK;
+}
+
+// Shell 命令：机器人动作模拟
+static int cmd_robot_action(int argc, char **argv)
+{
+    if (argc < 2) {
+        LOG_E("Usage: action <move|turn|dance> [value]\r\n");
+        return -1;
+    }
+    const char *action_type = argv[1];
+    if (strcmp(action_type, "move") == 0 && argc == 3) {
+        int steps = atoi(argv[2]);
+        LOG_I("Executing move forward: %d steps (simulated)\r\n", steps);
+    } else if (strcmp(action_type, "turn") == 0 && argc == 3) {
+        int angle = atoi(argv[2]);
+        LOG_I("Executing turn left: %d degrees (simulated)\r\n", angle);
+    } else if (strcmp(action_type, "dance") == 0 && argc == 3) {
+        int pattern = atoi(argv[2]);
+        LOG_I("Executing dance pattern: %d (simulated)\r\n", pattern);
+    } else {
+        LOG_E("Unknown or invalid action.\r\n");
+        return -1;
+    }
+    return 0;
+}
+
+// Shell 命令：测试 URL 解析
+static int cmd_test_url_parse(int argc, char **argv)
+{
+    if (argc != 2) {
+        LOG_E("Usage: test_parseurl <url_string>\r\n");
+        return -1;
+    }
+    parsed_url_t parsed_result;
+    int ret = parse_url(argv[1], &parsed_result);
+    if (ret == URL_PARSE_OK) {
+        LOG_I("URL OK: scheme=%s, host=%s, port=%u, path=%s\r\n", parsed_result.scheme, parsed_result.host, parsed_result.port, parsed_result.path);
+    } else {
+        LOG_E("URL parse error: %d\r\n", ret);
+        return -1;
+    }
+    return 0;
+}
+
+// Shell 命令：测试中文输出
+static int cmd_chinese_test(int argc, char **argv)
+{
+    LOG_I("测试中文输出：你好，世界！\r\n");
+    return 0;
+}
+
+static int cmd_test_http_get(int argc, char **argv)
+{
+    BaseType_t task_ret = xTaskCreate(http_get_test_task, "http_get_test", TASK_STACK_SIZE_NET, NULL, 10, NULL);
+    if (task_ret != pdPASS) {
+        printf("Error: Failed to create HTTP GET test task! (ret=%ld)\r\n", task_ret);
+        return -1;
+    }
+    printf("HTTP GET test task created. Check logs for results (httpbin.org/get).\r\n");
+    return 0;
+}
+
+static int cmd_test_https_get(int argc, char **argv)
+{
+    BaseType_t task_ret = xTaskCreate(https_get_test_task, "https_get_test", TASK_STACK_SIZE_NET, NULL, 10, NULL);
+    if (task_ret != pdPASS) {
+        printf("Error: Failed to create HTTPS GET test task! (ret=%ld)\r\n", task_ret);
+        return -1;
+    }
+    printf("HTTPS GET test task created. Check logs for results (httpbin.org/get).\r\n");
+    return 0;
+}
+
+static int cmd_test_http_post(int argc, char **argv)
+{
+    BaseType_t task_ret = xTaskCreate(http_post_test_task, "http_post_test", TASK_STACK_SIZE_NET, NULL, 10, NULL);
+    if (task_ret != pdPASS) {
+        printf("Error: Failed to create HTTP POST test task! (ret=%ld)\r\n", task_ret);
+        return -1;
+    }
+    printf("HTTP POST test task created. Check logs for results.\r\n");
+    return 0;
+}
+
+static int cmd_test_https_post(int argc, char **argv)
+{
+    BaseType_t task_ret = xTaskCreate(https_post_test_task, "https_post_test", TASK_STACK_SIZE_NET, NULL, 10, NULL);
+    if (task_ret != pdPASS) {
+        printf("Error: Failed to create HTTPS POST test task! (ret=%ld)\r\n", task_ret);
+        return -1;
+    }
+    printf("HTTPS POST test task created. Check logs for results.\r\n");
+    return 0;
+}
+
+// curl 命令后台任务与参数解析
+typedef struct {
+    char *url;
+    char *method;
+    char *headers;
+    char *body;
+    char *content_type;
+    int timeout_ms;
+} curl_task_params_t;
+static void curl_task(void *pvParameters);
+static int cmd_curl(int argc, char **argv);
+
+static void curl_task(void *pvParameters)
+{
+    curl_task_params_t *params = (curl_task_params_t *)pvParameters;
+    uint8_t *resp_buf_ptr = NULL;
+    const int resp_buf_size = TEST_RESP_BUF_SIZE;
+    int final_status = REQ_ERR_INTERNAL;
+
+    Response resp = {
+        .response_buf = NULL,
+        .response_buf_len = resp_buf_size,
+        .status_code = 0,
+        .actual_resp_len = 0
+    };
+
+    if (!params || !params->url || !params->method) {
+        LOG_E("Curl Task: Invalid parameters received.\r\n");
+        goto task_cleanup_curl;
+    }
+
+    if (check_wifi_state() != 0) {
+        LOG_E("Curl Task: WiFi not connected! Aborting request to %s\r\n", params->url);
+        final_status = REQ_ERR_CONNECT;
+        goto task_cleanup_curl;
+    }
+
+    LOG_I("Curl Task: Starting %s request to %s\r\n", params->method, params->url);
+
+    resp_buf_ptr = malloc(resp_buf_size);
+    if (!resp_buf_ptr) {
+        LOG_E("Curl Task: Failed to allocate response buffer (%d bytes)\r\n", resp_buf_size);
+        final_status = REQ_ERR_MEM;
+        goto task_cleanup_curl;
+    }
+    LOG_D("Curl Task: Response buffer allocated (%d bytes) at %p\r\n", resp_buf_size, resp_buf_ptr);
+    resp_buf_ptr[0] = '\0';
+    resp.response_buf = resp_buf_ptr;
+
+    RequestOptions opts = {
+        .method = params->method,
+        .url = params->url,
+        .custom_headers = params->headers,
+        .content_type = params->content_type,
+        .request_body = params->body,
+        .body_len = (params->body ? strlen(params->body) : 0),
+        .timeout_ms = params->timeout_ms
+    };
+
+    resp.response_buf = resp_buf_ptr;
+    resp.response_buf_len = resp_buf_size;
+    resp.status_code = 0;
+    resp.actual_resp_len = 0;
+
+    TickType_t tick_start = xTaskGetTickCount();
+    LOG_I("Curl Task: Sending request...\r\n");
+    final_status = send_request(&opts, &resp);
+    TickType_t tick_end = xTaskGetTickCount();
+    uint32_t elapsed_ms = (tick_end - tick_start) * 1000 / configTICK_RATE_HZ;
+    LOG_I("Curl Task: Request finished. Time elapsed: %lu ms\r\n", (unsigned long)elapsed_ms);
+
+    printf("\r\n-------------------- Curl Result --------------------\r\n");
+    printf("URL: %s\r\n", params->url);
+    printf("Method: %s\r\n", params->method);
+    printf("HTTP Status Code: %d\r\n", resp.status_code);
+    printf("Time elapsed: %lu ms\r\n", (unsigned long)elapsed_ms);
+
+    if (resp.actual_resp_len > 0) {
+        printf("Response Body (%d bytes, newlines replaced with space):\r\n", resp.actual_resp_len);
+        printf("<<<--- START BODY --->>>\r\n");
+        for (int i = 0; i < resp.actual_resp_len; i++) {
+            char current_char = resp.response_buf[i];
+            if (current_char != '\n' && current_char != '\r') {
+                printf("%c", current_char);
+            } else {
+                printf(" ");
+            }
+        }
+        printf("\r\n<<<--- END BODY --->>>\r\n");
+    } else {
+        printf("Response Body: (empty)\r\n");
+    }
+
+    if (final_status < 0 && final_status != resp.status_code) {
+        printf("Client Error Code: %d (%s)\r\n", final_status,
+               final_status == REQ_ERR_TIMEOUT        ? "Timeout" :
+               final_status == REQ_ERR_CONNECT        ? "Connection/TLS Failed" :
+               final_status == REQ_ERR_DNS            ? "DNS Failed" :
+               final_status == REQ_ERR_BAD_REQUEST    ? "Bad Request/URL Parse Failed" :
+               final_status == REQ_ERR_MEM            ? "Memory Allocation Failed" :
+               final_status == REQ_ERR_RESP_TOO_LARGE ? "Response Too Large" :
+               final_status == REQ_ERR_RESP_PARSE     ? "Response Parse Failed" :
+                                                        "Other Client Error");
+    }
+    printf("-----------------------------------------------------\r\n");
+
+task_cleanup_curl:
+    if (resp_buf_ptr) {
+        LOG_D("Curl Task: Freeing response buffer at %p\r\n", resp_buf_ptr);
+        free(resp_buf_ptr);
+    }
+    if (params) {
+        LOG_D("Curl Task: Freeing task parameters...\r\n");
+        if (params->url)
+            free(params->url);
+        if (params->headers)
+            free(params->headers);
+        if (params->body)
+            free(params->body);
+        free(params);
+    }
+
+    LOG_I("Curl Task Finished.\r\n");
+    vTaskDelete(NULL);
+}
+
+static int cmd_curl(int argc, char **argv)
+{
+    if (argc < 2) {
+        printf("Usage: curl <URL> [-H \"Header: Value\"] [-d 'data'] [timeout_ms]\r\n");
+        printf("Example:\r\n");
+        printf("  curl http://httpbin.org/get\r\n");
+        printf("  curl https://httpbin.org/post -H \"Content-Type: application/json\" -d '{\"value\":1}'\r\n");
+        printf("  curl https://api.deepseek.com/... -H \"Authorization: Bearer sk-...\" -H \"Content-Type: application/json\" -d '{\"model\":...}' 20000\r\n");
+        return -1;
+    }
+
+    curl_task_params_t *params = NULL;
+    char *url_arg = NULL;
+    char *method_arg = "GET";
+    char *body_arg = NULL;
+    char *headers_arg = NULL;
+    char *content_type_arg = NULL;
+    int timeout_arg = CURL_DEFAULT_TIMEOUT_MS;
+    size_t headers_current_len = 0;
+
+    headers_arg = malloc(CURL_MAX_HEADERS_LEN);
+    params = malloc(sizeof(curl_task_params_t));
+    if (!params || !headers_arg) {
+        printf("Error: Cannot allocate memory for task parameters or headers\r\n");
+        if (params)
+            free(params);
+        if (headers_arg)
+            free(headers_arg);
+        return -1;
+    }
+    headers_arg[0] = '\0';
+    memset(params, 0, sizeof(curl_task_params_t));
+
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-H") == 0) {
+            if (i + 1 < argc) {
+                i++;
+                size_t header_len = strlen(argv[i]);
+                if (headers_current_len + header_len + 2 >= CURL_MAX_HEADERS_LEN) {
+                    printf("Error: Total header length exceeds limit (%d bytes)\r\n", CURL_MAX_HEADERS_LEN);
+                    goto parse_error_curl;
+                }
+                strcat(headers_arg, argv[i]);
+                strcat(headers_arg, "\r\n");
+                headers_current_len += header_len + 2;
+
+                if (content_type_arg == NULL && strncasecmp(argv[i], "Content-Type:", 13) == 0) {
+                    const char *ct_start = argv[i] + 13;
+                    while (*ct_start == ' ')
+                        ct_start++;
+                    content_type_arg = (char *)ct_start;
+                }
+            } else {
+                printf("Error: -H requires an argument\r\n");
+                goto parse_error_curl;
+            }
+        } else if (strcmp(argv[i], "-d") == 0) {
+            if (i + 1 < argc) {
+                i++;
+                if (body_arg != NULL) {
+                    printf("Error: Multiple -d arguments are not supported\r\n");
+                    goto parse_error_curl;
+                }
+                body_arg = strdup(argv[i]);
+                if (!body_arg) {
+                    printf("Error: Cannot allocate memory for request body\r\n");
+                    goto parse_error_curl;
+                }
+                method_arg = "POST";
+            } else {
+                printf("Error: -d requires an argument\r\n");
+                goto parse_error_curl;
+            }
+        } else {
+            char *endptr;
+            long val = strtol(argv[i], &endptr, 10);
+            if (*endptr == '\0' && argv[i][0] != '\0' && val > 0) {
+                timeout_arg = (int)val;
+            } else if (url_arg == NULL) {
+                url_arg = strdup(argv[i]);
+                if (!url_arg) {
+                    printf("Error: Cannot allocate memory for URL\r\n");
+                    goto parse_error_curl;
+                }
+            } else {
+                printf("Error: Unknown argument or URL already set: %s\r\n", argv[i]);
+                goto parse_error_curl;
+            }
+        }
+    }
+
+    if (url_arg == NULL) {
+        printf("Error: URL is required\r\n");
+        goto parse_error_curl;
+    }
+
+    params->url = url_arg;
+    params->method = method_arg;
+    if (headers_current_len > 0) {
+        params->headers = headers_arg;
+    } else {
+        free(headers_arg);
+        params->headers = NULL;
+        headers_arg = NULL;
+    }
+    params->body = body_arg;
+    params->content_type = content_type_arg;
+    params->timeout_ms = timeout_arg;
+
+    BaseType_t task_ret = xTaskCreate(curl_task,
+                                      "curl_task",
+                                      TASK_STACK_SIZE_NET,
+                                      params,
+                                      10,
+                                      NULL);
+
+    if (task_ret != pdPASS) {
+        printf("Error: Failed to create curl task (ret=%ld)\r\n", task_ret);
+        if (params) {
+            if (params->url)
+                free(params->url);
+            if (params->headers)
+                free(params->headers);
+            if (params->body)
+                free(params->body);
+            free(params);
+        }
+        return -1;
+    }
+
+    printf("Curl task created for %s. Check logs for progress...\r\n", url_arg);
+    return 0;
+
+parse_error_curl:
+    printf("Cleaning up due to parsing error...\r\n");
+    if (url_arg)
+        free(url_arg);
+    if (headers_arg)
+        free(headers_arg);
+    if (body_arg)
+        free(body_arg);
+    if (params)
+        free(params);
+    return -1;
+}
+
+// Shell 命令：调用 Chat 聊天
+static int cmd_simpleopenapi_chat(int argc, char **argv)
+{
+    if (argc < 2) {
+        printf("Usage: chat <user_message>\r\n");
+        return -1;
+    }
+    size_t total_len = 0;
+    for (int i = 1; i < argc; i++)
+        total_len += strlen(argv[i]) + 1;
+    if (total_len == 0)
+        return -1;
+    char *full_message = malloc(total_len);
+    if (!full_message)
+        return -1;
+    full_message[0] = '\0';
+    for (int i = 1; i < argc; i++) {
+        strcat(full_message, argv[i]);
+        if (i < argc - 1)
+            strcat(full_message, " ");
+    }
+    int ret = simple_openapi_chat_async(full_message);
+    free(full_message);
+    if (ret != 0) {
+        printf("Error: Failed to initiate Chat request (Error code: %d)\r\n", ret);
+        return -1;
+    }
+    printf("Chat request initiated. Check logs for response...\r\n");
+    return 0;
+}
+
+// --- 新增: ES8388 音频控制 Shell 命令 ---
+
+/**
+ * @brief Shell command to initialize and start ES8388 audio capture.
+ */
+static int cmd_audio_start(int argc, char **argv)
+{
+    LOG_I("Attempting to initialize and start audio capture...\r\n");
+
+    // 获取当前状态，避免重复初始化或启动
+    audio_module_state_t current_state = es8388_audio_get_state();
+
+    if (current_state == AUDIO_STATE_UNINITIALIZED) {
+        if (es8388_audio_init() != 0) {
+            LOG_E("ES8388 audio initialization failed.\r\n");
+            return -1;
+        }
+        LOG_I("ES8388 audio module initialized.\r\n");
+    } else if (current_state == AUDIO_STATE_CAPTURING) {
+        LOG_W("Audio capture is already active.\r\n");
+        return 0;
+    }
+    // 如果是 AUDIO_STATE_INITIALIZED 状态，则直接尝试启动
+
+    if (es8388_audio_start_capture() != 0) {
+        LOG_E("Failed to start ES8388 audio capture.\r\n");
+        return -2; // 使用不同的错误码以便区分
+    }
+    LOG_I("ES8388 audio capture started.\r\n");
+    return 0;
+}
+
+/**
+ * @brief Shell command to stop ES8388 audio capture and deinitialize the module.
+ */
+static int cmd_audio_stop(int argc, char **argv)
+{
+    LOG_I("Attempting to stop audio capture and deinitialize module...\r\n");
+
+    audio_module_state_t current_state = es8388_audio_get_state();
+
+    if (current_state == AUDIO_STATE_CAPTURING) {
+        if (es8388_audio_stop_capture() != 0) {
+            LOG_E("Failed to stop ES8388 audio capture, but will attempt deinit.\r\n");
+            // 即使停止失败，也尝试反初始化
+        } else {
+            LOG_I("ES8388 audio capture stopped.\r\n");
+        }
+    } else if (current_state == AUDIO_STATE_UNINITIALIZED) {
+        LOG_W("Audio module is not initialized or already deinitialized.\r\n");
+        return 0; // 无需操作
+    } else {
+        LOG_I("Audio capture was not active, proceeding to deinit.\r\n");
+    }
+
+    es8388_audio_deinit(); // 清理资源
+    LOG_I("ES8388 audio module deinitialized.\r\n");
+    return 0;
+}
+
+/**
+ * @brief Shell command to get a chunk of audio data (for testing).
+ */
+static int cmd_audio_get_data(int argc, char **argv)
+{
+#define TEMP_AUDIO_CHUNK_SIZE 1024 // 定义一个临时缓冲区大小用于测试
+    static uint8_t temp_audio_buffer[TEMP_AUDIO_CHUNK_SIZE];
+    uint32_t data_len = 0;
+
+    LOG_I("Attempting to get audio data...\r\n");
+    if (es8388_audio_get_state() != AUDIO_STATE_CAPTURING) {
+        LOG_E("Audio capture is not active. Start capture first with 'audio_start'.\r\n");
+        return -1;
+    }
+    TickType_t get_data_timeout = pdMS_TO_TICKS(1000); // 或者给1秒的富余，等待DMA填充完毕
+    int ret = es8388_audio_get_data(temp_audio_buffer, TEMP_AUDIO_CHUNK_SIZE, &data_len, get_data_timeout);
+    if (ret == 0 && data_len > 0) {
+        LOG_I("Successfully retrieved %lu bytes of audio data.\r\n", data_len);
+        // 为简单起见，这里只打印前几个字节作为示例
+        // 注意：直接打印二进制音频数据到控制台可能不可读
+        printf("First few bytes (hex): ");
+        for (int i = 0; i < 16 && i < data_len; i++) {
+            printf("%02X ", temp_audio_buffer[i]);
+        }
+        printf("\r\n");
+    } else if (ret == -3) {
+        LOG_W("Audio data not ready yet (DMA transfer might be ongoing).\r\n");
+    } else {
+        LOG_E("Failed to get audio data, error code: %d, data_len: %lu\r\n", ret, data_len);
+    }
+    return ret;
+}
+
+// 配置接收端 PC 的 IP 地址和端口
+#define LAN_PCM_SERVER_IP            "10.0.0.2" // <<--- 【已更新为您日志中提供的IP地址】
+#define LAN_PCM_SERVER_PORT          8000
+#define LAN_PCM_SERVER_PATH          "/api/v1/asr/stream" // 与Python服务器脚本中的 UPLOAD_PATH 一致
+
+// 定义发送时单次从音频驱动获取的数据块大小
+#define LAN_AUDIO_FETCH_CHUNK_SIZE   (32000)
+#define DEFAULT_AUDIO_CHUNKS_TO_SEND 30 // 默认发送30个数据块 (约 15 秒音频: 30 * 0.5s)
+
+static uint8_t lan_audio_chunk_buffer[LAN_AUDIO_FETCH_CHUNK_SIZE];
+// --- 新增: 为 multipart/form-data 请求体创建一个更大的缓冲区 ---
+// 需要容纳音频数据本身 + 所有 multipart 头部信息（大约需要额外300-400字节）
+#define LAN_MULTIPART_BODY_BUFFER_SIZE (LAN_AUDIO_FETCH_CHUNK_SIZE + 512)
+static uint8_t multipart_body_buffer[LAN_MULTIPART_BODY_BUFFER_SIZE];
+/**
+ * @brief Shell command to send multiple chunks of captured audio data to a LAN server.
+ * [全新方案] 将 session_id 放在 URL 中，请求体为原始二进制流。
+ * Usage: send_audio_lan [num_chunks]
+ */
+static int cmd_send_audio_lan(int argc, char **argv)
+{
+    if (es8388_audio_get_state() != AUDIO_STATE_CAPTURING) {
+        LOG_E("音频未在采集中，请先运行 'audio_start' 命令。\r\n");
+        return -1;
+    }
+
+    int num_chunks_to_send = DEFAULT_AUDIO_CHUNKS_TO_SEND;
+    if (argc > 1) {
+        int arg_chunks = atoi(argv[1]);
+        if (arg_chunks > 0) {
+            num_chunks_to_send = arg_chunks;
+        }
+    }
+    LOG_I("准备发送 %d 个音频数据块 (每块 %d 字节)。\r\n", num_chunks_to_send, LAN_AUDIO_FETCH_CHUNK_SIZE);
+
+    // 1. 生成本次流式会话的 session_id
+    char session_id_str[24];
+    snprintf(session_id_str, sizeof(session_id_str), "%llu", bflb_mtimer_get_time_us());
+    LOG_I("本次会话 Session ID: %s\r\n", session_id_str);
+
+    // ★★★★★【核心修改】★★★★★
+    // 2. 将 session_id 拼接到 URL 路径的末尾
+    char server_url[128];
+    snprintf(server_url, sizeof(server_url), "http://%s:%d%s/%s",
+             LAN_PCM_SERVER_IP, LAN_PCM_SERVER_PORT, LAN_PCM_SERVER_PATH, session_id_str);
+    LOG_I("目标服务器 URL: %s\r\n", server_url);
+
+    uint32_t fetched_data_len = 0;
+    int audio_ret = -1;
+    int successfully_sent_chunks = 0;
+
+    for (int i = 0; i < num_chunks_to_send; i++) {
+        LOG_I("正在准备第 %d/%d 个数据块...\r\n", i + 1, num_chunks_to_send);
+        TickType_t get_data_timeout = pdMS_TO_TICKS(1000);
+        audio_ret = es8388_audio_get_data(lan_audio_chunk_buffer, LAN_AUDIO_FETCH_CHUNK_SIZE, &fetched_data_len, get_data_timeout);
+
+        if (audio_ret != 0 || fetched_data_len == 0) {
+            LOG_E("获取音频数据失败 (返回: %d)。\r\n", audio_ret);
+            if (i == 0)
+                return -2;
+            goto send_summary_lan_v2;
+        }
+
+        // 3. ★恢复到最原始的 RequestOptions★，不再需要任何复杂的头部和body拼接！
+        RequestOptions opts = {
+            .method = "POST",
+            .url = server_url,
+            .custom_headers = "Connection: Keep-Alive\r\n", // 可以保留，或设为 NULL
+            .content_type = "application/octet-stream",     // 发送原始二进制流
+            .request_body = (const char *)lan_audio_chunk_buffer,
+            .body_len = fetched_data_len,
+            .timeout_ms = 10000
+        };
+
+        uint8_t http_resp_buf[256];
+        Response http_resp_data = { .response_buf = http_resp_buf, .response_buf_len = sizeof(http_resp_buf) };
+
+        LOG_I("正在发送第 %d/%d 个数据块 (%lu 字节) 到 %s...\r\n", i + 1, num_chunks_to_send, fetched_data_len, server_url);
+        int send_status = send_request(&opts, &http_resp_data);
+
+        if (send_status >= 200 && send_status < 300) {
+            LOG_I("第 %d/%d 个数据块发送成功。HTTP 状态码: %d。\r\n", i + 1, num_chunks_to_send, send_status);
+            if (http_resp_data.actual_resp_len > 0) {
+                LOG_I("服务器响应: %.*s\r\n", http_resp_data.actual_resp_len, http_resp_data.response_buf);
+            }
+            successfully_sent_chunks++;
+        } else {
+            LOG_E("第 %d/%d 个数据块发送失败。send_request 返回: %d\r\n", i + 1, num_chunks_to_send, send_status);
+            goto send_summary_lan_v2;
+        }
+    }
+
+send_summary_lan_v2:
+    LOG_I("发送总结：总共尝试发送 %d 个数据块，成功发送 %d 个。\r\n", num_chunks_to_send, successfully_sent_chunks);
+    return 0;
+}
+
+static int cmd_robot_start(int argc, char **argv)
+{
+    printf("Command: robot_start\r\n");
+
+    // 步骤 1: 启动音频采集 (由“专人”负责)
+    // 检查是否已经初始化，避免重复操作
+    if (es8388_audio_get_state() == AUDIO_STATE_UNINITIALIZED) {
+        printf("Audio not initialized. Initializing...\r\n");
+        if (es8388_audio_init() != 0) {
+            printf("Error: Audio module initialization failed.\r\n");
+            return -1;
+        }
+    }
+    if (es8388_audio_get_state() != AUDIO_STATE_CAPTURING) {
+        printf("Audio not capturing. Starting capture...\r\n");
+        if (es8388_audio_start_capture() != 0) {
+            printf("Error: Failed to start audio capture.\r\n");
+            return -2;
+        }
+    }
+    printf("Audio system is ready.\r\n");
+
+    // 步骤 2: 调用我们新的MQTT会话启动函数
+    printf("Starting MQTT session task...\r\n");
+    robot_session_start();
+
+    return 0;
+}
+
+// Shell 命令注册
+SHELL_CMD_EXPORT_ALIAS(cmd_greet, greet, Greet the user : greet[name]);
+SHELL_CMD_EXPORT_ALIAS(cmd_robot_action, action, Robot action : action<move | turn | dance>[value]);
+SHELL_CMD_EXPORT_ALIAS(cmd_test_http_get, test_http_get, Test HTTP GET to httpbin.org / get);
+SHELL_CMD_EXPORT_ALIAS(cmd_test_https_get, test_https_get, Test HTTPS GET to httpbin.org / get);
+SHELL_CMD_EXPORT_ALIAS(cmd_test_http_post, test_http_post, Test HTTP POST to httpbin.org / post);
+SHELL_CMD_EXPORT_ALIAS(cmd_test_https_post, test_https_post, Test HTTPS POST to httpbin.org / post);
+SHELL_CMD_EXPORT_ALIAS(cmd_test_url_parse, test_parseurl, Test the URL parser : test_parseurl<url>);
+SHELL_CMD_EXPORT_ALIAS(cmd_chinese_test, test_chinese, Test Chinese output : test_chinese);
+SHELL_CMD_EXPORT_ALIAS(cmd_curl, curl, "Simple curl: curl <URL> [-H H:V] [-d 'data'] [timeout]");
+SHELL_CMD_EXPORT_ALIAS(cmd_simpleopenapi_chat, chat, Send message to Chat API : chat<message>);
+SHELL_CMD_EXPORT_ALIAS(cmd_audio_start, audio_start, Initialize and start ES8388 audio capture);
+SHELL_CMD_EXPORT_ALIAS(cmd_audio_stop, audio_stop, Stop ES8388 audio capture and deinitialize);
+SHELL_CMD_EXPORT_ALIAS(cmd_audio_get_data, audio_get, Get a chunk of captured audio data (for testing));
+SHELL_CMD_EXPORT_ALIAS(cmd_send_audio_lan, send_audio_lan, Send audio to LAN.Usage : send_audio_lan[num_chunks]);
+SHELL_CMD_EXPORT_ALIAS(cmd_robot_start, robot_start, Start the main conversation loop of the robot);
+#endif
+--- END OF FILE: modules/cli_cmds/src/my_cli_cmds.c ---
+
+
+================================================================================
+--- START OF FILE: modules/audio_es8388/include/es8388_driver.h ---
+================================================================================
+
+#ifndef ES8388_DRIVER_H
+#define ES8388_DRIVER_H
+
+#include <stdint.h>
+#include "portmacro.h" // 包含 FreeRTOS 的 portmacro.h 以使用 TickType_t 和其他类型
+
+/**
+ * @brief 音频模块初始化状态
+ */
+typedef enum {
+    AUDIO_STATE_UNINITIALIZED,
+    AUDIO_STATE_INITIALIZED,
+    AUDIO_STATE_CAPTURING
+} audio_module_state_t;
+
+/**
+ * @brief 初始化 ES8388 音频编解码器及相关I2S和DMA。
+ *
+ * @return int 0 表示成功, 非 0 表示失败。
+ */
+int es8388_audio_init(void);
+
+/**
+ * @brief 启动音频采集。
+ *
+ * @return int 0 表示成功, 非 0 表示失败。
+ */
+int es8388_audio_start_capture(void);
+
+/**
+ * @brief 停止音频采集。
+ *
+ * @return int 0 表示成功, 非 0 表示失败。
+ */
+int es8388_audio_stop_capture(void); // 确保此名称与 .c 文件中的定义一致
+
+/**
+ * @brief 反初始化音频模块，释放资源。
+ */
+void es8388_audio_deinit(void);
+
+/**
+ * @brief 获取当前音频模块状态。
+ *
+ * @return audio_module_state_t 当前状态。
+ */
+audio_module_state_t es8388_audio_get_state(void);
+
+/**
+ * @brief 获取最近捕获的音频数据。
+ *
+ * @param buffer 指向目标缓冲区的指针，用于复制音频数据。
+ * @param buffer_size 目标缓冲区的最大长度。
+ * @param out_len [OUT] 实际复制到目标缓冲区的音频数据长度。
+ * @param timeout_ticks 超时等待的时间（单位：ticks）。
+ * @return int 0 表示成功获取数据，非 0 表示失败。
+ */
+int es8388_audio_get_data(uint8_t *buffer, uint32_t buffer_size, uint32_t *out_len, TickType_t timeout_ticks); // 增加超时参数
+
+/**
+ * @brief Plays a chunk of audio data.
+ * @param data Pointer to the audio data buffer.
+ * @param len Length of the audio data in bytes.
+ * @return 0 on success, negative error code on failure.
+ */
+int es8388_audio_play(const uint8_t *data, uint32_t len);
+
+/**
+ * @brief Fills the upcoming DMA audio buffers with silence.
+ *        This function should be called when transitioning from playback back to recording
+ *        to prevent old audio data from being looped.
+ * @return 0 on success, negative error code on failure.
+ */
+int es8388_audio_fill_silence(void);
+
+#endif // ES8388_DRIVER_H
+
+--- END OF FILE: modules/audio_es8388/include/es8388_driver.h ---
+
+
+================================================================================
+--- START OF FILE: modules/audio_es8388/src/es8388_driver.c ---
+================================================================================
+
+// es8388_driver.c - REBORN AND BATTLE-HARDENED
+
+#include "FreeRTOS.h"
+#include "es8388_driver.h"
+#include "board.h"
+#include "bflb_gpio.h"
+#include "bflb_l1c.h"
+#include "bflb_mtimer.h"
+#include "bflb_i2c.h"
+#include "bl616_glb.h"
+#include "bflb_dma.h"
+#include "bsp_es8388.h"
+#include "bflb_i2s.h"
+#include "log.h"
+#include <string.h>
+#include "task.h"
+#include <semphr.h>
+
+// --- 模块内部变量 ---
+static struct bflb_device_s *i2s0_dev;
+static struct bflb_device_s *dma0_ch0_dev; // TX
+static struct bflb_device_s *dma0_ch1_dev; // RX
+
+// RX (录音) 相关的定义 (保持不变，工作得很好)
+#define RX_BUFFER_SIZE 1600 // 或者3200，取决于你希望一次DMA录多久
+static uint8_t rx_audio_buffer[RX_BUFFER_SIZE] __attribute__((aligned(4)));
+static SemaphoreHandle_t rx_buffer_ready_sem = NULL;
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+//              ★★★ 播放逻辑 - 全新、硬核、防抖动的多块缓冲机制 ★★★
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+
+// 定义每个DMA传输块的大小，这个值应该等于或大于网络上收到的单个音频包大小
+#define TX_DMA_BLOCK_SIZE 2048 // 播放块大小，也应该相应减小
+// 定义我们使用多少个块来做缓冲。越多的块能提供越好的抗网络抖动能力，但会增加延迟和内存消耗。4个是很好的起点。
+#define TX_DMA_BLOCK_NUM  (4)
+// 总的环形缓冲区大小
+#define TX_BUFFER_SIZE    (TX_DMA_BLOCK_SIZE * TX_DMA_BLOCK_NUM)
+
+// 这是我们真正的物理环形缓冲区，DMA将从这里循环读取数据
+static uint8_t tx_audio_buffer[TX_BUFFER_SIZE] __attribute__((aligned(4)));
+
+// ★★★ 核心武器：计数信号量 ★★★
+// 这个信号量代表了应用程序“可以填充”的空闲块的数量。
+// 初始化时有 TX_DMA_BLOCK_NUM 个，当应用填充一个块，就消耗一个。当DMA播放完一个块，就在中断里释放一个。
+// 这就是我们的“流控”机制！
+static SemaphoreHandle_t tx_blocks_available_sem = NULL;
+
+// ★★★ 写指针（按块索引）★★★
+// 用来标记下一个要被应用层写入的块是哪一个
+static volatile uint32_t tx_write_block_idx = 0;
+
+static ES8388_Cfg_Type es8388_codec_cfg = {
+    .work_mode = ES8388_CODEC_MDOE,
+    .role = ES8388_SLAVE,
+    .mic_input_mode = ES8388_SINGLE_ENDED_MIC,
+    .mic_pga = ES8388_MIC_PGA_6DB,
+    .i2s_frame = ES8388_LEFT_JUSTIFY_FRAME,
+    .data_width = ES8388_DATA_LEN_16,
+};
+static audio_module_state_t current_audio_state = AUDIO_STATE_UNINITIALIZED;
+
+// --- DMA 中断服务函数 ---
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+//              ★★★ 这是新架构的脉搏！ ★★★
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+static void dma0_ch0_tx_isr_callback(void *arg)
+{
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    // DMA 刚刚播放完一个块，这意味着这个块现在“空闲”了。
+    // 我们释放一个信号量，告诉在 es8388_audio_play 中等待的播放任务：
+    // “嘿，哥们，你可以再填充一个新的数据块了！”
+    if (tx_blocks_available_sem != NULL) {
+        xSemaphoreGiveFromISR(tx_blocks_available_sem, &xHigherPriorityTaskWoken);
+        // 如果释放信号量唤醒了一个更高优先级的任务，我们立刻进行任务切换，保证音频数据被最快填充。
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    }
+}
+
+static void dma0_ch1_rx_isr_callback(void *arg)
+{
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    if (rx_buffer_ready_sem != NULL) {
+        xSemaphoreGiveFromISR(rx_buffer_ready_sem, &xHigherPriorityTaskWoken);
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    }
+}
+
+// --- 内部辅助函数 ---
+static int audio_i2s_gpio_init(void)
+{
+    struct bflb_device_s *gpio_dev;
+    gpio_dev = bflb_device_get_by_name("gpio");
+    bflb_gpio_init(gpio_dev, GPIO_PIN_1, GPIO_FUNC_I2S | GPIO_ALTERNATE | GPIO_PULLUP | GPIO_SMT_EN | GPIO_DRV_1);
+    bflb_gpio_init(gpio_dev, GPIO_PIN_10, GPIO_FUNC_I2S | GPIO_ALTERNATE | GPIO_PULLUP | GPIO_SMT_EN | GPIO_DRV_1);
+    bflb_gpio_init(gpio_dev, GPIO_PIN_3, GPIO_FUNC_I2S | GPIO_ALTERNATE | GPIO_PULLUP | GPIO_SMT_EN | GPIO_DRV_1);
+    bflb_gpio_init(gpio_dev, GPIO_PIN_0, GPIO_FUNC_I2S | GPIO_ALTERNATE | GPIO_PULLUP | GPIO_SMT_EN | GPIO_DRV_1);
+    bflb_gpio_init(gpio_dev, GPIO_PIN_2, GPIO_FUNC_CLKOUT | GPIO_ALTERNATE | GPIO_PULLUP | GPIO_SMT_EN | GPIO_DRV_1);
+    return 0;
+}
+
+static void audio_mclk_out_init(void)
+{
+    GLB_Set_I2S_CLK(ENABLE, 2, GLB_I2S_DI_SEL_I2S_DI_INPUT, GLB_I2S_DO_SEL_I2S_DO_OUTPT);
+    GLB_Set_Chip_Clock_Out2_Sel(GLB_CHIP_CLK_OUT_2_I2S_REF_CLK);
+}
+
+static int audio_i2s_dma_init(void)
+{
+    // ★★★ DMA LLI (链表) 设置需要改变，以支持块状循环传输 ★★★
+    static struct bflb_dma_channel_lli_pool_s tx_llipool[TX_DMA_BLOCK_NUM];
+    static struct bflb_dma_channel_lli_transfer_s tx_transfers[TX_DMA_BLOCK_NUM];
+
+    static struct bflb_dma_channel_lli_pool_s rx_llipool[10]; // RX部分保持不变
+    static struct bflb_dma_channel_lli_transfer_s rx_transfers[1];
+
+    struct bflb_i2s_config_s i2s_cfg = {
+        .bclk_freq_hz = 8000 * 16 * 2, // 确保与TTS服务生成的采样率一致
+        .role = I2S_ROLE_MASTER,
+        .format_mode = I2S_MODE_LEFT_JUSTIFIED,
+        .channel_mode = I2S_CHANNEL_MODE_NUM_2,
+        .frame_width = I2S_SLOT_WIDTH_16,
+        .data_width = I2S_SLOT_WIDTH_16,
+        .fs_offset_cycle = 0,
+        .tx_fifo_threshold = 4,
+        .rx_fifo_threshold = 4,
+    };
+    struct bflb_dma_channel_config_s rx_dma_cfg = {
+        .direction = DMA_PERIPH_TO_MEMORY, .src_req = DMA_REQUEST_I2S_RX, .dst_req = DMA_REQUEST_NONE, .src_addr_inc = DMA_ADDR_INCREMENT_DISABLE, .dst_addr_inc = DMA_ADDR_INCREMENT_ENABLE, .src_burst_count = DMA_BURST_INCR1, .dst_burst_count = DMA_BURST_INCR1, .src_width = DMA_DATA_WIDTH_16BIT, .dst_width = DMA_DATA_WIDTH_16BIT
+    };
+    struct bflb_dma_channel_config_s tx_dma_cfg = {
+        .direction = DMA_MEMORY_TO_PERIPH,
+        .src_req = DMA_REQUEST_NONE,
+        .dst_req = DMA_REQUEST_I2S_TX,
+        .src_addr_inc = DMA_ADDR_INCREMENT_ENABLE,
+        .dst_addr_inc = DMA_ADDR_INCREMENT_DISABLE,
+        .src_burst_count = DMA_BURST_INCR1,
+        .dst_burst_count = DMA_BURST_INCR1,
+        .src_width = DMA_DATA_WIDTH_16BIT,
+        .dst_width = DMA_DATA_WIDTH_16BIT,
+    };
+
+    i2s0_dev = bflb_device_get_by_name("i2s0");
+    bflb_i2s_init(i2s0_dev, &i2s_cfg);
+    bflb_i2s_link_txdma(i2s0_dev, true);
+    bflb_i2s_link_rxdma(i2s0_dev, true);
+
+    dma0_ch0_dev = bflb_device_get_by_name("dma0_ch0");
+    dma0_ch1_dev = bflb_device_get_by_name("dma0_ch1");
+    bflb_dma_channel_init(dma0_ch0_dev, &tx_dma_cfg);
+    bflb_dma_channel_init(dma0_ch1_dev, &rx_dma_cfg);
+
+    bflb_dma_channel_irq_attach(dma0_ch0_dev, dma0_ch0_tx_isr_callback, NULL);
+    bflb_dma_channel_irq_attach(dma0_ch1_dev, dma0_ch1_rx_isr_callback, NULL);
+
+    // RX DMA 设置 (保持不变)
+    rx_transfers[0].src_addr = (uint32_t)DMA_ADDR_I2S_RDR;
+    rx_transfers[0].dst_addr = (uint32_t)rx_audio_buffer;
+    rx_transfers[0].nbytes = sizeof(rx_audio_buffer);
+    uint32_t num_lli_rx = bflb_dma_channel_lli_reload(dma0_ch1_dev, rx_llipool, 10, rx_transfers, 1);
+    bflb_dma_channel_lli_link_head(dma0_ch1_dev, rx_llipool, num_lli_rx);
+
+    // ★★★ TX DMA 设置 (全新，核心！) ★★★
+    // 我们不再是一次性传输整个大缓冲区，而是创建 N 个传输任务，每个任务传输一个块。
+    // 然后把这些任务链接成一个环，DMA就会永无止境地、一块一块地循环播放。
+    for (int i = 0; i < TX_DMA_BLOCK_NUM; i++) {
+        tx_transfers[i].src_addr = (uint32_t)(tx_audio_buffer + (i * TX_DMA_BLOCK_SIZE));
+        tx_transfers[i].dst_addr = (uint32_t)DMA_ADDR_I2S_TDR;
+        tx_transfers[i].nbytes = TX_DMA_BLOCK_SIZE;
+    }
+    uint32_t num_lli_tx = bflb_dma_channel_lli_reload(dma0_ch0_dev, tx_llipool, TX_DMA_BLOCK_NUM, tx_transfers, TX_DMA_BLOCK_NUM);
+    bflb_dma_channel_lli_link_head(dma0_ch0_dev, tx_llipool, num_lli_tx);
+
+    return 0;
+}
+
+// --- 公共接口函数实现 ---
+int es8388_audio_init(void)
+{
+    if (current_audio_state != AUDIO_STATE_UNINITIALIZED) {
+        return 0;
+    }
+    LOG_I("Initializing ES8388 audio module (Battle-Hardened V3)...\r\n");
+    board_i2c0_gpio_init();
+    ES8388_Init(&es8388_codec_cfg);
+    ES8388_Set_Voice_Volume(300);
+    audio_i2s_gpio_init();
+    audio_mclk_out_init();
+
+    // ★★★ 把DMA初始化放在所有状态初始化之前 ★★★
+    if (audio_i2s_dma_init() != 0) {
+        LOG_E("I2S and DMA init failed!\r\n");
+        return -1;
+    }
+
+    // ★★★ 确保在最开始时，信号量是全新的 ★★★
+    if (tx_blocks_available_sem != NULL) {
+        vSemaphoreDelete(tx_blocks_available_sem);
+    }
+    tx_blocks_available_sem = xSemaphoreCreateCounting(TX_DMA_BLOCK_NUM, TX_DMA_BLOCK_NUM);
+    if (tx_blocks_available_sem == NULL) {
+        LOG_E("Failed to create tx_blocks_available_sem! PANIC!\r\n");
+        return -1;
+    }
+    tx_write_block_idx = 0;
+
+    if (rx_buffer_ready_sem == NULL) {
+        rx_buffer_ready_sem = xSemaphoreCreateBinary();
+    }
+
+    memset(tx_audio_buffer, 0, TX_BUFFER_SIZE);
+    bflb_l1c_dcache_clean_range((void *)tx_audio_buffer, TX_BUFFER_SIZE);
+
+    current_audio_state = AUDIO_STATE_INITIALIZED;
+    LOG_I("ES8388 audio module initialized and ready for the final battle.\r\n");
+    return 0;
+}
+
+int es8388_audio_start_capture(void)
+{
+    if (current_audio_state == AUDIO_STATE_UNINITIALIZED) {
+        return -1;
+    }
+    if (current_audio_state == AUDIO_STATE_CAPTURING) {
+        return 0;
+    }
+    LOG_I("Starting audio capture and playback engine...\r\n");
+    bflb_dma_channel_start(dma0_ch0_dev);
+    bflb_dma_channel_start(dma0_ch1_dev);
+    bflb_i2s_feature_control(i2s0_dev, I2S_CMD_DATA_ENABLE, I2S_CMD_DATA_ENABLE_RX | I2S_CMD_DATA_ENABLE_TX);
+    current_audio_state = AUDIO_STATE_CAPTURING;
+    return 0;
+}
+
+int es8388_audio_stop_capture(void)
+{
+    if (current_audio_state != AUDIO_STATE_CAPTURING) {
+        return 0;
+    }
+    LOG_I("Stopping audio capture...\r\n");
+    bflb_i2s_feature_control(i2s0_dev, I2S_CMD_DATA_ENABLE, 0);
+    bflb_dma_channel_stop(dma0_ch1_dev);
+    bflb_dma_channel_stop(dma0_ch0_dev);
+    current_audio_state = AUDIO_STATE_INITIALIZED;
+    return 0;
+}
+
+void es8388_audio_deinit(void)
+{
+    if (current_audio_state == AUDIO_STATE_UNINITIALIZED) {
+        return;
+    }
+    if (current_audio_state == AUDIO_STATE_CAPTURING) {
+        es8388_audio_stop_capture();
+    }
+    LOG_I("Deinitializing ES8388 audio module...\r\n");
+    if (dma0_ch0_dev) {
+        bflb_dma_channel_irq_detach(dma0_ch0_dev);
+    }
+    if (dma0_ch1_dev) {
+        bflb_dma_channel_irq_detach(dma0_ch1_dev);
+    }
+    if (tx_blocks_available_sem) {
+        vSemaphoreDelete(tx_blocks_available_sem);
+        tx_blocks_available_sem = NULL;
+    }
+
+    i2s0_dev = NULL;
+    dma0_ch0_dev = NULL;
+    dma0_ch1_dev = NULL;
+    current_audio_state = AUDIO_STATE_UNINITIALIZED;
+}
+
+audio_module_state_t es8388_audio_get_state(void)
+{
+    return current_audio_state;
+}
+
+int es8388_audio_get_data(uint8_t *buffer, uint32_t buffer_size, uint32_t *out_len, TickType_t timeout_ticks)
+{
+    if (out_len)
+        *out_len = 0;
+    if (xSemaphoreTake(rx_buffer_ready_sem, timeout_ticks) == pdTRUE) {
+        uint32_t mono_data_size = RX_BUFFER_SIZE / 2;
+        if (buffer_size < mono_data_size)
+            return -4; // 缓冲区太小
+
+        bflb_l1c_dcache_invalidate_range((void *)rx_audio_buffer, RX_BUFFER_SIZE);
+
+        // 循环，只取左声道数据
+        for (int i = 0; i < mono_data_size / 2; i++) {
+            // rx_audio_buffer[i*4] 和 [i*4+1] 是左声道
+            buffer[i * 2] = rx_audio_buffer[i * 4];
+            buffer[i * 2 + 1] = rx_audio_buffer[i * 4 + 1];
+        }
+        if (out_len)
+            *out_len = mono_data_size;
+        return 0;
+    }
+    return -3;
+}
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+//              ★★★ 新的、绝对可靠的、永不卡顿的音频播放函数 ★★★
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+int es8388_audio_play(const uint8_t *data, uint32_t len)
+{
+    // data 是单声道数据，len 是其长度
+    if (!data || len == 0)
+        return -2;
+
+    // 我们需要把单声道数据，复制成双倍长度的双声道数据
+    // 我们在栈上创建一个临时缓冲区来做这件事，避免malloc
+    // 这个缓冲区的大小，应该等于一个DMA块的一半
+    uint8_t temp_mono_chunk[TX_DMA_BLOCK_SIZE / 2];
+
+    const uint8_t *p_data = data;
+    uint32_t remaining_len = len;
+
+    while (remaining_len > 0) {
+        if (xSemaphoreTake(tx_blocks_available_sem, portMAX_DELAY) != pdTRUE)
+            return -4;
+
+        uint8_t *dest_addr = tx_audio_buffer + (tx_write_block_idx * TX_DMA_BLOCK_SIZE);
+        uint32_t mono_len_to_process = (remaining_len > sizeof(temp_mono_chunk)) ? sizeof(temp_mono_chunk) : remaining_len;
+
+        // 1. 把一小块单声道数据，从源头拷贝到我们的临时区
+        memcpy(temp_mono_chunk, p_data, mono_len_to_process);
+
+        // 2. ★★★ 核心：在DMA目标缓冲区里，进行单转双的操作 ★★★
+        for (int i = 0; i < mono_len_to_process / 2; i++) {
+            // 左声道 = 源
+            dest_addr[i * 4] = temp_mono_chunk[i * 2];
+            dest_addr[i * 4 + 1] = temp_mono_chunk[i * 2 + 1];
+            // 右声道 = 源 (复制一遍)
+            dest_addr[i * 4 + 2] = temp_mono_chunk[i * 2];
+            dest_addr[i * 4 + 3] = temp_mono_chunk[i * 2 + 1];
+        }
+
+        // 3. 如果处理完的数据不足一个DMA块，用0补齐
+        uint32_t stereo_len_processed = mono_len_to_process * 2;
+        if (stereo_len_processed < TX_DMA_BLOCK_SIZE) {
+            memset(dest_addr + stereo_len_processed, 0, TX_DMA_BLOCK_SIZE - stereo_len_processed);
+        }
+
+        bflb_l1c_dcache_clean_range((void *)dest_addr, TX_DMA_BLOCK_SIZE);
+
+        p_data += mono_len_to_process;
+        remaining_len -= mono_len_to_process;
+        tx_write_block_idx = (tx_write_block_idx + 1) % TX_DMA_BLOCK_NUM;
+    }
+    return 0;
+}
+
+int es8388_audio_fill_silence(void)
+{
+    if (current_audio_state != AUDIO_STATE_CAPTURING) {
+        return -1;
+    }
+
+    // 这个函数的哲学是：我不知道DMA现在读到哪里了，我也不知道缓冲区里有什么。
+    // 我只知道，我要用最快的速度，把整个环形缓冲区，用静音数据覆盖一遍。
+    // 这样做，可以确保在下一次播放开始前，无论DMA读到哪里，读到的都是静音。
+
+    LOG_I("[Driver] Filling entire TX buffer with silence to prevent looping noise.\r\n");
+
+    // ★★★ 我们不再停止DMA，也不再操作信号量，因为这太危险了 ★★★
+    // 我们只是默默地、安全地修改内存内容。
+
+    // 1. 把整个物理缓冲区清零
+    memset(tx_audio_buffer, 0, TX_BUFFER_SIZE);
+
+    // 2. 刷新整个缓冲区的D-Cache，确保DMA能看到我们的修改
+    bflb_l1c_dcache_clean_range((void *)tx_audio_buffer, TX_BUFFER_SIZE);
+
+    // 我们甚至不需要重置 tx_write_block_idx。
+    // 因为下一次 es8388_audio_play 被调用时，它会从 tx_write_block_idx 当前的位置继续写入。
+    // 而它前面的所有块，都已经被我们清零了，所以是绝对安全的。
+
+    return 0;
+}
+--- END OF FILE: modules/audio_es8388/src/es8388_driver.c ---
+
+--- END OF PROJECT CODE BUNDLE (for Opus Module) ---

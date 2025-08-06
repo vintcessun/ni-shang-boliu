@@ -1,6 +1,5 @@
-#include "rtos.h"
-
 #include "http.h"
+#include "rtos.h"
 #define DBG_TAG "RTOS"
 #include "log.h"
 

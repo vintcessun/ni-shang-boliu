@@ -1,17 +1,16 @@
 #ifndef __HTTP_H_
 #define __HTTP_H_
 
-#define SERVER "192.168.202.89"
-#define SSID "HONOR"
-#define PASSWD "8888888888"
+#include "audio.h"
+#include "rtos.h"
+
+#define SERVER "192.168.219.89"
 
 #define BASE_URL(path) "http://" SERVER "/api/" #path
-#define fast_api(x) http_get(BASE_URL(x), response, 500)
-#define audio_play(x) fast_api(audio?data=x)
-
-#define WIFI                                                  \
-	uint8_t cmd[] = "wifi_sta_connect " SSID " " PASSWD "\n"; \
-	shell_exe_cmd(cmd, sizeof(cmd) / sizeof(uint8_t));
+#define fast_api(x) \
+	http_get(BASE_URL(x), response, sizeof(response) / sizeof(response[0]))
+#define audio_play(x) play_audio(x)
+#define BASE_WS(path) "ws://" SERVER "/api/" #path "/ws"
 
 int http_main(void);
 int http_get(const char *url, uint8_t *response, size_t max_len);

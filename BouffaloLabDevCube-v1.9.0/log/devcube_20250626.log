@@ -1,0 +1,2396 @@
+2025-06-26 20:41:03,294 - INFO - [20:41:03.290] - serial type is bouffalo
+2025-06-26 20:41:03,325 - INFO - [20:41:03.324] - Open COM3 Success
+2025-06-26 20:41:03,340 - INFO - [20:41:03.340] -
+2025-06-26 20:41:03,340 - INFO - ____
+2025-06-26 20:41:03,341 - INFO - [20:41:03.341] -                __  __      _       _       _
+2025-06-26 20:41:03,341 - INFO - |  _ \             / _|/ _|    | |     | |     | |
+2025-06-26 20:41:03,341 - INFO - | |
+2025-06-26 20:41:03,341 - INFO - [20:41:03.341] - _) | ___  _   _| |_| |_ __ _| | ___ | | __ _| |__
+2025-06-26 20:41:03,341 - INFO - [20:41:03.341] -
+2025-06-26 20:41:03,341 - INFO - |  _ < / _ \| | | |  _|  _/
+2025-06-26 20:41:03,341 - INFO - [20:41:03.341] -  _` | |/ _ \| |/ _
+2025-06-26 20:41:03,345 - INFO - [20:41:03.345] - ` | '_ \
+2025-06-26 20:41:03,346 - INFO - | |_) | (_) | |_| | | | || (_| | | (_) | | (_| | |_) |
+2025-06-26 20:41:03,346 - INFO - |____/ \___/ \__,_|_| |_| \__,_|_|\___/|_|\__,_|_.__/
+2025-06-26 20:41:03,346 - INFO - Build:15:11:14,Apr 10 2023
+2025-06-26 20:41:03,346 - INFO - Copyright (c) 2022 Bouffalolab team
+2025-06-26 20:41:03,346 - INFO - =========== flash cfg ==============
+2025-06-26 20:41:03,346 - INFO - jedec id   0xEF4017
+2025-06-26 20:41:03,346 - INFO - mid            0xEF
+2025-06-26 20:41:03,346 - INFO - iomode         0x04
+2025-06-26 20:41:03,346 - INFO - clk delay      0x01
+2025-06-26 20:41:03,346 - INFO - clk invert     0x01
+2025-06-26 20:41:03,346 - INFO - read reg cmd0  0x05
+2025-06-26 20:41:03,346 - INFO - read reg cmd1  0x35
+2025-06-26 20:41:03,346 - INFO - write reg cmd0 0x01
+2025-06-26 20:41:03,346 - INFO - write reg cmd1 0x31
+2025-06-26 20:41:03,346 - INFO - qe write len   0x01
+2025-06-26 20:41:03,346 - INFO - cread support  0x00
+2025-06-26 20:41:03,346 - INFO - cread code     0xFF
+2025-06-26 20:41:03,346 - INFO - burst wrap cmd 0x77
+2025-06-26 20:41:03,346 - INFO - =====================================
+2025-06-26 20:41:03,346 - INFO - dynamic memory init success,heap size = 109 Kbyte
+2025-06-26 20:41:03,346 - INFO - sig1:ffffffff
+2025-06-26 20:41:03,346 - INFO - sig2:0000f32f
+2025-06-26 20:41:03,346 - INFO - cgen1:9f7ffffd
+2025-06-26 20:41:03,346 - INFO - lvgl case
+2025-06-26 20:41:03,727 - INFO - [20:41:03.727] - Touch Pr
+2025-06-26 20:41:03,727 - INFO - [20:41:03.727] - oduct ID: 0x00000000
+2025-06-26 20:41:03,728 - INFO - Touch Product ID r
+2025-06-26 20:41:03,728 - ERROR - [20:41:03.728] - ead fail!
+2025-06-26 20:41:04,233 - INFO - [20:41:04.232] -
+2025-06-26 20:41:04,233 - ERROR - Error!
+2025-06-26 20:41:04,234 - INFO - [20:41:04.234] -  Can't identify sensor!
+2025-06-26 20:41:09,392 - INFO - [20:41:09.388] - Close COM3 Success
+2025-06-26 20:41:09,410 - INFO - [20:41:09.405] - tlv bin created success
+2025-06-26 20:41:09,446 - INFO - [20:41:09.444] - EFUSE_CFG
+2025-06-26 20:41:09,447 - INFO - [20:41:09.446] - BOOTHEADER_GROUP0_CFG
+2025-06-26 20:41:09,471 - INFO - [20:41:09.469] - Create bootheader using D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini
+2025-06-26 20:41:09,472 - INFO - [20:41:09.471] - Updating data according to <D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini[BOOTHEADER_GROUP0_CFG]>
+2025-06-26 20:41:09,475 - INFO - [20:41:09.474] - Created file len:256
+2025-06-26 20:41:09,478 - INFO - [20:41:09.478] - Create efuse using D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini
+2025-06-26 20:41:09,481 - INFO - [20:41:09.479] - Updating data according to <D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini[EFUSE_CFG]>
+2025-06-26 20:41:09,485 - INFO - [20:41:09.484] - Created file len:512
+2025-06-26 20:41:09,491 - INFO - [20:41:09.490] - Image create path: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu
+2025-06-26 20:41:09,492 - INFO - [20:41:09.491] - Config file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/img_create_cfg.ini
+2025-06-26 20:41:09,507 - INFO - [20:41:09.506] - img already have bootheader
+2025-06-26 20:41:09,508 - INFO - [20:41:09.508] - Image hash is b'77651051ec03263b4917a24b98d00d1738f31d76b33908f00bc8228104dd95db'
+2025-06-26 20:41:09,508 - INFO - [20:41:09.508] - Header crc: b'd2e6a86a'
+2025-06-26 20:41:09,509 - INFO - [20:41:09.508] - Write flash img
+2025-06-26 20:41:09,512 - INFO - [20:41:09.511] - Encrypt efuse data
+2025-06-26 20:41:09,518 - INFO - [20:41:09.518] - ========= eflash loader config =========
+2025-06-26 20:41:09,554 - INFO - [20:41:09.554] - Version: eflash_loader_v2.5.1
+2025-06-26 20:41:09,556 - INFO - [20:41:09.555] - Program Start
+2025-06-26 20:41:09,556 - INFO - [20:41:09.556] - ========= eflash loader cmd arguments =========
+2025-06-26 20:41:09,556 - INFO - [20:41:09.556] - Config file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\eflash_loader\eflash_loader_cfg.ini
+2025-06-26 20:41:09,558 - INFO - [20:41:09.557] - serial port is COM3 (PROG)
+2025-06-26 20:41:09,558 - INFO - [20:41:09.558] - cpu_reset=False
+2025-06-26 20:41:09,558 - INFO - [20:41:09.558] - chiptype: bl616
+2025-06-26 20:41:09,558 - INFO - [20:41:09.558] - ========= Interface is uart =========
+2025-06-26 20:41:09,558 - INFO - [20:41:09.558] - com speed: 2000000
+2025-06-26 20:41:09,558 - INFO - [20:41:09.558] - Bootrom load
+2025-06-26 20:41:09,558 - INFO - [20:41:09.558] - ========= get_boot_info =========
+2025-06-26 20:41:09,559 - INFO - [20:41:09.558] - ========= image get bootinfo =========
+2025-06-26 20:41:09,781 - INFO - [20:41:09.779] - Not ack OK
+2025-06-26 20:41:09,781 - INFO - [20:41:09.781] - FL
+2025-06-26 20:41:09,781 - INFO - [20:41:09.781] - result: FL
+2025-06-26 20:41:09,787 - INFO - [20:41:09.786] - default set DTR high
+2025-06-26 20:41:09,902 - INFO - [20:41:09.902] - usb serial port
+2025-06-26 20:41:09,965 - INFO - [20:41:09.964] - clean buf
+2025-06-26 20:41:09,967 - INFO - [20:41:09.967] - send sync
+2025-06-26 20:41:10,183 - INFO - [20:41:10.183] - ack is 4f4b
+2025-06-26 20:41:10,230 - INFO - [20:41:10.230] - shake hand success
+2025-06-26 20:41:10,747 - INFO - [20:41:10.745] - data read is b'01001606000001002712890123e62acf0eb498000f758010'
+2025-06-26 20:41:10,747 - INFO - [20:41:10.747] - ========= chipid: b40ecf2ae623 =========
+2025-06-26 20:41:10,747 - INFO - [20:41:10.747] - Get bootinfo time cost(ms): 1188.442626953125
+2025-06-26 20:41:10,747 - INFO - [20:41:10.747] - change bdrate: 2000000
+2025-06-26 20:41:10,747 - INFO - [20:41:10.747] - Clock PLL set
+2025-06-26 20:41:10,748 - INFO - [20:41:10.748] - Set clock time cost(ms): 1.0
+2025-06-26 20:41:10,885 - INFO - [20:41:10.884] - Read mac addr
+2025-06-26 20:41:10,887 - INFO - [20:41:10.887] - macaddr: b40ecf2ae623
+2025-06-26 20:41:10,887 - INFO - [20:41:10.887] - flash set para
+2025-06-26 20:41:10,887 - INFO - [20:41:10.887] - get flash pin cfg from bootinfo: 0x24
+2025-06-26 20:41:10,888 - INFO - [20:41:10.888] - set flash cfg: 14124
+2025-06-26 20:41:10,888 - INFO - [20:41:10.888] - Set flash config
+2025-06-26 20:41:10,890 - INFO - [20:41:10.889] - Set para time cost(ms): 1.294921875
+2025-06-26 20:41:10,890 - INFO - [20:41:10.890] - ========= flash read jedec ID =========
+2025-06-26 20:41:10,895 - INFO - [20:41:10.895] - Read flash jedec ID
+2025-06-26 20:41:10,895 - INFO - [20:41:10.895] - flash jedec id: ef401700
+2025-06-26 20:41:10,895 - INFO - [20:41:10.895] - Finished
+2025-06-26 20:41:10,899 - INFO - [20:41:10.899] - get flash size: 0x00800000
+2025-06-26 20:41:10,899 - INFO - [20:41:10.899] - Program operation
+2025-06-26 20:41:10,900 - INFO - [20:41:10.900] - Dealing Index 0
+2025-06-26 20:41:10,901 - INFO - [20:41:10.901] - ========= programming chips\bl616\img_create_mcu\bootinfo.bin to 0x00000000
+2025-06-26 20:41:10,907 - INFO - [20:41:10.907] - flash para file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips/bl616/efuse_bootheader/flash_para.bin
+2025-06-26 20:41:10,908 - INFO - [20:41:10.908] - Set flash config
+2025-06-26 20:41:10,910 - INFO - [20:41:10.910] - Set para time cost(ms): 2.012451171875
+2025-06-26 20:41:10,911 - INFO - [20:41:10.911] - ========= flash load =========
+2025-06-26 20:41:10,911 - INFO - [20:41:10.911] - ========= flash erase =========
+2025-06-26 20:41:10,911 - INFO - [20:41:10.911] - Erase flash from 0x0 to 0xff
+2025-06-26 20:41:10,966 - INFO - [20:41:10.966] - Erase time cost(ms): 54.812744140625
+2025-06-26 20:41:10,970 - INFO - [20:41:10.970] - Load 256/256 {"progress":100}
+2025-06-26 20:41:10,971 - INFO - [20:41:10.971] - Load 256/256 {"progress":100}
+2025-06-26 20:41:10,972 - INFO - [20:41:10.971] - Write check
+2025-06-26 20:41:10,974 - INFO - [20:41:10.974] - Flash load time cost(ms): 6.000732421875
+2025-06-26 20:41:10,974 - INFO - [20:41:10.974] - Finished
+2025-06-26 20:41:10,977 - INFO - [20:41:10.977] - Sha caled by host: 6f694b802a19e39af94cef5c78ab63e61aeef15569d6fc60e9fa3560f81e7d9c
+2025-06-26 20:41:10,977 - INFO - [20:41:10.977] - xip mode Verify
+2025-06-26 20:41:10,979 - INFO - [20:41:10.978] - Read Sha256/256
+2025-06-26 20:41:10,979 - INFO - [20:41:10.979] - Flash xip readsha time cost(ms): 1.000244140625
+2025-06-26 20:41:10,979 - INFO - [20:41:10.979] - Finished
+2025-06-26 20:41:10,979 - INFO - [20:41:10.979] - Sha caled by dev: 6f694b802a19e39af94cef5c78ab63e61aeef15569d6fc60e9fa3560f81e7d9c
+2025-06-26 20:41:10,979 - INFO - [20:41:10.979] - Verify success
+2025-06-26 20:41:10,981 - INFO - [20:41:10.981] - Dealing Index 1
+2025-06-26 20:41:10,982 - INFO - [20:41:10.982] - ========= programming chips\bl616\img_create_mcu\img.bin to 0x00002000
+2025-06-26 20:41:10,985 - INFO - [20:41:10.985] - flash para file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips/bl616/efuse_bootheader/flash_para.bin
+2025-06-26 20:41:10,985 - INFO - [20:41:10.985] - Set flash config
+2025-06-26 20:41:10,988 - INFO - [20:41:10.988] - Set para time cost(ms): 2.999267578125
+2025-06-26 20:41:10,988 - INFO - [20:41:10.988] - ========= flash load =========
+2025-06-26 20:41:10,989 - INFO - [20:41:10.989] - ========= flash erase =========
+2025-06-26 20:41:10,989 - INFO - [20:41:10.989] - Erase flash from 0x2000 to 0x112ef
+2025-06-26 20:41:11,616 - INFO - [20:41:11.616] - Erase time cost(ms): 627.036376953125
+2025-06-26 20:41:11,619 - INFO - [20:41:11.619] - decompress write rx timeout: 98.304
+2025-06-26 20:41:11,639 - INFO - [20:41:11.639] - decompress flash load 37576
+2025-06-26 20:41:11,650 - INFO - [20:41:11.650] - Load 2048/37576 {"progress":5}
+2025-06-26 20:41:11,669 - INFO - [20:41:11.669] - Load 4096/37576 {"progress":10}
+2025-06-26 20:41:11,679 - INFO - [20:41:11.679] - Load 6144/37576 {"progress":16}
+2025-06-26 20:41:11,696 - INFO - [20:41:11.695] - Load 8192/37576 {"progress":21}
+2025-06-26 20:41:11,711 - INFO - [20:41:11.711] - Load 10240/37576 {"progress":27}
+2025-06-26 20:41:11,729 - INFO - [20:41:11.729] - Load 12288/37576 {"progress":32}
+2025-06-26 20:41:11,741 - INFO - [20:41:11.741] - Load 14336/37576 {"progress":38}
+2025-06-26 20:41:11,757 - INFO - [20:41:11.757] - Load 16384/37576 {"progress":43}
+2025-06-26 20:41:11,773 - INFO - [20:41:11.773] - Load 18432/37576 {"progress":49}
+2025-06-26 20:41:11,790 - INFO - [20:41:11.790] - Load 20480/37576 {"progress":54}
+2025-06-26 20:41:11,803 - INFO - [20:41:11.802] - Load 22528/37576 {"progress":59}
+2025-06-26 20:41:11,819 - INFO - [20:41:11.819] - Load 24576/37576 {"progress":65}
+2025-06-26 20:41:11,837 - INFO - [20:41:11.835] - Load 26624/37576 {"progress":70}
+2025-06-26 20:41:11,853 - INFO - [20:41:11.853] - Load 28672/37576 {"progress":76}
+2025-06-26 20:41:11,870 - INFO - [20:41:11.870] - Load 30720/37576 {"progress":81}
+2025-06-26 20:41:11,883 - INFO - [20:41:11.883] - Load 32768/37576 {"progress":87}
+2025-06-26 20:41:11,899 - INFO - [20:41:11.899] - Load 34816/37576 {"progress":92}
+2025-06-26 20:41:11,915 - INFO - [20:41:11.915] - Load 36864/37576 {"progress":98}
+2025-06-26 20:41:11,932 - INFO - [20:41:11.932] - Load 37576/37576 {"progress":100}
+2025-06-26 20:41:11,932 - INFO - [20:41:11.932] - Load 37576/37576 {"progress":100}
+2025-06-26 20:41:11,932 - INFO - [20:41:11.932] - Write check
+2025-06-26 20:41:11,946 - INFO - [20:41:11.946] - Flash load time cost(ms): 326.27001953125
+2025-06-26 20:41:11,946 - INFO - [20:41:11.946] - Finished
+2025-06-26 20:41:11,947 - INFO - [20:41:11.947] - Sha caled by host: 77651051ec03263b4917a24b98d00d1738f31d76b33908f00bc8228104dd95db
+2025-06-26 20:41:11,947 - INFO - [20:41:11.947] - xip mode Verify
+2025-06-26 20:41:11,999 - INFO - [20:41:11.999] - Read Sha256/62192
+2025-06-26 20:41:11,999 - INFO - [20:41:11.999] - Flash xip readsha time cost(ms): 51.560302734375
+2025-06-26 20:41:12,000 - INFO - [20:41:11.999] - Finished
+2025-06-26 20:41:12,000 - INFO - [20:41:12.000] - Sha caled by dev: 77651051ec03263b4917a24b98d00d1738f31d76b33908f00bc8228104dd95db
+2025-06-26 20:41:12,000 - INFO - [20:41:12.000] - Verify success
+2025-06-26 20:41:12,004 - INFO - [20:41:12.004] - Program Finished
+2025-06-26 20:41:12,005 - INFO - [20:41:12.005] - All time cost(ms): 2449.722900390625
+2025-06-26 20:41:12,118 - INFO - [20:41:12.117] - close interface
+2025-06-26 20:41:12,119 - INFO - [20:41:12.118] - [All Success]
+2025-06-26 20:41:20,230 - INFO - [20:41:20.229] - serial type is bouffalo
+2025-06-26 20:41:20,259 - INFO - [20:41:20.258] - Open COM3 Success
+2025-06-26 20:41:20,296 - INFO - [20:41:20.296] - dynamic
+2025-06-26 20:41:20,297 - INFO - [20:41:20.297] - memory init success, ocram heap size = 429 Kbyte
+2025-06-26 20:41:20,297 - INFO - ____               __  __
+2025-06-26 20:41:20,297 - INFO - [20:41:20.297] -     _       _       _
+2025-06-26 20:41:20,297 - INFO - |  _ \
+2025-06-26 20:41:20,297 - INFO - [20:41:20.297] -       / _|/ _|    | |
+2025-06-26 20:41:20,297 - INFO - [20:41:20.297] -   | |     | |
+2025-06-26 20:41:20,297 - INFO - | |_
+2025-06-26 20:41:20,297 - INFO - [20:41:20.297] - ) | ___  _   _| |_| |_ __ _| | ___ | | __
+2025-06-26 20:41:20,297 - INFO - [20:41:20.297] - _| |__
+2025-06-26 20:41:20,297 - INFO - |  _ <
+2025-06-26 20:41:20,298 - INFO - [20:41:20.298] - / _ \| | | |  _|  _/ _` | |/ _ \| |/ _` | '_ \
+2025-06-26 20:41:20,298 - INFO - [20:41:20.298] -  | |_) | (_) | |_| | | | || (_|
+2025-06-26 20:41:20,298 - INFO - [20:41:20.298] - | | (_)
+2025-06-26 20:41:20,298 - INFO - [20:41:20.298] - | | (_| | |_) |
+2025-06-26 20:41:20,298 - INFO - |____/
+2025-06-26 20:41:20,298 - INFO - [20:41:20.298] - \___/ \__,_|_| |
+2025-06-26 20:41:20,298 - INFO - [20:41:20.298] - _| \__,_|_|\___/|
+2025-06-26 20:41:20,298 - INFO - [20:41:20.298] - _|\__,_|_.__/
+2025-06-26 20:41:20,298 - INFO - Build:2
+2025-06-26 20:41:20,298 - INFO - [20:41:20.298] - 0:29:52, Jun 26
+2025-06-26 20:41:20,298 - INFO - [20:41:20.298] - 2025
+2025-06-26 20:41:20,298 - INFO - Copyright (c) 2022
+2025-06-26 20:41:20,298 - INFO - [20:41:20.298] -  Bouffalolab team
+2025-06-26 20:41:20,298 - INFO - Versi
+2025-06-26 20:41:20,299 - INFO - [20:41:20.299] - on of used compo
+2025-06-26 20:41:20,299 - INFO - [20:41:20.299] - nents:
+2025-06-26 20:41:20,299 - INFO - Version:
+2025-06-26 20:41:20,299 - INFO - [20:41:20.299] -  component_version_lhal:
+2025-06-26 20:41:20,299 - INFO - [20:41:20.299] -  V2.0.0-1
+2025-06-26 20:41:20,299 - INFO - [20:41:20.299] - 23-g811e8c1f-dir
+2025-06-26 20:41:20,299 - INFO - [20:41:20.299] - ty
+2025-06-26 20:41:20,299 - INFO - Version: co
+2025-06-26 20:41:20,299 - INFO - [20:41:20.299] - mponent_version_sdk: 2.2
+2025-06-26 20:41:20,299 - INFO - [20:41:20.299] - .0
+2025-06-26 20:41:20,299 - INFO - Boo
+2025-06-26 20:41:20,299 - INFO - [20:41:20.299] - t2 maybe not exist!
+2025-06-26 20:41:20,299 - INFO - ===
+2025-06-26 20:41:20,299 - INFO - [20:41:20.299] - ===== flash cfg =
+2025-06-26 20:41:20,299 - INFO - [20:41:20.299] - =======
+2025-06-26 20:41:20,299 - INFO - flash clock
+2025-06-26 20:41:20,300 - INFO - [20:41:20.299] -   80MHz
+2025-06-26 20:41:20,300 - INFO - [20:41:20.300] -
+2025-06-26 20:41:20,300 - INFO - flash delay      105,13
+2025-06-26 20:41:20,300 - INFO - [20:41:20.300] - 0,3
+2025-06-26 20:41:20,301 - INFO - flash size
+2025-06-26 20:41:20,303 - INFO - [20:41:20.302] -      0x00800000
+2025-06-26 20:41:20,303 - INFO - jedec id         0x1740EF
+2025-06-26 20:41:20,303 - INFO - mid              0xEF
+2025-06-26 20:41:20,304 - INFO - iomode           0x04
+2025-06-26 20:41:20,305 - INFO - clk delay        0x01
+2025-06-26 20:41:20,306 - INFO - clk invert       0x03
+2025-06-26 20:41:20,306 - INFO - read reg cmd0    0x05
+2025-06-26 20:41:20,306 - INFO - read reg cmd1    0x35
+2025-06-26 20:41:20,307 - INFO - write reg cmd0   0x01
+2025-06-26 20:41:20,307 - INFO - write reg cmd1   0x31
+2025-06-26 20:41:20,308 - INFO - qe write len     0x01
+2025-06-26 20:41:20,308 - INFO - cread support    0x00
+2025-06-26 20:41:20,308 - INFO - cread code       0xFF
+2025-06-26 20:41:20,309 - INFO - burst wrap c
+2025-06-26 20:41:20,312 - INFO - [20:41:20.312] - md   0x77
+2025-06-26 20:41:20,313 - INFO - ===========================
+2025-06-26 20:41:20,313 - INFO - uart  sig1:ffffffff, sig2:0000f32f
+2025-06-26 20:41:20,313 - INFO - clock gen1:9ffffffd, gen2:0fff0c11
+2025-06-26 20:41:20,315 - INFO - board init done
+2025-06-26 20:41:20,315 - INFO - ===========================
+2025-06-26 20:41:20,316 - INFO - [0;35m[F][MAIN] hello world fatal
+2025-06-26 20:41:20,317 - ERROR - [0;31m[E][MAIN] hello world error
+2025-06-26 20:41:20,318 - INFO - [0;33m[W][MAIN] hello world warning
+2025-06-26 20:41:20,320 - INFO - [0m[I][MAIN] hello world information
+2025-06-26 20:41:20,320 - INFO - hello world fatal raw
+2025-06-26 20:41:20,320 - ERROR - hello world error raw
+2025-06-26 20:41:20,320 - INFO - hello world warning raw
+2025-06-26 20:41:20,320 - INFO - hello world information raw
+2025-06-26 20:41:21,303 - INFO - [20:41:21.303] - [0;35m[
+2025-06-26 20:41:21,304 - INFO - [20:41:21.304] - F][MAIN] hello world fatal
+2025-06-26 20:41:21,304 - ERROR - [0;31m[E][MAIN] hello world error
+2025-06-26 20:41:21,305 - INFO - [0;33m[W][MAIN] hello world warning
+2025-06-26 20:41:21,305 - INFO - [0m[I][MAIN] hello world information
+2025-06-26 20:41:21,305 - INFO - hello world fatal raw
+2025-06-26 20:41:21,305 - ERROR - hello world error raw
+2025-06-26 20:41:21,305 - INFO - hello
+2025-06-26 20:41:21,305 - INFO - [20:41:21.305] - world warning raw
+2025-06-26 20:41:21,305 - INFO - hello world information raw
+2025-06-26 20:41:22,304 - INFO - [20:41:22.304] - [0;35m[
+2025-06-26 20:41:22,305 - INFO - [20:41:22.305] - F][MAIN] hello world fatal
+2025-06-26 20:41:22,305 - ERROR - [0;31m[E][MAIN] hello world error
+2025-06-26 20:41:22,305 - INFO - [0;33m[W][MAIN] hello world warning
+2025-06-26 20:41:22,305 - INFO - [0m[I][MAIN] hello world information
+2025-06-26 20:41:22,305 - INFO - hello world fatal ra
+2025-06-26 20:41:22,305 - INFO - [20:41:22.305] - w
+2025-06-26 20:41:22,305 - ERROR - hello world error raw
+2025-06-26 20:41:22,305 - INFO - hello world warning raw
+2025-06-26 20:41:22,305 - INFO - hello world information
+2025-06-26 20:41:22,305 - INFO - [20:41:22.305] - raw
+2025-06-26 20:41:23,305 - INFO - [20:41:23.305] - [0;35m[
+2025-06-26 20:41:23,306 - INFO - [20:41:23.306] - F][MAIN] hello world fatal
+2025-06-26 20:41:23,306 - ERROR - [0;31m[E][MAIN] hello world error
+2025-06-26 20:41:23,306 - INFO - [0;33m[W][MAIN] hello world warning
+2025-06-26 20:41:23,306 - INFO - [0m[I][MAIN] hello world information
+2025-06-26 20:41:23,306 - INFO - hello world fatal raw
+2025-06-26 20:41:23,306 - ERROR - hello world error raw
+2025-06-26 20:41:23,306 - INFO - hello w
+2025-06-26 20:41:23,307 - INFO - [20:41:23.307] - orld warning raw
+2025-06-26 20:41:23,307 - INFO - hello world information raw
+2025-06-26 20:41:24,307 - INFO - [20:41:24.307] - [0;35m[
+2025-06-26 20:41:24,308 - INFO - [20:41:24.307] - F][MAIN] hello world fatal
+2025-06-26 20:41:24,308 - INFO - [0;31m[E][M
+2025-06-26 20:41:24,308 - ERROR - [20:41:24.308] - AIN] hello world error
+2025-06-26 20:41:24,308 - INFO - [0;33m[W][MAIN] hello world warning
+2025-06-26 20:41:24,308 - INFO - [0m[I][MAIN] hello world information
+2025-06-26 20:41:24,308 - INFO - hello world fatal raw
+2025-06-26 20:41:24,308 - ERROR - hello world error raw
+2025-06-26 20:41:24,308 - INFO - hello world warning raw
+2025-06-26 20:41:24,308 - INFO - hell
+2025-06-26 20:41:24,308 - INFO - [20:41:24.308] - o world information raw
+2025-06-26 20:41:25,307 - INFO - [20:41:25.307] - [0;35m[
+2025-06-26 20:41:25,308 - INFO - [20:41:25.308] - F][MAIN] hello world fatal
+2025-06-26 20:41:25,308 - ERROR - [0;31m[E][MAIN] hello world error
+2025-06-26 20:41:25,308 - INFO - [0;33m[W][MAIN] hello world warning
+2025-06-26 20:41:25,308 - INFO - [0m[I][MAIN] hello world information
+2025-06-26 20:41:25,308 - INFO - hello
+2025-06-26 20:41:25,308 - INFO - [20:41:25.308] -  world fatal raw
+2025-06-26 20:41:25,308 - ERROR - hello world error raw
+2025-06-26 20:41:25,308 - INFO - hello world warning raw
+2025-06-26 20:41:25,308 - INFO - hello world information
+2025-06-26 20:41:25,308 - INFO - [20:41:25.308] - raw
+2025-06-26 20:41:26,309 - INFO - [20:41:26.308] - [0;35m[
+2025-06-26 20:41:26,312 - INFO - [20:41:26.311] - F][MAIN] hello world fatal
+2025-06-26 20:41:26,312 - ERROR - [0;31m[E][MAIN] hello world error
+2025-06-26 20:41:26,312 - INFO - [0;33m[W][MAIN] hello world warning
+2025-06-26 20:41:26,312 - INFO - [0m[I][MAIN] hello world information
+2025-06-26 20:41:26,312 - INFO - hello world fatal raw
+2025-06-26 20:41:26,312 - ERROR - hello world error raw
+2025-06-26 20:41:26,312 - INFO - hello world warning raw
+2025-06-26 20:41:26,312 - INFO - hello world information raw
+2025-06-26 20:41:27,310 - INFO - [20:41:27.309] - [0;35m[
+2025-06-26 20:41:27,310 - INFO - [20:41:27.310] - F][MAIN] hello world fatal
+2025-06-26 20:41:27,310 - INFO - [0;31m[E][MA
+2025-06-26 20:41:27,310 - ERROR - [20:41:27.310] - IN] hello world error
+2025-06-26 20:41:27,310 - INFO - [0;33m[W][MAIN]
+2025-06-26 20:41:27,310 - INFO - [20:41:27.310] - hello world warning
+2025-06-26 20:41:27,310 - INFO - [0
+2025-06-26 20:41:27,310 - INFO - [20:41:27.310] - m[I][MAIN] hello world informatio
+2025-06-26 20:41:27,310 - INFO - [20:41:27.310] - n
+2025-06-26 20:41:27,310 - INFO - hello world fa
+2025-06-26 20:41:27,310 - INFO - [20:41:27.310] - tal raw
+2025-06-26 20:41:27,310 - ERROR - hello world erro
+2025-06-26 20:41:27,311 - INFO - [20:41:27.311] - r raw
+2025-06-26 20:41:27,311 - INFO - hello wor
+2025-06-26 20:41:27,311 - INFO - [20:41:27.311] - ld warning raw
+2025-06-26 20:41:27,311 - INFO - [20:41:27.311] - hello world information
+2025-06-26 20:41:27,311 - INFO - [20:41:27.311] - raw
+2025-06-26 20:41:28,311 - INFO - [20:41:28.311] - [0;35m[
+2025-06-26 20:41:28,313 - INFO - [20:41:28.313] - F][MAIN] hello world fata
+2025-06-26 20:41:28,313 - INFO - [20:41:28.313] - l
+2025-06-26 20:41:28,313 - ERROR - [0;31m[E][MAIN] hello world error
+2025-06-26 20:41:28,313 - INFO - [0;33m[W][MAIN] hello world warning
+2025-06-26 20:41:28,313 - INFO - [0m[I][MAIN] hello world information
+2025-06-26 20:41:28,313 - INFO - hello world fatal raw
+2025-06-26 20:41:28,313 - ERROR - hello world error raw
+2025-06-26 20:41:28,313 - INFO - hello world warning raw
+2025-06-26 20:41:28,313 - INFO - hello world information raw
+2025-06-26 20:41:29,312 - INFO - [20:41:29.312] - [0;35m[
+2025-06-26 20:41:29,313 - INFO - [20:41:29.313] - F][MAIN] hello world fatal
+2025-06-26 20:41:29,313 - INFO - [0;31m[E][MAIN] hello world
+2025-06-26 20:41:29,314 - ERROR - [20:41:29.314] -  error
+2025-06-26 20:41:29,314 - INFO - [0;33m[W][MAIN] hello world warning
+2025-06-26 20:41:29,314 - INFO - [0m[I][MAIN] hello world information
+2025-06-26 20:41:29,314 - INFO - hello world fatal raw
+2025-06-26 20:41:29,314 - ERROR - hello world error raw
+2025-06-26 20:41:29,314 - INFO - hello world warning raw
+2025-06-26 20:41:29,314 - INFO - hello world information raw
+2025-06-26 20:41:30,313 - INFO - [20:41:30.313] - [0;35m[
+2025-06-26 20:41:30,313 - INFO - [20:41:30.313] - F][MAIN] hello world fatal
+2025-06-26 20:41:30,313 - INFO - [0;
+2025-06-26 20:41:30,313 - ERROR - [20:41:30.313] - 31m[E][MAIN] hello world error
+2025-06-26 20:41:30,313 - INFO - [0;33m[W]
+2025-06-26 20:41:30,313 - INFO - [20:41:30.313] - [MAIN] hello world warning
+2025-06-26 20:41:30,313 - INFO - [0m
+2025-06-26 20:41:30,314 - INFO - [20:41:30.314] - [I][MAIN] hello world information
+2025-06-26 20:41:30,316 - INFO - [20:41:30.316] -
+2025-06-26 20:41:30,317 - INFO - hello world fatal raw
+2025-06-26 20:41:30,317 - ERROR - hello world error raw
+2025-06-26 20:41:30,317 - INFO - hello world warning raw
+2025-06-26 20:41:30,318 - INFO - hello world information raw
+2025-06-26 20:41:31,374 - INFO - [20:41:31.372] - Close COM3 Success
+2025-06-26 21:28:45,908 - INFO - [21:28:45.903] - tlv bin created success
+2025-06-26 21:28:45,916 - INFO - [21:28:45.915] - EFUSE_CFG
+2025-06-26 21:28:45,917 - INFO - [21:28:45.916] - BOOTHEADER_GROUP0_CFG
+2025-06-26 21:28:45,935 - INFO - [21:28:45.934] - Create bootheader using D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini
+2025-06-26 21:28:45,936 - INFO - [21:28:45.936] - Updating data according to <D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini[BOOTHEADER_GROUP0_CFG]>
+2025-06-26 21:28:45,938 - INFO - [21:28:45.938] - Created file len:256
+2025-06-26 21:28:45,943 - INFO - [21:28:45.940] - Create efuse using D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini
+2025-06-26 21:28:45,945 - INFO - [21:28:45.944] - Updating data according to <D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini[EFUSE_CFG]>
+2025-06-26 21:28:45,947 - INFO - [21:28:45.946] - Created file len:512
+2025-06-26 21:28:45,950 - INFO - [21:28:45.950] - Image create path: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu
+2025-06-26 21:28:45,951 - INFO - [21:28:45.950] - Config file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/img_create_cfg.ini
+2025-06-26 21:28:45,959 - INFO - [21:28:45.957] - img already have bootheader
+2025-06-26 21:28:45,960 - INFO - [21:28:45.959] - Image hash is b'77651051ec03263b4917a24b98d00d1738f31d76b33908f00bc8228104dd95db'
+2025-06-26 21:28:45,960 - INFO - [21:28:45.960] - Header crc: b'd2e6a86a'
+2025-06-26 21:28:45,961 - INFO - [21:28:45.960] - Write flash img
+2025-06-26 21:28:45,962 - INFO - [21:28:45.962] - Encrypt efuse data
+2025-06-26 21:28:45,967 - INFO - [21:28:45.967] - ========= eflash loader config =========
+2025-06-26 21:28:45,989 - INFO - [21:28:45.989] - Version: eflash_loader_v2.5.1
+2025-06-26 21:28:45,989 - INFO - [21:28:45.989] - Program Start
+2025-06-26 21:28:45,989 - INFO - [21:28:45.989] - ========= eflash loader cmd arguments =========
+2025-06-26 21:28:45,989 - INFO - [21:28:45.989] - Config file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\eflash_loader\eflash_loader_cfg.ini
+2025-06-26 21:28:45,990 - INFO - [21:28:45.990] - serial port is COM6
+2025-06-26 21:28:45,990 - INFO - [21:28:45.990] - cpu_reset=False
+2025-06-26 21:28:45,990 - INFO - [21:28:45.990] - chiptype: bl616
+2025-06-26 21:28:45,990 - INFO - [21:28:45.990] - ========= Interface is uart =========
+2025-06-26 21:28:45,990 - INFO - [21:28:45.990] - com speed: 2000000
+2025-06-26 21:28:45,990 - INFO - [21:28:45.990] - Bootrom load
+2025-06-26 21:28:45,991 - INFO - [21:28:45.990] - ========= get_boot_info =========
+2025-06-26 21:28:45,991 - INFO - [21:28:45.991] - ========= image get bootinfo =========
+2025-06-26 21:28:55,893 - ERROR - [21:28:55.892] - Cannot configure port, something went wrong. Original message: OSError(22, '指定不存在的设备。', None, 433)
+2025-06-26 21:28:56,898 - ERROR - [21:28:56.898] - could not open port 'COM6': FileNotFoundError(2, '系统找不到指定的文件。', None, 2)
+2025-06-26 21:28:57,908 - ERROR - [21:28:57.908] - Error: 'NoneType' object has no attribute 'writeTimeout'
+2025-06-26 21:28:57,908 - INFO - [21:28:57.908] - Not ack OK
+2025-06-26 21:28:57,908 - INFO - [21:28:57.908] - FL
+2025-06-26 21:28:57,909 - INFO - [21:28:57.909] - result: FL
+2025-06-26 21:28:57,909 - ERROR - [21:28:57.909] - shake hand fail
+2025-06-26 21:28:57,909 - INFO - [21:28:57.909] - ########################################################################
+2025-06-26 21:28:57,909 - INFO - [21:28:57.909] - 请按照以下描述排查问题：
+2025-06-26 21:28:57,909 - INFO - [21:28:57.909] - Boot pin是否上拉到板子自身的3.3V，而不是外部的3.3V
+2025-06-26 21:28:57,909 - INFO - [21:28:57.909] - UART RX是否连接到USB转串口的TX引脚
+2025-06-26 21:28:57,909 - INFO - [21:28:57.909] - UART TX是否连接到USB转串口的RX引脚
+2025-06-26 21:28:57,909 - INFO - [21:28:57.909] - 在使用烧录软件进行烧录前，是否在Boot pin拉高的情况下，使用Reset/Chip_En复位了芯片
+2025-06-26 21:28:57,909 - INFO - [21:28:57.909] - 烧录软件所选择的COM口，是否是连接芯片的串口
+2025-06-26 21:28:57,912 - INFO - [21:28:57.909] - 烧录软件上选择的波特率是否是USB转串口支持的波特率
+2025-06-26 21:28:57,915 - INFO - [21:28:57.913] - 3.3V供电是否正常
+2025-06-26 21:28:57,918 - INFO - [21:28:57.916] - 板子供电电流是否正常(烧录模式下，芯片耗电电流5-7mA)
+2025-06-26 21:28:57,925 - INFO - [21:28:57.921] - ########################################################################
+2025-06-26 21:28:57,930 - ERROR - [21:28:57.927] - shake hand fail
+2025-06-26 21:28:57,940 - ERROR - [21:28:57.936] - ErrorCode: 0050, ErrorMsg: BFLB IMG LOAD SHAKEHAND FAIL
+2025-06-26 21:28:57,943 - INFO - [21:28:57.943] - Burn Retry
+2025-06-26 21:28:57,943 - INFO - [21:28:57.943] - 0
+2025-06-26 21:28:57,943 - ERROR - [21:28:57.943] - Burn return with retry fail
+2025-06-26 21:30:03,181 - INFO - [21:30:03.178] - tlv bin created success
+2025-06-26 21:30:03,186 - INFO - [21:30:03.186] - EFUSE_CFG
+2025-06-26 21:30:03,187 - INFO - [21:30:03.187] - BOOTHEADER_GROUP0_CFG
+2025-06-26 21:30:03,207 - INFO - [21:30:03.206] - Create bootheader using D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini
+2025-06-26 21:30:03,208 - INFO - [21:30:03.207] - Updating data according to <D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini[BOOTHEADER_GROUP0_CFG]>
+2025-06-26 21:30:03,210 - INFO - [21:30:03.209] - Created file len:256
+2025-06-26 21:30:03,212 - INFO - [21:30:03.211] - Create efuse using D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini
+2025-06-26 21:30:03,213 - INFO - [21:30:03.213] - Updating data according to <D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini[EFUSE_CFG]>
+2025-06-26 21:30:03,215 - INFO - [21:30:03.215] - Created file len:512
+2025-06-26 21:30:03,219 - INFO - [21:30:03.219] - Image create path: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu
+2025-06-26 21:30:03,222 - INFO - [21:30:03.219] - Config file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/img_create_cfg.ini
+2025-06-26 21:30:03,229 - INFO - [21:30:03.227] - img already have bootheader
+2025-06-26 21:30:03,229 - INFO - [21:30:03.229] - Image hash is b'ebc3453460f4448c02e1ba3e2b6b70f039ba5964959aad58a878bf87754f0225'
+2025-06-26 21:30:03,230 - INFO - [21:30:03.229] - Header crc: b'1a7df631'
+2025-06-26 21:30:03,230 - INFO - [21:30:03.230] - Write flash img
+2025-06-26 21:30:03,231 - INFO - [21:30:03.231] - Encrypt efuse data
+2025-06-26 21:30:03,235 - INFO - [21:30:03.235] - ========= eflash loader config =========
+2025-06-26 21:30:03,256 - INFO - [21:30:03.256] - Version: eflash_loader_v2.5.1
+2025-06-26 21:30:03,256 - INFO - [21:30:03.256] - Program Start
+2025-06-26 21:30:03,256 - INFO - [21:30:03.256] - ========= eflash loader cmd arguments =========
+2025-06-26 21:30:03,257 - INFO - [21:30:03.257] - Config file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\eflash_loader\eflash_loader_cfg.ini
+2025-06-26 21:30:03,257 - INFO - [21:30:03.257] - serial port is COM3 (PROG)
+2025-06-26 21:30:03,257 - INFO - [21:30:03.257] - cpu_reset=False
+2025-06-26 21:30:03,257 - INFO - [21:30:03.257] - chiptype: bl616
+2025-06-26 21:30:03,257 - INFO - [21:30:03.257] - ========= Interface is uart =========
+2025-06-26 21:30:03,258 - INFO - [21:30:03.258] - com speed: 2000000
+2025-06-26 21:30:03,258 - INFO - [21:30:03.258] - Bootrom load
+2025-06-26 21:30:03,258 - INFO - [21:30:03.258] - ========= get_boot_info =========
+2025-06-26 21:30:03,258 - INFO - [21:30:03.258] - ========= image get bootinfo =========
+2025-06-26 21:30:03,472 - INFO - [21:30:03.471] - Not ack OK
+2025-06-26 21:30:03,472 - INFO - [21:30:03.472] - FL
+2025-06-26 21:30:03,472 - INFO - [21:30:03.472] - result: FL
+2025-06-26 21:30:03,477 - INFO - [21:30:03.476] - default set DTR high
+2025-06-26 21:30:03,581 - INFO - [21:30:03.580] - usb serial port
+2025-06-26 21:30:03,643 - INFO - [21:30:03.643] - clean buf
+2025-06-26 21:30:03,647 - INFO - [21:30:03.647] - send sync
+2025-06-26 21:30:03,863 - INFO - [21:30:03.863] - ack is 4f4b
+2025-06-26 21:30:03,895 - INFO - [21:30:03.895] - shake hand success
+2025-06-26 21:30:04,410 - INFO - [21:30:04.410] - data read is b'01001606000001002712890123e62acf0eb498000f758010'
+2025-06-26 21:30:04,410 - INFO - [21:30:04.410] - ========= chipid: b40ecf2ae623 =========
+2025-06-26 21:30:04,410 - INFO - [21:30:04.410] - Get bootinfo time cost(ms): 1151.599853515625
+2025-06-26 21:30:04,411 - INFO - [21:30:04.410] - change bdrate: 2000000
+2025-06-26 21:30:04,412 - INFO - [21:30:04.412] - Clock PLL set
+2025-06-26 21:30:04,413 - INFO - [21:30:04.413] - Set clock time cost(ms): 1.000244140625
+2025-06-26 21:30:04,548 - INFO - [21:30:04.548] - Read mac addr
+2025-06-26 21:30:04,549 - INFO - [21:30:04.549] - macaddr: b40ecf2ae623
+2025-06-26 21:30:04,549 - INFO - [21:30:04.549] - flash set para
+2025-06-26 21:30:04,549 - INFO - [21:30:04.549] - get flash pin cfg from bootinfo: 0x24
+2025-06-26 21:30:04,549 - INFO - [21:30:04.549] - set flash cfg: 14124
+2025-06-26 21:30:04,549 - INFO - [21:30:04.549] - Set flash config
+2025-06-26 21:30:04,553 - INFO - [21:30:04.552] - Set para time cost(ms): 2.99853515625
+2025-06-26 21:30:04,554 - INFO - [21:30:04.554] - ========= flash read jedec ID =========
+2025-06-26 21:30:04,556 - INFO - [21:30:04.556] - Read flash jedec ID
+2025-06-26 21:30:04,556 - INFO - [21:30:04.556] - flash jedec id: ef401700
+2025-06-26 21:30:04,556 - INFO - [21:30:04.556] - Finished
+2025-06-26 21:30:04,562 - INFO - [21:30:04.561] - get flash size: 0x00800000
+2025-06-26 21:30:04,562 - INFO - [21:30:04.562] - Program operation
+2025-06-26 21:30:04,563 - INFO - [21:30:04.563] - Dealing Index 0
+2025-06-26 21:30:04,563 - INFO - [21:30:04.563] - ========= programming chips\bl616\img_create_mcu\bootinfo.bin to 0x00000000
+2025-06-26 21:30:04,568 - INFO - [21:30:04.568] - flash para file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips/bl616/efuse_bootheader/flash_para.bin
+2025-06-26 21:30:04,569 - INFO - [21:30:04.569] - Set flash config
+2025-06-26 21:30:04,571 - INFO - [21:30:04.571] - Set para time cost(ms): 1.9833984375
+2025-06-26 21:30:04,572 - INFO - [21:30:04.571] - ========= flash load =========
+2025-06-26 21:30:04,572 - INFO - [21:30:04.572] - ========= flash erase =========
+2025-06-26 21:30:04,572 - INFO - [21:30:04.572] - Erase flash from 0x0 to 0xff
+2025-06-26 21:30:04,633 - INFO - [21:30:04.632] - Erase time cost(ms): 59.459228515625
+2025-06-26 21:30:04,636 - INFO - [21:30:04.636] - Load 256/256 {"progress":100}
+2025-06-26 21:30:04,637 - INFO - [21:30:04.637] - Load 256/256 {"progress":100}
+2025-06-26 21:30:04,637 - INFO - [21:30:04.637] - Write check
+2025-06-26 21:30:04,639 - INFO - [21:30:04.639] - Flash load time cost(ms): 5.008056640625
+2025-06-26 21:30:04,639 - INFO - [21:30:04.639] - Finished
+2025-06-26 21:30:04,640 - INFO - [21:30:04.640] - Sha caled by host: e28c6ca5efa1cb187215928fbbc6f0200f07256a93ea763484f0aaeb4361c35d
+2025-06-26 21:30:04,640 - INFO - [21:30:04.640] - xip mode Verify
+2025-06-26 21:30:04,641 - INFO - [21:30:04.641] - Read Sha256/256
+2025-06-26 21:30:04,641 - INFO - [21:30:04.641] - Flash xip readsha time cost(ms): 0.983642578125
+2025-06-26 21:30:04,641 - INFO - [21:30:04.641] - Finished
+2025-06-26 21:30:04,642 - INFO - [21:30:04.642] - Sha caled by dev: e28c6ca5efa1cb187215928fbbc6f0200f07256a93ea763484f0aaeb4361c35d
+2025-06-26 21:30:04,643 - INFO - [21:30:04.642] - Verify success
+2025-06-26 21:30:04,645 - INFO - [21:30:04.645] - Dealing Index 1
+2025-06-26 21:30:04,645 - INFO - [21:30:04.645] - ========= programming chips\bl616\img_create_mcu\img.bin to 0x00002000
+2025-06-26 21:30:04,648 - INFO - [21:30:04.648] - flash para file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips/bl616/efuse_bootheader/flash_para.bin
+2025-06-26 21:30:04,648 - INFO - [21:30:04.648] - Set flash config
+2025-06-26 21:30:04,651 - INFO - [21:30:04.651] - Set para time cost(ms): 2.985107421875
+2025-06-26 21:30:04,651 - INFO - [21:30:04.651] - ========= flash load =========
+2025-06-26 21:30:04,652 - INFO - [21:30:04.651] - ========= flash erase =========
+2025-06-26 21:30:04,652 - INFO - [21:30:04.652] - Erase flash from 0x2000 to 0xcd5f
+2025-06-26 21:30:05,302 - INFO - [21:30:05.302] - Erase time cost(ms): 650.05029296875
+2025-06-26 21:30:05,303 - INFO - [21:30:05.303] - decompress write rx timeout: 98.304
+2025-06-26 21:30:05,316 - INFO - [21:30:05.316] - decompress flash load 27236
+2025-06-26 21:30:05,328 - INFO - [21:30:05.328] - Load 2048/27236 {"progress":7}
+2025-06-26 21:30:05,340 - INFO - [21:30:05.339] - Load 4096/27236 {"progress":15}
+2025-06-26 21:30:05,356 - INFO - [21:30:05.355] - Load 6144/27236 {"progress":22}
+2025-06-26 21:30:05,372 - INFO - [21:30:05.372] - Load 8192/27236 {"progress":30}
+2025-06-26 21:30:05,389 - INFO - [21:30:05.389] - Load 10240/27236 {"progress":37}
+2025-06-26 21:30:05,406 - INFO - [21:30:05.406] - Load 12288/27236 {"progress":45}
+2025-06-26 21:30:05,419 - INFO - [21:30:05.418] - Load 14336/27236 {"progress":52}
+2025-06-26 21:30:05,435 - INFO - [21:30:05.435] - Load 16384/27236 {"progress":60}
+2025-06-26 21:30:05,451 - INFO - [21:30:05.451] - Load 18432/27236 {"progress":67}
+2025-06-26 21:30:05,462 - INFO - [21:30:05.462] - Load 20480/27236 {"progress":75}
+2025-06-26 21:30:05,479 - INFO - [21:30:05.479] - Load 22528/27236 {"progress":82}
+2025-06-26 21:30:05,497 - INFO - [21:30:05.496] - Load 24576/27236 {"progress":90}
+2025-06-26 21:30:05,513 - INFO - [21:30:05.512] - Load 26624/27236 {"progress":97}
+2025-06-26 21:30:05,529 - INFO - [21:30:05.529] - Load 27236/27236 {"progress":100}
+2025-06-26 21:30:05,530 - INFO - [21:30:05.530] - Load 27236/27236 {"progress":100}
+2025-06-26 21:30:05,530 - INFO - [21:30:05.530] - Write check
+2025-06-26 21:30:05,540 - INFO - [21:30:05.540] - Flash load time cost(ms): 236.953857421875
+2025-06-26 21:30:05,541 - INFO - [21:30:05.541] - Finished
+2025-06-26 21:30:05,541 - INFO - [21:30:05.541] - Sha caled by host: ebc3453460f4448c02e1ba3e2b6b70f039ba5964959aad58a878bf87754f0225
+2025-06-26 21:30:05,542 - INFO - [21:30:05.542] - xip mode Verify
+2025-06-26 21:30:05,580 - INFO - [21:30:05.580] - Read Sha256/44384
+2025-06-26 21:30:05,580 - INFO - [21:30:05.580] - Flash xip readsha time cost(ms): 38.47607421875
+2025-06-26 21:30:05,580 - INFO - [21:30:05.580] - Finished
+2025-06-26 21:30:05,580 - INFO - [21:30:05.580] - Sha caled by dev: ebc3453460f4448c02e1ba3e2b6b70f039ba5964959aad58a878bf87754f0225
+2025-06-26 21:30:05,581 - INFO - [21:30:05.581] - Verify success
+2025-06-26 21:30:05,582 - INFO - [21:30:05.582] - Program Finished
+2025-06-26 21:30:05,583 - INFO - [21:30:05.583] - All time cost(ms): 2327.571044921875
+2025-06-26 21:30:05,697 - INFO - [21:30:05.696] - close interface
+2025-06-26 21:30:05,697 - INFO - [21:30:05.697] - [All Success]
+2025-06-26 21:30:07,400 - INFO - [21:30:07.399] - serial type is bouffalo
+2025-06-26 21:30:07,444 - INFO - [21:30:07.443] - Open COM3 Success
+2025-06-26 21:30:07,530 - INFO - [21:30:07.530] - Dump log...
+2025-06-26 21:30:07,531 - INFO - psr
+2025-06-26 21:30:07,531 - INFO - [21:30:07.531] - am suss:11
+2025-06-26 21:30:07,532 - INFO - custom 0x5f
+2025-06-26 21:30:07,532 - INFO - flash init 0
+2025-06-26 21:30:07,532 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:07,532 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:07,532 - INFO - ver:8.1.8
+2025-06-26 21:30:07,532 - INFO - user_fw
+2025-06-26 21:30:07,532 - INFO - NO valid PT table,use default
+2025-06-26 21:30:07,532 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:07,532 - INFO - MFG not found
+2025-06-26 21:30:07,532 - INFO - entry ID 0 found
+2025-06-26 21:30:07,532 - INFO - Boot start
+2025-06-26 21:30:07,532 - INFO - Media boot main
+2025-06-26 21:30:07,532 - INFO - R header from 10000
+2025-06-26 21:30:07,532 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:07,532 - INFO - Group roll back
+2025-06-26 21:30:07,532 - INFO - Boot retu
+2025-06-26 21:30:07,532 - INFO - [21:30:07.532] - rn 0x21c
+2025-06-26 21:30:07,532 - INFO - Check Rollback
+2025-06-26 21:30:07,532 - INFO - Rollback group 0
+2025-06-26 21:30:07,532 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:07,532 - INFO - MFG not found
+2025-06-26 21:30:07,532 - INFO - entry ID 0 found
+2025-06-26 21:30:07,532 - INFO - Boot start
+2025-06-26 21:30:07,532 - INFO - Media boot main
+2025-06-26 21:30:07,532 - INFO - Group 0 not b
+2025-06-26 21:30:07,532 - INFO - [21:30:07.532] - oot
+2025-06-26 21:30:07,533 - INFO - no valid group found
+2025-06-26 21:30:07,533 - INFO - Media boot return 539
+2025-06-26 21:30:07,533 - ERROR - Boot2 fail
+2025-06-26 21:30:08,032 - INFO - [21:30:08.032] - Dump log
+2025-06-26 21:30:08,033 - INFO - [21:30:08.033] - ...
+2025-06-26 21:30:08,033 - INFO - psram suss:11
+2025-06-26 21:30:08,033 - INFO - custom 0x5f
+2025-06-26 21:30:08,033 - INFO - flash i
+2025-06-26 21:30:08,035 - INFO - [21:30:08.033] - nit 0
+2025-06-26 21:30:08,035 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:08,035 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:08,035 - INFO - ver:8.1.8
+2025-06-26 21:30:08,036 - INFO - user_fw
+2025-06-26 21:30:08,036 - INFO - NO valid PT table,use default
+2025-06-26 21:30:08,036 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:08,036 - INFO - MFG not found
+2025-06-26 21:30:08,036 - INFO - entry ID 0 found
+2025-06-26 21:30:08,036 - INFO - Boot start
+2025-06-26 21:30:08,036 - INFO - Media boot main
+2025-06-26 21:30:08,036 - INFO - R header from 10000
+2025-06-26 21:30:08,036 - ERROR - Group 0 parse fail ret 0x20
+2025-06-26 21:30:08,036 - INFO - [21:30:08.036] - 4
+2025-06-26 21:30:08,036 - INFO - Group roll back
+2025-06-26 21:30:08,036 - INFO - Boot return 0x21c
+2025-06-26 21:30:08,036 - INFO - Check Rollback
+2025-06-26 21:30:08,036 - INFO - Rollback group 0
+2025-06-26 21:30:08,036 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:08,037 - INFO - MFG not found
+2025-06-26 21:30:08,037 - INFO - entry ID 0 found
+2025-06-26 21:30:08,037 - INFO - Boot start
+2025-06-26 21:30:08,037 - INFO - Media boot main
+2025-06-26 21:30:08,038 - INFO - Group 0 not boot
+2025-06-26 21:30:08,039 - INFO - no valid group found
+2025-06-26 21:30:08,039 - INFO - Media boot return 539
+2025-06-26 21:30:08,040 - ERROR - Boot2 fail
+2025-06-26 21:30:08,535 - INFO - [21:30:08.535] - Dump log
+2025-06-26 21:30:08,536 - INFO - [21:30:08.536] - ...
+2025-06-26 21:30:08,536 - INFO - psram suss:11
+2025-06-26 21:30:08,536 - INFO - custom 0x5f
+2025-06-26 21:30:08,536 - INFO - flash init 0
+2025-06-26 21:30:08,536 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:08,536 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:08,536 - INFO - ver:8.1.8
+2025-06-26 21:30:08,536 - INFO - user_fw
+2025-06-26 21:30:08,536 - INFO - NO valid PT table,use default
+2025-06-26 21:30:08,536 - INFO - Active PT:0,Age
+2025-06-26 21:30:08,537 - INFO - [21:30:08.537] - 0
+2025-06-26 21:30:08,538 - INFO - MFG not found
+2025-06-26 21:30:08,538 - INFO - entry ID 0 found
+2025-06-26 21:30:08,538 - INFO - Boot start
+2025-06-26 21:30:08,538 - INFO - Media boot main
+2025-06-26 21:30:08,539 - INFO - R header from 10000
+2025-06-26 21:30:08,539 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:08,539 - INFO - Group roll back
+2025-06-26 21:30:08,539 - INFO - Boot
+2025-06-26 21:30:08,540 - INFO - [21:30:08.540] - return 0x21c
+2025-06-26 21:30:08,541 - INFO - Check Rollback
+2025-06-26 21:30:08,541 - INFO - Rollback group 0
+2025-06-26 21:30:08,541 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:08,542 - INFO - MFG not found
+2025-06-26 21:30:08,542 - INFO - entry ID 0 found
+2025-06-26 21:30:08,543 - INFO - Boot start
+2025-06-26 21:30:08,543 - INFO - Media boot main
+2025-06-26 21:30:08,543 - INFO - Group 0 not boot
+2025-06-26 21:30:08,543 - INFO - no valid group found
+2025-06-26 21:30:08,543 - INFO - Media boot return 539
+2025-06-26 21:30:08,543 - ERROR - Boot2 fail
+2025-06-26 21:30:09,038 - INFO - [21:30:09.037] - Dump log
+2025-06-26 21:30:09,040 - INFO - [21:30:09.038] - ...
+2025-06-26 21:30:09,041 - INFO - psram suss:11
+2025-06-26 21:30:09,041 - INFO - custom 0x5f
+2025-06-26 21:30:09,042 - INFO - flash init 0
+2025-06-26 21:30:09,042 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:09,042 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:09,042 - INFO - ver:8.1.8
+2025-06-26 21:30:09,042 - INFO - user_fw
+2025-06-26 21:30:09,042 - INFO - NO v
+2025-06-26 21:30:09,042 - INFO - [21:30:09.042] - alid PT table,use default
+2025-06-26 21:30:09,043 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:09,043 - INFO - MFG not found
+2025-06-26 21:30:09,043 - INFO - entry ID 0 found
+2025-06-26 21:30:09,043 - INFO - Boot start
+2025-06-26 21:30:09,043 - INFO - Media boot main
+2025-06-26 21:30:09,043 - INFO - R header from 10000
+2025-06-26 21:30:09,043 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:09,043 - INFO - Group roll back
+2025-06-26 21:30:09,044 - INFO - Boot return 0x21c
+2025-06-26 21:30:09,044 - INFO - Check Rollback
+2025-06-26 21:30:09,044 - INFO - Rollback group 0
+2025-06-26 21:30:09,044 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:09,044 - INFO - MFG not found
+2025-06-26 21:30:09,044 - INFO - entry ID 0 found
+2025-06-26 21:30:09,045 - INFO - Boot start
+2025-06-26 21:30:09,045 - INFO - Media boot main
+2025-06-26 21:30:09,045 - INFO - Group 0 not boot
+2025-06-26 21:30:09,045 - INFO - no valid group found
+2025-06-26 21:30:09,045 - INFO - Media boot return 539
+2025-06-26 21:30:09,045 - ERROR - Boot2 fail
+2025-06-26 21:30:09,540 - INFO - [21:30:09.540] - Dump log
+2025-06-26 21:30:09,541 - INFO - [21:30:09.540] - ...
+2025-06-26 21:30:09,542 - INFO - psram suss:11
+2025-06-26 21:30:09,542 - INFO - custom 0x5f
+2025-06-26 21:30:09,542 - INFO - flash
+2025-06-26 21:30:09,542 - INFO - [21:30:09.542] - init 0
+2025-06-26 21:30:09,542 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:09,542 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:09,542 - INFO - ver:8.1.8
+2025-06-26 21:30:09,542 - INFO - user_fw
+2025-06-26 21:30:09,542 - INFO - NO valid PT table,use default
+2025-06-26 21:30:09,542 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:09,542 - INFO - MFG not found
+2025-06-26 21:30:09,542 - INFO - entry ID 0 found
+2025-06-26 21:30:09,542 - INFO - Boot start
+2025-06-26 21:30:09,542 - INFO - Media boot main
+2025-06-26 21:30:09,542 - INFO - R header from 10000
+2025-06-26 21:30:09,542 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:09,542 - INFO - Group roll back
+2025-06-26 21:30:09,542 - INFO - Boot retur
+2025-06-26 21:30:09,542 - INFO - [21:30:09.542] - n 0x21c
+2025-06-26 21:30:09,542 - INFO - Check Rollback
+2025-06-26 21:30:09,543 - INFO - Rollback group 0
+2025-06-26 21:30:09,543 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:09,544 - INFO - MFG not found
+2025-06-26 21:30:09,545 - INFO - entry ID 0 found
+2025-06-26 21:30:09,546 - INFO - Boot start
+2025-06-26 21:30:09,547 - INFO - Media boot main
+2025-06-26 21:30:09,548 - INFO - [21:30:09.548] -
+2025-06-26 21:30:09,548 - INFO - Group 0 not boot
+2025-06-26 21:30:09,548 - INFO - no valid group found
+2025-06-26 21:30:09,549 - INFO - Media boot return 539
+2025-06-26 21:30:09,549 - ERROR - Boot2 fail
+2025-06-26 21:30:10,042 - INFO - [21:30:10.042] - Dump log
+2025-06-26 21:30:10,043 - INFO - [21:30:10.043] - ...
+2025-06-26 21:30:10,043 - INFO - psram suss:11
+2025-06-26 21:30:10,043 - INFO - custom 0x5f
+2025-06-26 21:30:10,043 - INFO - flash init 0
+2025-06-26 21:30:10,043 - INFO - [21:30:10.043] - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:10,043 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:10,043 - INFO - v
+2025-06-26 21:30:10,043 - INFO - [21:30:10.043] - er:8.1.8
+2025-06-26 21:30:10,043 - INFO - user_fw
+2025-06-26 21:30:10,043 - INFO - NO valid PT table,us
+2025-06-26 21:30:10,043 - INFO - [21:30:10.043] - e default
+2025-06-26 21:30:10,043 - INFO - Active PT:0,A
+2025-06-26 21:30:10,043 - INFO - [21:30:10.043] - ge 0
+2025-06-26 21:30:10,044 - INFO - MFG not found
+2025-06-26 21:30:10,046 - INFO - entry ID 0 f
+2025-06-26 21:30:10,046 - INFO - [21:30:10.046] - ound
+2025-06-26 21:30:10,047 - INFO - Boot start
+2025-06-26 21:30:10,047 - INFO - Media boot main
+2025-06-26 21:30:10,047 - INFO - R header from 10000
+2025-06-26 21:30:10,047 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:10,048 - INFO - Group roll back
+2025-06-26 21:30:10,048 - INFO - Boot return 0x21c
+2025-06-26 21:30:10,049 - INFO - Check Rollback
+2025-06-26 21:30:10,049 - INFO - Rollback group 0
+2025-06-26 21:30:10,049 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:10,050 - INFO - MFG not found
+2025-06-26 21:30:10,050 - INFO - entry ID 0 found
+2025-06-26 21:30:10,051 - INFO - Boot start
+2025-06-26 21:30:10,051 - INFO - Media boot main
+2025-06-26 21:30:10,052 - INFO - Group 0 not boot
+2025-06-26 21:30:10,052 - INFO - no valid group found
+2025-06-26 21:30:10,052 - INFO - Media boot return 539
+2025-06-26 21:30:10,053 - ERROR - Boot2 fail
+2025-06-26 21:30:10,545 - INFO - [21:30:10.545] - Dump log
+2025-06-26 21:30:10,546 - INFO - [21:30:10.546] - ...
+2025-06-26 21:30:10,546 - INFO - psram suss:11
+2025-06-26 21:30:10,546 - INFO - custom 0x5f
+2025-06-26 21:30:10,546 - INFO - flash init 0
+2025-06-26 21:30:10,546 - INFO - Boot2 sta
+2025-06-26 21:30:10,546 - INFO - [21:30:10.546] - rt:Apr 11 2025,10:40:49
+2025-06-26 21:30:10,546 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:10,546 - INFO - ver:8.1.8
+2025-06-26 21:30:10,546 - INFO - user_fw
+2025-06-26 21:30:10,546 - INFO - NO valid PT table,use default
+2025-06-26 21:30:10,546 - INFO - [21:30:10.546] -
+2025-06-26 21:30:10,546 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:10,547 - INFO - MFG not found
+2025-06-26 21:30:10,547 - INFO - entry ID 0 found
+2025-06-26 21:30:10,547 - INFO - Boo
+2025-06-26 21:30:10,547 - INFO - [21:30:10.547] - t start
+2025-06-26 21:30:10,547 - INFO - Media boot main
+2025-06-26 21:30:10,547 - INFO - R header from 10000
+2025-06-26 21:30:10,547 - INFO - Group 0 pa
+2025-06-26 21:30:10,547 - ERROR - [21:30:10.547] - rse fail ret 0x204
+2025-06-26 21:30:10,547 - INFO - Group roll back
+2025-06-26 21:30:10,547 - INFO - Boot return 0x21c
+2025-06-26 21:30:10,547 - INFO - C
+2025-06-26 21:30:10,547 - INFO - [21:30:10.547] - heck Rollback
+2025-06-26 21:30:10,547 - INFO - Rollback group 0
+2025-06-26 21:30:10,547 - INFO - Active PT:1,Age
+2025-06-26 21:30:10,547 - INFO - [21:30:10.547] - 1
+2025-06-26 21:30:10,547 - INFO - MFG not found
+2025-06-26 21:30:10,548 - INFO - entry ID 0 found
+2025-06-26 21:30:10,548 - INFO - Boot
+2025-06-26 21:30:10,548 - INFO - [21:30:10.548] - start
+2025-06-26 21:30:10,548 - INFO - Media boot main
+2025-06-26 21:30:10,548 - INFO - Group 0 not boot
+2025-06-26 21:30:10,548 - INFO - no valid group found
+2025-06-26 21:30:10,548 - INFO - [21:30:10.548] - Media boot return 539
+2025-06-26 21:30:10,548 - ERROR - Boot2 fail
+2025-06-26 21:30:10,548 - INFO - [21:30:10.548] -
+2025-06-26 21:30:11,048 - INFO - [21:30:11.048] - Dump log
+2025-06-26 21:30:11,048 - INFO - [21:30:11.048] - ...
+2025-06-26 21:30:11,048 - INFO - psram suss:11
+2025-06-26 21:30:11,048 - INFO - custom 0x5f
+2025-06-26 21:30:11,049 - INFO - flash init 0
+2025-06-26 21:30:11,049 - INFO - [21:30:11.049] - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:11,049 - INFO - Group=1,CPU Co
+2025-06-26 21:30:11,049 - INFO - [21:30:11.049] - unt=1
+2025-06-26 21:30:11,049 - INFO - ver:8.1.8
+2025-06-26 21:30:11,049 - INFO - user_fw
+2025-06-26 21:30:11,049 - INFO - NO valid PT table,use default
+2025-06-26 21:30:11,049 - INFO - [21:30:11.049] -
+2025-06-26 21:30:11,049 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:11,049 - INFO - MFG not foun
+2025-06-26 21:30:11,049 - INFO - [21:30:11.049] - d
+2025-06-26 21:30:11,049 - INFO - entry ID 0 found
+2025-06-26 21:30:11,049 - INFO - Boot start
+2025-06-26 21:30:11,049 - INFO - Media bo
+2025-06-26 21:30:11,049 - INFO - [21:30:11.049] - ot main
+2025-06-26 21:30:11,049 - INFO - R header from 100
+2025-06-26 21:30:11,050 - INFO - [21:30:11.050] - 00
+2025-06-26 21:30:11,050 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:11,050 - INFO - [21:30:11.050] - Group roll back
+2025-06-26 21:30:11,050 - INFO - Boot return 0x21c
+2025-06-26 21:30:11,050 - INFO - Check R
+2025-06-26 21:30:11,050 - INFO - [21:30:11.050] - ollback
+2025-06-26 21:30:11,050 - INFO - Rollback group 0
+2025-06-26 21:30:11,050 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:11,050 - INFO - MFG not
+2025-06-26 21:30:11,050 - INFO - [21:30:11.050] -  found
+2025-06-26 21:30:11,050 - INFO - entry ID 0 found
+2025-06-26 21:30:11,051 - INFO - Boot start
+2025-06-26 21:30:11,051 - INFO - Media boot main
+2025-06-26 21:30:11,051 - INFO - Group 0 not
+2025-06-26 21:30:11,051 - INFO - [21:30:11.051] -  boot
+2025-06-26 21:30:11,052 - INFO - no valid group found
+2025-06-26 21:30:11,052 - INFO - Media boot return 539
+2025-06-26 21:30:11,053 - ERROR - Boot2 fail
+2025-06-26 21:30:11,551 - INFO - [21:30:11.551] - Dump log
+2025-06-26 21:30:11,552 - INFO - [21:30:11.551] - ...
+2025-06-26 21:30:11,552 - INFO - psram suss:11
+2025-06-26 21:30:11,552 - INFO - custom 0x5f
+2025-06-26 21:30:11,552 - INFO - flash init 0
+2025-06-26 21:30:11,552 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:11,552 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:11,552 - INFO - ver:8.1.8
+2025-06-26 21:30:11,552 - INFO - us
+2025-06-26 21:30:11,552 - INFO - [21:30:11.552] - er_fw
+2025-06-26 21:30:11,552 - INFO - NO valid PT table,use default
+2025-06-26 21:30:11,552 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:11,552 - INFO - MFG not found
+2025-06-26 21:30:11,552 - INFO - entry ID 0 found
+2025-06-26 21:30:11,552 - INFO - [21:30:11.552] -
+2025-06-26 21:30:11,552 - INFO - Boot start
+2025-06-26 21:30:11,552 - INFO - Media boot main
+2025-06-26 21:30:11,552 - INFO - R header from 10000
+2025-06-26 21:30:11,552 - ERROR - Group 0 parse fail ret
+2025-06-26 21:30:11,553 - INFO - [21:30:11.553] -  0x204
+2025-06-26 21:30:11,553 - INFO - Group roll back
+2025-06-26 21:30:11,553 - INFO - Boot return 0x21c
+2025-06-26 21:30:11,554 - INFO - Check
+2025-06-26 21:30:11,554 - INFO - [21:30:11.554] -  Rollback
+2025-06-26 21:30:11,555 - INFO - Rollback group 0
+2025-06-26 21:30:11,555 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:11,555 - INFO - MFG not found
+2025-06-26 21:30:11,555 - INFO - entry ID 0 found
+2025-06-26 21:30:11,556 - INFO - Boot start
+2025-06-26 21:30:11,556 - INFO - Media boot main
+2025-06-26 21:30:11,556 - INFO - Group 0 not boot
+2025-06-26 21:30:11,557 - INFO - no valid group found
+2025-06-26 21:30:11,557 - INFO - Media boot return 539
+2025-06-26 21:30:11,557 - ERROR - Boot2 fail
+2025-06-26 21:30:12,053 - INFO - [21:30:12.053] - Dump log
+2025-06-26 21:30:12,054 - INFO - [21:30:12.054] - ...
+2025-06-26 21:30:12,054 - INFO - psram suss:11
+2025-06-26 21:30:12,054 - INFO - custom 0x5f
+2025-06-26 21:30:12,054 - INFO - flash init 0
+2025-06-26 21:30:12,054 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:12,054 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:12,054 - INFO - ver:8.1.8
+2025-06-26 21:30:12,054 - INFO - user_fw
+2025-06-26 21:30:12,054 - INFO - NO valid PT table,use default
+2025-06-26 21:30:12,054 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:12,054 - INFO - MFG
+2025-06-26 21:30:12,054 - INFO - [21:30:12.054] - not found
+2025-06-26 21:30:12,054 - INFO - entry ID 0 found
+2025-06-26 21:30:12,054 - INFO - Boot start
+2025-06-26 21:30:12,055 - INFO - Media boot main
+2025-06-26 21:30:12,055 - INFO - R header from 10000
+2025-06-26 21:30:12,055 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:12,055 - INFO - Group
+2025-06-26 21:30:12,055 - INFO - [21:30:12.055] - roll back
+2025-06-26 21:30:12,055 - INFO - Boot return 0x21c
+2025-06-26 21:30:12,055 - INFO - Check Rollback
+2025-06-26 21:30:12,055 - INFO - Rollback group 0
+2025-06-26 21:30:12,056 - INFO - Active PT:
+2025-06-26 21:30:12,059 - INFO - [21:30:12.058] - 1,Age 1
+2025-06-26 21:30:12,060 - INFO - MFG not found
+2025-06-26 21:30:12,060 - INFO - entry ID 0 found
+2025-06-26 21:30:12,060 - INFO - Boot start
+2025-06-26 21:30:12,061 - INFO - Media boot main
+2025-06-26 21:30:12,061 - INFO - Group 0 not boot
+2025-06-26 21:30:12,061 - INFO - no valid group found
+2025-06-26 21:30:12,062 - INFO - Media boot return 539
+2025-06-26 21:30:12,062 - ERROR - Boot2 fail
+2025-06-26 21:30:12,555 - INFO - [21:30:12.555] - Dump log
+2025-06-26 21:30:12,556 - INFO - [21:30:12.556] - ...
+2025-06-26 21:30:12,556 - INFO - psram suss:11
+2025-06-26 21:30:12,556 - INFO - custom 0x5f
+2025-06-26 21:30:12,557 - INFO - flash
+2025-06-26 21:30:12,557 - INFO - [21:30:12.557] - init 0
+2025-06-26 21:30:12,557 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:12,557 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:12,557 - INFO - ver:8.1.8
+2025-06-26 21:30:12,557 - INFO - user_fw
+2025-06-26 21:30:12,557 - INFO - NO valid PT table,use default
+2025-06-26 21:30:12,557 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:12,557 - INFO - MFG not found
+2025-06-26 21:30:12,557 - INFO - entry ID 0 found
+2025-06-26 21:30:12,557 - INFO - Boot start
+2025-06-26 21:30:12,557 - INFO - Media boot main
+2025-06-26 21:30:12,557 - INFO - R
+2025-06-26 21:30:12,560 - INFO - [21:30:12.560] -  header from 10000
+2025-06-26 21:30:12,560 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:12,560 - INFO - Group roll back
+2025-06-26 21:30:12,561 - INFO - Boot return 0x21c
+2025-06-26 21:30:12,561 - INFO - Check Rollbac
+2025-06-26 21:30:12,561 - INFO - [21:30:12.561] - k
+2025-06-26 21:30:12,564 - INFO - Rollback group 0
+2025-06-26 21:30:12,564 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:12,564 - INFO - MFG not found
+2025-06-26 21:30:12,564 - INFO - entry ID 0 found
+2025-06-26 21:30:12,564 - INFO - Boot start
+2025-06-26 21:30:12,564 - INFO - Media boot main
+2025-06-26 21:30:12,564 - INFO - Group 0 not boot
+2025-06-26 21:30:12,564 - INFO - no valid group found
+2025-06-26 21:30:12,564 - INFO - Media boot return 539
+2025-06-26 21:30:12,564 - ERROR - Boot2 fail
+2025-06-26 21:30:13,058 - INFO - [21:30:13.058] - Dump log
+2025-06-26 21:30:13,059 - INFO - [21:30:13.059] - ...
+2025-06-26 21:30:13,060 - INFO - psram suss:11
+2025-06-26 21:30:13,060 - INFO - custom 0x5f
+2025-06-26 21:30:13,060 - INFO - flash
+2025-06-26 21:30:13,060 - INFO - [21:30:13.060] - init 0
+2025-06-26 21:30:13,060 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:13,060 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:13,060 - INFO - ver:8.1.8
+2025-06-26 21:30:13,060 - INFO - user_fw
+2025-06-26 21:30:13,060 - INFO - NO valid PT table,use default
+2025-06-26 21:30:13,060 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:13,060 - INFO - MFG not found
+2025-06-26 21:30:13,060 - INFO - entry ID 0 found
+2025-06-26 21:30:13,060 - INFO - Boot start
+2025-06-26 21:30:13,060 - INFO - Media boot main
+2025-06-26 21:30:13,060 - INFO - R header from 10000
+2025-06-26 21:30:13,060 - INFO - Group 0 parse
+2025-06-26 21:30:13,060 - ERROR - [21:30:13.060] -  fail ret 0x204
+2025-06-26 21:30:13,060 - INFO - Group roll back
+2025-06-26 21:30:13,060 - INFO - Boot return 0x21c
+2025-06-26 21:30:13,060 - INFO - Check Rollback
+2025-06-26 21:30:13,060 - INFO - Rollback group 0
+2025-06-26 21:30:13,060 - INFO - Active PT:1,
+2025-06-26 21:30:13,060 - INFO - [21:30:13.060] - Age 1
+2025-06-26 21:30:13,061 - INFO - MFG not found
+2025-06-26 21:30:13,061 - INFO - entry ID 0 found
+2025-06-26 21:30:13,061 - INFO - Boot sta
+2025-06-26 21:30:13,061 - INFO - [21:30:13.061] - rt
+2025-06-26 21:30:13,061 - INFO - Media boot main
+2025-06-26 21:30:13,061 - INFO - Group 0 not boot
+2025-06-26 21:30:13,061 - INFO - no
+2025-06-26 21:30:13,061 - INFO - [21:30:13.061] - valid group found
+2025-06-26 21:30:13,061 - INFO - Media boot return 539
+2025-06-26 21:30:13,061 - INFO - [21:30:13.061] -
+2025-06-26 21:30:13,061 - ERROR - Boot2 fail
+2025-06-26 21:30:13,562 - INFO - [21:30:13.561] - Dump log
+2025-06-26 21:30:13,562 - INFO - [21:30:13.562] - ...
+2025-06-26 21:30:13,562 - INFO - psram suss:11
+2025-06-26 21:30:13,562 - INFO - custom 0x5f
+2025-06-26 21:30:13,562 - INFO - flash init 0
+2025-06-26 21:30:13,562 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:13,562 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:13,562 - INFO - ver:8.1.8
+2025-06-26 21:30:13,562 - INFO - [21:30:13.562] - user_fw
+2025-06-26 21:30:13,562 - INFO - NO valid PT table,use default
+2025-06-26 21:30:13,562 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:13,562 - INFO - MFG not found
+2025-06-26 21:30:13,562 - INFO - [21:30:13.562] -
+2025-06-26 21:30:13,562 - INFO - entry ID 0 found
+2025-06-26 21:30:13,562 - INFO - Boot start
+2025-06-26 21:30:13,563 - INFO - [21:30:13.563] - Media boot main
+2025-06-26 21:30:13,563 - INFO - R header from 10000
+2025-06-26 21:30:13,563 - INFO - Group
+2025-06-26 21:30:13,563 - ERROR - [21:30:13.563] - 0 parse fail ret 0x204
+2025-06-26 21:30:13,563 - INFO - Group roll back
+2025-06-26 21:30:13,563 - INFO - [21:30:13.563] -
+2025-06-26 21:30:13,565 - INFO - Boot return 0x2
+2025-06-26 21:30:13,566 - INFO - [21:30:13.566] - 1c
+2025-06-26 21:30:13,566 - INFO - Check Rollback
+2025-06-26 21:30:13,567 - INFO - Rollback group 0
+2025-06-26 21:30:13,567 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:13,567 - INFO - MFG not found
+2025-06-26 21:30:13,567 - INFO - entry ID 0 found
+2025-06-26 21:30:13,568 - INFO - Boot start
+2025-06-26 21:30:13,568 - INFO - Media boot main
+2025-06-26 21:30:13,568 - INFO - Group 0 not boot
+2025-06-26 21:30:13,568 - INFO - no valid group found
+2025-06-26 21:30:13,569 - INFO - Media boot return 539
+2025-06-26 21:30:13,569 - ERROR - Boot2 fail
+2025-06-26 21:30:14,065 - INFO - [21:30:14.064] - Dump log
+2025-06-26 21:30:14,065 - INFO - [21:30:14.065] - ...
+2025-06-26 21:30:14,065 - INFO - psram suss:11
+2025-06-26 21:30:14,066 - INFO - custom 0x5f
+2025-06-26 21:30:14,066 - INFO - flash init 0
+2025-06-26 21:30:14,066 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:14,066 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:14,066 - INFO - ver:8.1.8
+2025-06-26 21:30:14,066 - INFO - user_fw
+2025-06-26 21:30:14,066 - INFO - NO valid PT table,use default
+2025-06-26 21:30:14,066 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:14,066 - INFO - MFG not found
+2025-06-26 21:30:14,066 - INFO - entry ID 0 found
+2025-06-26 21:30:14,066 - INFO - Boot start
+2025-06-26 21:30:14,066 - INFO - Media boot main
+2025-06-26 21:30:14,066 - INFO - R header from 10000
+2025-06-26 21:30:14,067 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:14,067 - INFO - Group roll back
+2025-06-26 21:30:14,068 - INFO - Boot return 0x21c
+2025-06-26 21:30:14,069 - INFO - [21:30:14.069] - Check Rollback
+2025-06-26 21:30:14,069 - INFO - Rollback group 0
+2025-06-26 21:30:14,070 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:14,070 - INFO - MFG not found
+2025-06-26 21:30:14,070 - INFO - entry ID 0 found
+2025-06-26 21:30:14,070 - INFO - Boot start
+2025-06-26 21:30:14,070 - INFO - Media boot main
+2025-06-26 21:30:14,070 - INFO - Group 0 not boot
+2025-06-26 21:30:14,070 - INFO - no valid group found
+2025-06-26 21:30:14,070 - INFO - Media boot return 539
+2025-06-26 21:30:14,070 - ERROR - Boot2 fail
+2025-06-26 21:30:14,567 - INFO - [21:30:14.567] - Dump log
+2025-06-26 21:30:14,567 - INFO - [21:30:14.567] - ...
+2025-06-26 21:30:14,567 - INFO - psram suss:11
+2025-06-26 21:30:14,567 - INFO - custom 0x5f
+2025-06-26 21:30:14,567 - INFO - flash
+2025-06-26 21:30:14,567 - INFO - [21:30:14.567] - init 0
+2025-06-26 21:30:14,567 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:14,567 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:14,567 - INFO - ver:8.1.8
+2025-06-26 21:30:14,567 - INFO - user_fw
+2025-06-26 21:30:14,567 - INFO - NO valid PT table,use default
+2025-06-26 21:30:14,567 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:14,567 - INFO - MFG not found
+2025-06-26 21:30:14,568 - INFO - entry ID 0 found
+2025-06-26 21:30:14,568 - INFO - Boot start
+2025-06-26 21:30:14,569 - INFO - Media bo
+2025-06-26 21:30:14,569 - INFO - [21:30:14.569] - ot main
+2025-06-26 21:30:14,571 - INFO - R header from 10000
+2025-06-26 21:30:14,571 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:14,572 - INFO - Group roll back
+2025-06-26 21:30:14,572 - INFO - Boot return 0x21c
+2025-06-26 21:30:14,572 - INFO - Check Rollback
+2025-06-26 21:30:14,572 - INFO - Rollback group 0
+2025-06-26 21:30:14,572 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:14,572 - INFO - MFG not found
+2025-06-26 21:30:14,572 - INFO - entry ID 0 found
+2025-06-26 21:30:14,573 - INFO - Boot start
+2025-06-26 21:30:14,573 - INFO - Media boot main
+2025-06-26 21:30:14,573 - INFO - Group 0 not boot
+2025-06-26 21:30:14,573 - INFO - no valid group found
+2025-06-26 21:30:14,573 - INFO - Media boot return 539
+2025-06-26 21:30:14,573 - ERROR - Boot2 fail
+2025-06-26 21:30:15,069 - INFO - [21:30:15.068] - Dump log
+2025-06-26 21:30:15,069 - INFO - [21:30:15.069] - ...
+2025-06-26 21:30:15,069 - INFO - psram suss:11
+2025-06-26 21:30:15,069 - INFO - custom 0x5f
+2025-06-26 21:30:15,069 - INFO - flash init 0
+2025-06-26 21:30:15,069 - INFO - Boot2 start:Apr
+2025-06-26 21:30:15,069 - INFO - [21:30:15.069] - 11 2025,10:40:49
+2025-06-26 21:30:15,069 - INFO - Group=1,CPU Co
+2025-06-26 21:30:15,069 - INFO - [21:30:15.069] - unt=1
+2025-06-26 21:30:15,069 - INFO - ver:8.1.8
+2025-06-26 21:30:15,069 - INFO - user_fw
+2025-06-26 21:30:15,069 - INFO - NO v
+2025-06-26 21:30:15,070 - INFO - [21:30:15.070] - alid PT table,use default
+2025-06-26 21:30:15,070 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:15,070 - INFO - MFG not found
+2025-06-26 21:30:15,070 - INFO - entr
+2025-06-26 21:30:15,070 - INFO - [21:30:15.070] - y ID 0 found
+2025-06-26 21:30:15,070 - INFO - Boot start
+2025-06-26 21:30:15,070 - INFO - Media boot main
+2025-06-26 21:30:15,070 - INFO - [21:30:15.070] -
+2025-06-26 21:30:15,070 - INFO - R header from 10000
+2025-06-26 21:30:15,070 - INFO - G
+2025-06-26 21:30:15,070 - ERROR - [21:30:15.070] - roup 0 parse fail ret 0x204
+2025-06-26 21:30:15,070 - INFO - Gro
+2025-06-26 21:30:15,070 - INFO - [21:30:15.070] - up roll back
+2025-06-26 21:30:15,070 - INFO - Bo
+2025-06-26 21:30:15,070 - INFO - [21:30:15.070] - ot return 0x21c
+2025-06-26 21:30:15,070 - INFO - Check R
+2025-06-26 21:30:15,070 - INFO - [21:30:15.070] - ollback
+2025-06-26 21:30:15,070 - INFO - Rollback
+2025-06-26 21:30:15,070 - INFO - [21:30:15.070] - group 0
+2025-06-26 21:30:15,070 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:15,071 - INFO - MFG not
+2025-06-26 21:30:15,074 - INFO - [21:30:15.073] -  found
+2025-06-26 21:30:15,075 - INFO - entry ID 0 found
+2025-06-26 21:30:15,075 - INFO - Boot start
+2025-06-26 21:30:15,076 - INFO - Media boot main
+2025-06-26 21:30:15,076 - INFO - Group 0 not boot
+2025-06-26 21:30:15,076 - INFO - no valid group found
+2025-06-26 21:30:15,076 - INFO - Media boot return 539
+2025-06-26 21:30:15,077 - ERROR - Boot2 fail
+2025-06-26 21:30:15,572 - INFO - [21:30:15.572] - Dump log
+2025-06-26 21:30:15,573 - INFO - [21:30:15.573] - ...
+2025-06-26 21:30:15,573 - INFO - psram suss:11
+2025-06-26 21:30:15,573 - INFO - custom 0x5f
+2025-06-26 21:30:15,573 - INFO - flash init 0
+2025-06-26 21:30:15,573 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:15,573 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:15,573 - INFO - ver:8.1.8
+2025-06-26 21:30:15,573 - INFO - user_fw
+2025-06-26 21:30:15,573 - INFO - NO valid PT table,use default
+2025-06-26 21:30:15,573 - INFO - Act
+2025-06-26 21:30:15,573 - INFO - [21:30:15.573] - ive PT:0,Age 0
+2025-06-26 21:30:15,573 - INFO - MFG not found
+2025-06-26 21:30:15,573 - INFO - entry ID 0 found
+2025-06-26 21:30:15,573 - INFO - Boot start
+2025-06-26 21:30:15,573 - INFO - Media boot main
+2025-06-26 21:30:15,573 - INFO - R header from 10000
+2025-06-26 21:30:15,573 - INFO - Group 0
+2025-06-26 21:30:15,575 - ERROR - [21:30:15.574] - parse fail ret 0x204
+2025-06-26 21:30:15,575 - INFO - Group roll back
+2025-06-26 21:30:15,575 - INFO - Boot return 0x21c
+2025-06-26 21:30:15,575 - INFO - Check Rollback
+2025-06-26 21:30:15,576 - INFO - Rollback group 0
+2025-06-26 21:30:15,576 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:15,576 - INFO - MFG not found
+2025-06-26 21:30:15,576 - INFO - entry ID 0 found
+2025-06-26 21:30:15,576 - INFO - Boot start
+2025-06-26 21:30:15,577 - INFO - Media boot main
+2025-06-26 21:30:15,577 - INFO - Group
+2025-06-26 21:30:15,578 - INFO - [21:30:15.578] -  0 not boot
+2025-06-26 21:30:15,579 - INFO - no valid group found
+2025-06-26 21:30:15,579 - INFO - Media boot return 539
+2025-06-26 21:30:15,580 - ERROR - Boot2 fail
+2025-06-26 21:30:16,074 - INFO - [21:30:16.074] - Dump log
+2025-06-26 21:30:16,076 - INFO - [21:30:16.076] - ...
+2025-06-26 21:30:16,076 - INFO - psram suss:11
+2025-06-26 21:30:16,076 - INFO - custom 0x5f
+2025-06-26 21:30:16,076 - INFO - flash init 0
+2025-06-26 21:30:16,076 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:16,076 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:16,076 - INFO - ver:8.1.8
+2025-06-26 21:30:16,076 - INFO - user_fw
+2025-06-26 21:30:16,076 - INFO - NO valid PT table,use default
+2025-06-26 21:30:16,076 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:16,076 - INFO - MFG not found
+2025-06-26 21:30:16,076 - INFO - entry ID 0 found
+2025-06-26 21:30:16,076 - INFO - Boot start
+2025-06-26 21:30:16,076 - INFO - Media boot main
+2025-06-26 21:30:16,076 - INFO - R header from 10000
+2025-06-26 21:30:16,076 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:16,076 - INFO - Group roll back
+2025-06-26 21:30:16,076 - INFO - Boot return 0x21c
+2025-06-26 21:30:16,076 - INFO - Check Ro
+2025-06-26 21:30:16,076 - INFO - [21:30:16.076] - llback
+2025-06-26 21:30:16,076 - INFO - Rollback group 0
+2025-06-26 21:30:16,076 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:16,077 - INFO - MFG not found
+2025-06-26 21:30:16,077 - INFO - entry ID 0 found
+2025-06-26 21:30:16,077 - INFO - Boot start
+2025-06-26 21:30:16,077 - INFO - Media boot main
+2025-06-26 21:30:16,077 - INFO - Group 0 not boot
+2025-06-26 21:30:16,077 - INFO - no valid group found
+2025-06-26 21:30:16,078 - INFO - Media
+2025-06-26 21:30:16,079 - INFO - [21:30:16.079] - boot return 539
+2025-06-26 21:30:16,079 - ERROR - Boot2 fail
+2025-06-26 21:30:16,576 - INFO - [21:30:16.576] - Dump log
+2025-06-26 21:30:16,577 - INFO - [21:30:16.576] - ...
+2025-06-26 21:30:16,578 - INFO - psram suss:11
+2025-06-26 21:30:16,578 - INFO - custom 0x5f
+2025-06-26 21:30:16,578 - INFO - flash init 0
+2025-06-26 21:30:16,578 - INFO - Boot2 st
+2025-06-26 21:30:16,578 - INFO - [21:30:16.578] - art:Apr 11 2025,10:40:49
+2025-06-26 21:30:16,578 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:16,578 - INFO - ver:8.1.8
+2025-06-26 21:30:16,578 - INFO - user_fw
+2025-06-26 21:30:16,578 - INFO - NO valid PT table,use default
+2025-06-26 21:30:16,578 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:16,578 - INFO - MFG not found
+2025-06-26 21:30:16,578 - INFO - entry ID 0 found
+2025-06-26 21:30:16,578 - INFO - Boot start
+2025-06-26 21:30:16,578 - INFO - Media boot main
+2025-06-26 21:30:16,578 - INFO - R header from 10000
+2025-06-26 21:30:16,578 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:16,578 - INFO - Group roll back
+2025-06-26 21:30:16,578 - INFO - Boot return
+2025-06-26 21:30:16,578 - INFO - [21:30:16.578] - 0x21c
+2025-06-26 21:30:16,578 - INFO - Check Rollback
+2025-06-26 21:30:16,578 - INFO - Rollback group 0
+2025-06-26 21:30:16,578 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:16,578 - INFO - MFG not found
+2025-06-26 21:30:16,579 - INFO - entry ID 0 found
+2025-06-26 21:30:16,579 - INFO - Boot st
+2025-06-26 21:30:16,579 - INFO - [21:30:16.579] - art
+2025-06-26 21:30:16,579 - INFO - Media boot main
+2025-06-26 21:30:16,579 - INFO - Group 0 not boot
+2025-06-26 21:30:16,579 - INFO - no valid group found
+2025-06-26 21:30:16,579 - INFO - Me
+2025-06-26 21:30:16,579 - INFO - [21:30:16.579] - dia boot return 539
+2025-06-26 21:30:16,579 - ERROR - Boot2 fail
+2025-06-26 21:30:17,080 - INFO - [21:30:17.080] - Dump log
+2025-06-26 21:30:17,081 - INFO - [21:30:17.080] - ...
+2025-06-26 21:30:17,081 - INFO - psram suss:11
+2025-06-26 21:30:17,081 - INFO - custom 0x5f
+2025-06-26 21:30:17,081 - INFO - flash init 0
+2025-06-26 21:30:17,081 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:17,081 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:17,081 - INFO - ver:8.1.8
+2025-06-26 21:30:17,081 - INFO - user_fw
+2025-06-26 21:30:17,081 - INFO - NO valid PT table,use default
+2025-06-26 21:30:17,081 - INFO - Active
+2025-06-26 21:30:17,081 - INFO - [21:30:17.081] - PT:0,Age 0
+2025-06-26 21:30:17,081 - INFO - MFG not found
+2025-06-26 21:30:17,081 - INFO - entry ID 0 found
+2025-06-26 21:30:17,081 - INFO - Boot start
+2025-06-26 21:30:17,081 - INFO - Media boot main
+2025-06-26 21:30:17,081 - INFO - R header from 10000
+2025-06-26 21:30:17,081 - INFO - G
+2025-06-26 21:30:17,082 - ERROR - [21:30:17.081] - roup 0 parse fail ret 0x204
+2025-06-26 21:30:17,082 - INFO - Group roll back
+2025-06-26 21:30:17,083 - INFO - Boot return 0x21c
+2025-06-26 21:30:17,083 - INFO - [21:30:17.083] - Check Rollback
+2025-06-26 21:30:17,083 - INFO - Rollback group 0
+2025-06-26 21:30:17,084 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:17,084 - INFO - MFG not found
+2025-06-26 21:30:17,084 - INFO - entry ID 0 found
+2025-06-26 21:30:17,085 - INFO - Boot start
+2025-06-26 21:30:17,085 - INFO - Media boot main
+2025-06-26 21:30:17,085 - INFO - Group 0 not boot
+2025-06-26 21:30:17,086 - INFO - no valid group found
+2025-06-26 21:30:17,086 - INFO - Media boot return 539
+2025-06-26 21:30:17,087 - ERROR - Boot2 fail
+2025-06-26 21:30:17,582 - INFO - [21:30:17.582] - Dump log
+2025-06-26 21:30:17,583 - INFO - [21:30:17.583] - ...
+2025-06-26 21:30:17,583 - INFO - psram suss:11
+2025-06-26 21:30:17,583 - INFO - custom 0x5f
+2025-06-26 21:30:17,583 - INFO - flash init 0
+2025-06-26 21:30:17,583 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:17,583 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:17,583 - INFO - ver:8.1.8
+2025-06-26 21:30:17,583 - INFO - user_fw
+2025-06-26 21:30:17,583 - INFO - NO valid PT table,use default
+2025-06-26 21:30:17,583 - INFO - Active PT:0,Ag
+2025-06-26 21:30:17,583 - INFO - [21:30:17.583] - e 0
+2025-06-26 21:30:17,583 - INFO - MFG not found
+2025-06-26 21:30:17,583 - INFO - entry ID 0 found
+2025-06-26 21:30:17,583 - INFO - Boot start
+2025-06-26 21:30:17,583 - INFO - Media boot main
+2025-06-26 21:30:17,583 - INFO - R header from 10000
+2025-06-26 21:30:17,584 - INFO - Group 0 p
+2025-06-26 21:30:17,585 - ERROR - [21:30:17.585] - arse fail ret 0x204
+2025-06-26 21:30:17,585 - INFO - Group roll back
+2025-06-26 21:30:17,585 - INFO - Boot return 0x21c
+2025-06-26 21:30:17,585 - INFO - Check Rollback
+2025-06-26 21:30:17,586 - INFO - Rollback group 0
+2025-06-26 21:30:17,586 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:17,587 - INFO - MFG not found
+2025-06-26 21:30:17,587 - INFO - entry ID 0 found
+2025-06-26 21:30:17,587 - INFO - Boot start
+2025-06-26 21:30:17,587 - INFO - Media boot main
+2025-06-26 21:30:17,588 - INFO - Group 0 not boot
+2025-06-26 21:30:17,588 - INFO - no valid
+2025-06-26 21:30:17,590 - INFO - [21:30:17.589] - group found
+2025-06-26 21:30:17,590 - INFO - Media boot return 539
+2025-06-26 21:30:17,590 - ERROR - Boot2 fail
+2025-06-26 21:30:18,084 - INFO - [21:30:18.084] - Dump log
+2025-06-26 21:30:18,085 - INFO - [21:30:18.084] - ...
+2025-06-26 21:30:18,086 - INFO - psram suss:11
+2025-06-26 21:30:18,086 - INFO - custom 0x5f
+2025-06-26 21:30:18,086 - INFO - flash i
+2025-06-26 21:30:18,086 - INFO - [21:30:18.086] - nit 0
+2025-06-26 21:30:18,086 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:18,086 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:18,086 - INFO - ver:8.1.8
+2025-06-26 21:30:18,086 - INFO - user_fw
+2025-06-26 21:30:18,086 - INFO - NO valid PT table,use default
+2025-06-26 21:30:18,086 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:18,086 - INFO - MFG not found
+2025-06-26 21:30:18,086 - INFO - entry ID 0 found
+2025-06-26 21:30:18,086 - INFO - Boot start
+2025-06-26 21:30:18,086 - INFO - Media boot main
+2025-06-26 21:30:18,086 - INFO - R header from 10000
+2025-06-26 21:30:18,086 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:18,086 - INFO - Group roll back
+2025-06-26 21:30:18,087 - INFO - Boot return 0x21c
+2025-06-26 21:30:18,089 - INFO - Check Rol
+2025-06-26 21:30:18,092 - INFO - [21:30:18.092] - lback
+2025-06-26 21:30:18,092 - INFO - Rollback group 0
+2025-06-26 21:30:18,092 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:18,093 - INFO - MFG not found
+2025-06-26 21:30:18,093 - INFO - entry ID 0 found
+2025-06-26 21:30:18,093 - INFO - Boot start
+2025-06-26 21:30:18,093 - INFO - Media boot main
+2025-06-26 21:30:18,093 - INFO - Group 0 not boot
+2025-06-26 21:30:18,093 - INFO - no valid group found
+2025-06-26 21:30:18,093 - INFO - Media boot return 539
+2025-06-26 21:30:18,093 - ERROR - Boot2 fail
+2025-06-26 21:30:18,588 - INFO - [21:30:18.587] - Dump log
+2025-06-26 21:30:18,588 - INFO - [21:30:18.588] - ...
+2025-06-26 21:30:18,589 - INFO - psram suss:11
+2025-06-26 21:30:18,589 - INFO - custom 0x5f
+2025-06-26 21:30:18,589 - INFO - flash init 0
+2025-06-26 21:30:18,589 - INFO - [21:30:18.589] - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:18,589 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:18,589 - INFO - ver:8.1.8
+2025-06-26 21:30:18,589 - INFO - user_fw
+2025-06-26 21:30:18,589 - INFO - NO valid PT table,use default
+2025-06-26 21:30:18,589 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:18,589 - INFO - MFG not found
+2025-06-26 21:30:18,589 - INFO - entry ID 0 found
+2025-06-26 21:30:18,589 - INFO - Boot start
+2025-06-26 21:30:18,589 - INFO - Media boot main
+2025-06-26 21:30:18,589 - INFO - R header from 10000
+2025-06-26 21:30:18,589 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:18,589 - INFO - Group roll back
+2025-06-26 21:30:18,589 - INFO - Boot return 0x21c
+2025-06-26 21:30:18,589 - INFO - Check Rollback
+2025-06-26 21:30:18,589 - INFO - Rollback group 0
+2025-06-26 21:30:18,589 - INFO - Active PT
+2025-06-26 21:30:18,589 - INFO - [21:30:18.589] - :1,Age 1
+2025-06-26 21:30:18,589 - INFO - MFG not found
+2025-06-26 21:30:18,589 - INFO - entry ID 0 found
+2025-06-26 21:30:18,589 - INFO - Boot start
+2025-06-26 21:30:18,589 - INFO - Media boot main
+2025-06-26 21:30:18,589 - INFO - Group 0 not boot
+2025-06-26 21:30:18,589 - INFO - no valid group found
+2025-06-26 21:30:18,589 - INFO - Media boot return 539
+2025-06-26 21:30:18,589 - ERROR - Boot2 fail
+2025-06-26 21:30:19,092 - INFO - [21:30:19.089] - Dump log
+2025-06-26 21:30:19,092 - INFO - [21:30:19.092] - ...
+2025-06-26 21:30:19,092 - INFO - psram suss:11
+2025-06-26 21:30:19,092 - INFO - custom 0x5f
+2025-06-26 21:30:19,092 - INFO - flash init 0
+2025-06-26 21:30:19,092 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:19,092 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:19,092 - INFO - ver:8.1.8
+2025-06-26 21:30:19,092 - INFO - user_fw
+2025-06-26 21:30:19,092 - INFO - NO valid PT table,use default
+2025-06-26 21:30:19,092 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:19,092 - INFO - MFG not found
+2025-06-26 21:30:19,092 - INFO - entry ID 0 found
+2025-06-26 21:30:19,092 - INFO - Boot start
+2025-06-26 21:30:19,092 - INFO - Media boot main
+2025-06-26 21:30:19,092 - INFO - R header from 10000
+2025-06-26 21:30:19,092 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:19,092 - INFO - Group roll back
+2025-06-26 21:30:19,092 - INFO - Boot return 0x21c
+2025-06-26 21:30:19,092 - INFO - Check Rollback
+2025-06-26 21:30:19,092 - INFO - Rollback group 0
+2025-06-26 21:30:19,092 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:19,092 - INFO - MFG not found
+2025-06-26 21:30:19,092 - INFO - entry ID 0 found
+2025-06-26 21:30:19,092 - INFO - Boot start
+2025-06-26 21:30:19,092 - INFO - Med
+2025-06-26 21:30:19,092 - INFO - [21:30:19.092] - ia boot main
+2025-06-26 21:30:19,092 - INFO - Group 0 not boot
+2025-06-26 21:30:19,092 - INFO - no valid group found
+2025-06-26 21:30:19,092 - INFO - Media boot return 539
+2025-06-26 21:30:19,092 - ERROR - Boot2 fail
+2025-06-26 21:30:19,593 - INFO - [21:30:19.592] - Dump log
+2025-06-26 21:30:19,594 - INFO - [21:30:19.594] - ...
+2025-06-26 21:30:19,595 - INFO - psram suss:11
+2025-06-26 21:30:19,595 - INFO - custom 0x5f
+2025-06-26 21:30:19,595 - INFO - flash
+2025-06-26 21:30:19,595 - INFO - [21:30:19.595] - init 0
+2025-06-26 21:30:19,595 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:19,595 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:19,595 - INFO - ver:8.1.8
+2025-06-26 21:30:19,595 - INFO - user_fw
+2025-06-26 21:30:19,595 - INFO - NO valid PT table,use default
+2025-06-26 21:30:19,595 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:19,595 - INFO - MFG not found
+2025-06-26 21:30:19,595 - INFO - entry ID 0 found
+2025-06-26 21:30:19,595 - INFO - Boot start
+2025-06-26 21:30:19,595 - INFO - Media boot main
+2025-06-26 21:30:19,595 - INFO - R header from 10000
+2025-06-26 21:30:19,595 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:19,595 - INFO - Group roll back
+2025-06-26 21:30:19,595 - INFO - Boot return 0x21c
+2025-06-26 21:30:19,595 - INFO - Check Rollback
+2025-06-26 21:30:19,595 - INFO - Rollback group 0
+2025-06-26 21:30:19,595 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:19,595 - INFO - MFG not found
+2025-06-26 21:30:19,595 - INFO - entry ID 0 found
+2025-06-26 21:30:19,595 - INFO - Boot start
+2025-06-26 21:30:19,595 - INFO - Media boot main
+2025-06-26 21:30:19,596 - INFO - Group 0 not boot
+2025-06-26 21:30:19,596 - INFO - no valid group
+2025-06-26 21:30:19,596 - INFO - [21:30:19.596] - found
+2025-06-26 21:30:19,596 - INFO - Media boot return 539
+2025-06-26 21:30:19,596 - ERROR - Boot2 fail
+2025-06-26 21:30:20,095 - INFO - [21:30:20.095] - Dump log
+2025-06-26 21:30:20,097 - INFO - [21:30:20.097] - ...
+2025-06-26 21:30:20,097 - INFO - psram suss:11
+2025-06-26 21:30:20,097 - INFO - custom 0x5f
+2025-06-26 21:30:20,098 - INFO - flash
+2025-06-26 21:30:20,098 - INFO - [21:30:20.098] - init 0
+2025-06-26 21:30:20,098 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:20,098 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:20,098 - INFO - ver:8.1.8
+2025-06-26 21:30:20,098 - INFO - user_fw
+2025-06-26 21:30:20,098 - INFO - NO valid PT table,use default
+2025-06-26 21:30:20,098 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:20,098 - INFO - MFG not found
+2025-06-26 21:30:20,098 - INFO - entry ID 0 found
+2025-06-26 21:30:20,098 - INFO - Boot start
+2025-06-26 21:30:20,098 - INFO - Media boot main
+2025-06-26 21:30:20,098 - INFO - R header from 10000
+2025-06-26 21:30:20,098 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:20,098 - INFO - Group roll back
+2025-06-26 21:30:20,098 - INFO - Boot return 0x21c
+2025-06-26 21:30:20,098 - INFO - Check Rollback
+2025-06-26 21:30:20,098 - INFO - Rollback group 0
+2025-06-26 21:30:20,098 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:20,098 - INFO - MFG not found
+2025-06-26 21:30:20,098 - INFO - entry ID 0 found
+2025-06-26 21:30:20,098 - INFO - Boot start
+2025-06-26 21:30:20,098 - INFO - Media boot main
+2025-06-26 21:30:20,098 - INFO - Group 0 not boot
+2025-06-26 21:30:20,098 - INFO - no valid group found
+2025-06-26 21:30:20,098 - INFO - Media boot return 539
+2025-06-26 21:30:20,098 - ERROR - Boot2 fail
+2025-06-26 21:30:20,598 - INFO - [21:30:20.598] - Dump log
+2025-06-26 21:30:20,599 - INFO - [21:30:20.598] - ...
+2025-06-26 21:30:20,599 - INFO - psram suss:11
+2025-06-26 21:30:20,599 - INFO - custom 0x5f
+2025-06-26 21:30:20,599 - INFO - flash i
+2025-06-26 21:30:20,599 - INFO - [21:30:20.599] - nit 0
+2025-06-26 21:30:20,599 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:20,600 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:20,600 - INFO - ver:8.1.8
+2025-06-26 21:30:20,600 - INFO - user_fw
+2025-06-26 21:30:20,600 - INFO - NO valid PT table,use default
+2025-06-26 21:30:20,600 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:20,600 - INFO - MFG not found
+2025-06-26 21:30:20,600 - INFO - entry ID 0 found
+2025-06-26 21:30:20,600 - INFO - Boot start
+2025-06-26 21:30:20,600 - INFO - Media boot main
+2025-06-26 21:30:20,600 - INFO - R header from 10000
+2025-06-26 21:30:20,600 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:20,600 - INFO - Group roll back
+2025-06-26 21:30:20,600 - INFO - Boot return 0x21c
+2025-06-26 21:30:20,600 - INFO - Check Rollback
+2025-06-26 21:30:20,600 - INFO - Rollback group 0
+2025-06-26 21:30:20,600 - INFO - Act
+2025-06-26 21:30:20,600 - INFO - [21:30:20.600] - ive PT:1,Age 1
+2025-06-26 21:30:20,600 - INFO - MFG not found
+2025-06-26 21:30:20,600 - INFO - entry ID 0 found
+2025-06-26 21:30:20,600 - INFO - Boot start
+2025-06-26 21:30:20,601 - INFO - Media boot main
+2025-06-26 21:30:20,602 - INFO - Group 0 not boot
+2025-06-26 21:30:20,603 - INFO - no valid group found
+2025-06-26 21:30:20,603 - INFO - Media boot return 539
+2025-06-26 21:30:20,603 - ERROR - Boot2 fail
+2025-06-26 21:30:21,100 - INFO - [21:30:21.100] - Dump log
+2025-06-26 21:30:21,102 - INFO - [21:30:21.101] - ...
+2025-06-26 21:30:21,102 - INFO - psram suss:
+2025-06-26 21:30:21,102 - INFO - [21:30:21.102] - 11
+2025-06-26 21:30:21,102 - INFO - custom 0x5f
+2025-06-26 21:30:21,102 - INFO - flash init 0
+2025-06-26 21:30:21,102 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:21,102 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:21,102 - INFO - ver:8.1.8
+2025-06-26 21:30:21,102 - INFO - user_fw
+2025-06-26 21:30:21,102 - INFO - NO valid PT table,use default
+2025-06-26 21:30:21,102 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:21,102 - INFO - MFG not found
+2025-06-26 21:30:21,102 - INFO - entry ID 0 found
+2025-06-26 21:30:21,102 - INFO - Boot start
+2025-06-26 21:30:21,102 - INFO - Media boot main
+2025-06-26 21:30:21,102 - INFO - R header from 10000
+2025-06-26 21:30:21,102 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:21,102 - INFO - Group roll back
+2025-06-26 21:30:21,102 - INFO - Boot return 0
+2025-06-26 21:30:21,103 - INFO - [21:30:21.102] - x21c
+2025-06-26 21:30:21,103 - INFO - Check Rollback
+2025-06-26 21:30:21,103 - INFO - Rollback group 0
+2025-06-26 21:30:21,103 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:21,103 - INFO - MFG not found
+2025-06-26 21:30:21,103 - INFO - entry ID 0 found
+2025-06-26 21:30:21,103 - INFO - Boot start
+2025-06-26 21:30:21,103 - INFO - Media boot main
+2025-06-26 21:30:21,103 - INFO - Grou
+2025-06-26 21:30:21,103 - INFO - [21:30:21.103] - p 0 not boot
+2025-06-26 21:30:21,103 - INFO - no valid group found
+2025-06-26 21:30:21,103 - INFO - Media boot return 539
+2025-06-26 21:30:21,103 - ERROR - Boot2 fail
+2025-06-26 21:30:21,603 - INFO - [21:30:21.602] - Dump log
+2025-06-26 21:30:21,604 - INFO - [21:30:21.604] - ...
+2025-06-26 21:30:21,604 - INFO - psram suss:11
+2025-06-26 21:30:21,604 - INFO - custom 0x5f
+2025-06-26 21:30:21,604 - INFO - flash i
+2025-06-26 21:30:21,604 - INFO - [21:30:21.604] - nit 0
+2025-06-26 21:30:21,605 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:21,605 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:21,605 - INFO - ver:8.1.8
+2025-06-26 21:30:21,605 - INFO - user_fw
+2025-06-26 21:30:21,605 - INFO - NO valid PT table,use default
+2025-06-26 21:30:21,605 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:21,605 - INFO - MFG not found
+2025-06-26 21:30:21,605 - INFO - entry ID 0 found
+2025-06-26 21:30:21,605 - INFO - Boot start
+2025-06-26 21:30:21,605 - INFO - Media boot main
+2025-06-26 21:30:21,605 - INFO - R header from 10000
+2025-06-26 21:30:21,605 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:21,605 - INFO - Group roll back
+2025-06-26 21:30:21,605 - INFO - Boot return 0x21c
+2025-06-26 21:30:21,605 - INFO - Check Rollback
+2025-06-26 21:30:21,605 - INFO - Rollback group 0
+2025-06-26 21:30:21,605 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:21,605 - INFO - MFG not found
+2025-06-26 21:30:21,605 - INFO - ent
+2025-06-26 21:30:21,605 - INFO - [21:30:21.605] - ry ID 0 found
+2025-06-26 21:30:21,605 - INFO - Boot start
+2025-06-26 21:30:21,606 - INFO - Media boot main
+2025-06-26 21:30:21,606 - INFO - Group 0 not boot
+2025-06-26 21:30:21,606 - INFO - no valid group found
+2025-06-26 21:30:21,606 - INFO - Media boot return 539
+2025-06-26 21:30:21,606 - ERROR - Boot2 fail
+2025-06-26 21:30:22,105 - INFO - [21:30:22.105] - Dump log
+2025-06-26 21:30:22,106 - INFO - [21:30:22.105] - ...
+2025-06-26 21:30:22,107 - INFO - psram suss:11
+2025-06-26 21:30:22,107 - INFO - custom 0x5f
+2025-06-26 21:30:22,107 - INFO - flash
+2025-06-26 21:30:22,107 - INFO - [21:30:22.107] - init 0
+2025-06-26 21:30:22,107 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:22,107 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:22,107 - INFO - ver:8.1.8
+2025-06-26 21:30:22,107 - INFO - user_fw
+2025-06-26 21:30:22,107 - INFO - NO valid PT table,use default
+2025-06-26 21:30:22,107 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:22,107 - INFO - MFG not found
+2025-06-26 21:30:22,107 - INFO - entry ID 0 found
+2025-06-26 21:30:22,107 - INFO - Boot start
+2025-06-26 21:30:22,107 - INFO - Media boot main
+2025-06-26 21:30:22,107 - INFO - R header from 10000
+2025-06-26 21:30:22,107 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:22,107 - INFO - Group
+2025-06-26 21:30:22,107 - INFO - [21:30:22.107] -  roll back
+2025-06-26 21:30:22,107 - INFO - Boot return 0x21c
+2025-06-26 21:30:22,107 - INFO - Check Rollback
+2025-06-26 21:30:22,107 - INFO - Rollback group 0
+2025-06-26 21:30:22,107 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:22,107 - INFO - MFG not found
+2025-06-26 21:30:22,107 - INFO - entry I
+2025-06-26 21:30:22,108 - INFO - [21:30:22.108] - D 0 found
+2025-06-26 21:30:22,108 - INFO - Boot start
+2025-06-26 21:30:22,108 - INFO - Media boot main
+2025-06-26 21:30:22,108 - INFO - Group 0 not boot
+2025-06-26 21:30:22,108 - INFO - n
+2025-06-26 21:30:22,108 - INFO - [21:30:22.108] - o valid group found
+2025-06-26 21:30:22,108 - INFO - Media boot return 539
+2025-06-26 21:30:22,108 - INFO - [21:30:22.108] -
+2025-06-26 21:30:22,108 - ERROR - Boot2 fail
+2025-06-26 21:30:22,608 - INFO - [21:30:22.608] - Dump log
+2025-06-26 21:30:22,609 - INFO - [21:30:22.609] - ...
+2025-06-26 21:30:22,610 - INFO - psram suss:11
+2025-06-26 21:30:22,610 - INFO - custom 0x5f
+2025-06-26 21:30:22,610 - INFO - flash init 0
+2025-06-26 21:30:22,610 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:22,610 - INFO - Gr
+2025-06-26 21:30:22,610 - INFO - [21:30:22.610] - oup=1,CPU Count=1
+2025-06-26 21:30:22,610 - INFO - ver:8.1.8
+2025-06-26 21:30:22,611 - INFO - user_fw
+2025-06-26 21:30:22,611 - INFO - NO valid PT table,use default
+2025-06-26 21:30:22,611 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:22,611 - INFO - MFG not found
+2025-06-26 21:30:22,611 - INFO - entry ID 0 found
+2025-06-26 21:30:22,611 - INFO - Boot start
+2025-06-26 21:30:22,611 - INFO - Media boot main
+2025-06-26 21:30:22,611 - INFO - R header from 10000
+2025-06-26 21:30:22,611 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:22,611 - INFO - Group roll back
+2025-06-26 21:30:22,611 - INFO - Boot return 0x21c
+2025-06-26 21:30:22,611 - INFO - Check Rollback
+2025-06-26 21:30:22,611 - INFO - Rollback group 0
+2025-06-26 21:30:22,611 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:22,611 - INFO - MFG not found
+2025-06-26 21:30:22,611 - INFO - entry ID 0 found
+2025-06-26 21:30:22,611 - INFO - Boot start
+2025-06-26 21:30:22,611 - INFO - Media boot main
+2025-06-26 21:30:22,611 - INFO - G
+2025-06-26 21:30:22,612 - INFO - [21:30:22.612] - roup 0 not boot
+2025-06-26 21:30:22,612 - INFO - no valid group found
+2025-06-26 21:30:22,613 - INFO - Media boot return 539
+2025-06-26 21:30:22,613 - ERROR - Boot2 fail
+2025-06-26 21:30:23,111 - INFO - [21:30:23.111] - Dump log
+2025-06-26 21:30:23,111 - INFO - [21:30:23.111] - ...
+2025-06-26 21:30:23,111 - INFO - psram suss:11
+2025-06-26 21:30:23,111 - INFO - custom 0x5f
+2025-06-26 21:30:23,111 - INFO - flash ini
+2025-06-26 21:30:23,111 - INFO - [21:30:23.111] - t 0
+2025-06-26 21:30:23,111 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:23,111 - INFO - G
+2025-06-26 21:30:23,111 - INFO - [21:30:23.111] - roup=1,CPU Count=1
+2025-06-26 21:30:23,111 - INFO - ver:
+2025-06-26 21:30:23,111 - INFO - [21:30:23.111] - 8.1.8
+2025-06-26 21:30:23,111 - INFO - user_fw
+2025-06-26 21:30:23,111 - INFO - NO valid PT tab
+2025-06-26 21:30:23,111 - INFO - [21:30:23.111] - le,use default
+2025-06-26 21:30:23,111 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:23,111 - INFO - [21:30:23.111] -
+2025-06-26 21:30:23,111 - INFO - MFG not found
+2025-06-26 21:30:23,111 - INFO - [21:30:23.111] - entry ID 0 found
+2025-06-26 21:30:23,111 - INFO - Boot s
+2025-06-26 21:30:23,111 - INFO - [21:30:23.111] - tart
+2025-06-26 21:30:23,111 - INFO - Media boot main
+2025-06-26 21:30:23,111 - INFO - R
+2025-06-26 21:30:23,111 - INFO - [21:30:23.111] -  header from 10000
+2025-06-26 21:30:23,111 - INFO - Group
+2025-06-26 21:30:23,111 - ERROR - [21:30:23.111] -  0 parse fail ret 0x204
+2025-06-26 21:30:23,111 - INFO - Group ro
+2025-06-26 21:30:23,112 - INFO - [21:30:23.111] - ll back
+2025-06-26 21:30:23,112 - INFO - [21:30:23.112] -
+2025-06-26 21:30:23,112 - INFO - Boot return 0x2
+2025-06-26 21:30:23,112 - INFO - [21:30:23.112] - 1c
+2025-06-26 21:30:23,112 - INFO - Check Rollback
+2025-06-26 21:30:23,112 - INFO - Roll
+2025-06-26 21:30:23,112 - INFO - [21:30:23.112] - back group 0
+2025-06-26 21:30:23,112 - INFO - Ac
+2025-06-26 21:30:23,112 - INFO - [21:30:23.112] - tive PT:1,Age 1
+2025-06-26 21:30:23,112 - INFO - MFG not found
+2025-06-26 21:30:23,112 - INFO - [21:30:23.112] - entry ID
+2025-06-26 21:30:23,112 - INFO - [21:30:23.112] -  0 found
+2025-06-26 21:30:23,112 - INFO - Boot s
+2025-06-26 21:30:23,112 - INFO - [21:30:23.112] - tart
+2025-06-26 21:30:23,112 - INFO - Media boot main
+2025-06-26 21:30:23,112 - INFO - G
+2025-06-26 21:30:23,112 - INFO - [21:30:23.112] - roup 0 not boot
+2025-06-26 21:30:23,112 - INFO - no vali
+2025-06-26 21:30:23,112 - INFO - [21:30:23.112] - d group found
+2025-06-26 21:30:23,112 - INFO - Media boot
+2025-06-26 21:30:23,113 - INFO - [21:30:23.112] -  return 539
+2025-06-26 21:30:23,113 - INFO - Boo
+2025-06-26 21:30:23,113 - ERROR - [21:30:23.113] - t2 fail
+2025-06-26 21:30:23,613 - INFO - [21:30:23.613] - Dump log...
+2025-06-26 21:30:23,614 - INFO - psr
+2025-06-26 21:30:23,614 - INFO - [21:30:23.614] - am suss:11
+2025-06-26 21:30:23,614 - INFO - custom 0x5f
+2025-06-26 21:30:23,614 - INFO - flash init 0
+2025-06-26 21:30:23,614 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:23,614 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:23,614 - INFO - ver:8.1.8
+2025-06-26 21:30:23,614 - INFO - user_fw
+2025-06-26 21:30:23,614 - INFO - NO valid PT table,use default
+2025-06-26 21:30:23,614 - INFO - Active PT:0,Age 0
+2025-06-26 21:30:23,614 - INFO - MFG not found
+2025-06-26 21:30:23,614 - INFO - entry ID 0 fou
+2025-06-26 21:30:23,615 - INFO - [21:30:23.615] - nd
+2025-06-26 21:30:23,615 - INFO - Boot start
+2025-06-26 21:30:23,615 - INFO - Media boot main
+2025-06-26 21:30:23,616 - INFO - R header from 10000
+2025-06-26 21:30:23,616 - ERROR - Group 0 parse fail ret 0x204
+2025-06-26 21:30:23,616 - INFO - Group roll back
+2025-06-26 21:30:23,616 - INFO - Boo
+2025-06-26 21:30:23,617 - INFO - [21:30:23.617] - t return 0x21c
+2025-06-26 21:30:23,617 - INFO - Check Rollback
+2025-06-26 21:30:23,618 - INFO - Rollback group 0
+2025-06-26 21:30:23,618 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:23,618 - INFO - MFG not found
+2025-06-26 21:30:23,618 - INFO - entry ID 0 found
+2025-06-26 21:30:23,619 - INFO - Boot start
+2025-06-26 21:30:23,620 - INFO - Media boot main
+2025-06-26 21:30:23,620 - INFO - Group 0 not boot
+2025-06-26 21:30:23,620 - INFO - no valid group found
+2025-06-26 21:30:23,620 - INFO - Media boot return 539
+2025-06-26 21:30:23,621 - ERROR - Boot2 fail
+2025-06-26 21:30:24,628 - INFO - [21:30:24.624] - Close COM3 Success
+2025-06-26 21:30:24,633 - INFO - [21:30:24.633] - tlv bin created success
+2025-06-26 21:30:24,638 - INFO - [21:30:24.637] - EFUSE_CFG
+2025-06-26 21:30:24,640 - INFO - [21:30:24.638] - BOOTHEADER_GROUP0_CFG
+2025-06-26 21:30:24,661 - INFO - [21:30:24.660] - Create bootheader using D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini
+2025-06-26 21:30:24,661 - INFO - [21:30:24.661] - Updating data according to <D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini[BOOTHEADER_GROUP0_CFG]>
+2025-06-26 21:30:24,664 - INFO - [21:30:24.663] - Created file len:256
+2025-06-26 21:30:24,666 - INFO - [21:30:24.665] - Create efuse using D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini
+2025-06-26 21:30:24,668 - INFO - [21:30:24.667] - Updating data according to <D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini[EFUSE_CFG]>
+2025-06-26 21:30:24,672 - INFO - [21:30:24.670] - Created file len:512
+2025-06-26 21:30:24,679 - INFO - [21:30:24.677] - Image create path: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu
+2025-06-26 21:30:24,681 - INFO - [21:30:24.679] - Config file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/img_create_cfg.ini
+2025-06-26 21:30:24,687 - INFO - [21:30:24.684] - img already have bootheader
+2025-06-26 21:30:24,688 - INFO - [21:30:24.687] - Image hash is b'ebc3453460f4448c02e1ba3e2b6b70f039ba5964959aad58a878bf87754f0225'
+2025-06-26 21:30:24,689 - INFO - [21:30:24.688] - Header crc: b'1a7df631'
+2025-06-26 21:30:24,689 - INFO - [21:30:24.689] - Write flash img
+2025-06-26 21:30:24,691 - INFO - [21:30:24.690] - Encrypt efuse data
+2025-06-26 21:30:24,694 - INFO - [21:30:24.694] - ========= eflash loader config =========
+2025-06-26 21:30:24,722 - INFO - [21:30:24.721] - Version: eflash_loader_v2.5.1
+2025-06-26 21:30:24,722 - INFO - [21:30:24.722] - Program Start
+2025-06-26 21:30:24,722 - INFO - [21:30:24.722] - ========= eflash loader cmd arguments =========
+2025-06-26 21:30:24,722 - INFO - [21:30:24.722] - Config file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\eflash_loader\eflash_loader_cfg.ini
+2025-06-26 21:30:24,724 - INFO - [21:30:24.724] - serial port is COM3 (PROG)
+2025-06-26 21:30:24,724 - INFO - [21:30:24.724] - cpu_reset=False
+2025-06-26 21:30:24,724 - INFO - [21:30:24.724] - chiptype: bl616
+2025-06-26 21:30:24,724 - INFO - [21:30:24.724] - ========= Interface is uart =========
+2025-06-26 21:30:24,724 - INFO - [21:30:24.724] - com speed: 2000000
+2025-06-26 21:30:24,724 - INFO - [21:30:24.724] - Bootrom load
+2025-06-26 21:30:24,724 - INFO - [21:30:24.724] - ========= get_boot_info =========
+2025-06-26 21:30:24,724 - INFO - [21:30:24.724] - ========= image get bootinfo =========
+2025-06-26 21:30:24,751 - INFO - [21:30:24.750] - serial type is bouffalo
+2025-06-26 21:30:24,752 - ERROR - [21:30:24.752] - Open COM3 Fail
+2025-06-26 21:30:24,953 - INFO - [21:30:24.951] - Not ack OK
+2025-06-26 21:30:24,953 - INFO - [21:30:24.953] - FL
+2025-06-26 21:30:24,953 - INFO - [21:30:24.953] - result: FL
+2025-06-26 21:30:24,960 - INFO - [21:30:24.960] - default set DTR high
+2025-06-26 21:30:25,062 - INFO - [21:30:25.061] - usb serial port
+2025-06-26 21:30:25,123 - INFO - [21:30:25.123] - clean buf
+2025-06-26 21:30:25,125 - INFO - [21:30:25.125] - send sync
+2025-06-26 21:30:25,342 - INFO - [21:30:25.341] - ack is 4f4b
+2025-06-26 21:30:25,388 - INFO - [21:30:25.388] - shake hand success
+2025-06-26 21:30:25,905 - INFO - [21:30:25.905] - data read is b'01001606000001002712890123e62acf0eb498000f758010'
+2025-06-26 21:30:25,908 - INFO - [21:30:25.907] - ========= chipid: b40ecf2ae623 =========
+2025-06-26 21:30:25,908 - INFO - [21:30:25.908] - Get bootinfo time cost(ms): 1184.35009765625
+2025-06-26 21:30:25,908 - INFO - [21:30:25.908] - change bdrate: 2000000
+2025-06-26 21:30:25,909 - INFO - [21:30:25.908] - Clock PLL set
+2025-06-26 21:30:25,910 - INFO - [21:30:25.909] - Set clock time cost(ms): 0.0
+2025-06-26 21:30:26,044 - INFO - [21:30:26.043] - Read mac addr
+2025-06-26 21:30:26,044 - INFO - [21:30:26.044] - macaddr: b40ecf2ae623
+2025-06-26 21:30:26,044 - INFO - [21:30:26.044] - flash set para
+2025-06-26 21:30:26,044 - INFO - [21:30:26.044] - get flash pin cfg from bootinfo: 0x24
+2025-06-26 21:30:26,044 - INFO - [21:30:26.044] - set flash cfg: 14124
+2025-06-26 21:30:26,044 - INFO - [21:30:26.044] - Set flash config
+2025-06-26 21:30:26,048 - INFO - [21:30:26.047] - Set para time cost(ms): 2.5107421875
+2025-06-26 21:30:26,050 - INFO - [21:30:26.049] - ========= flash read jedec ID =========
+2025-06-26 21:30:26,051 - INFO - [21:30:26.050] - Read flash jedec ID
+2025-06-26 21:30:26,051 - INFO - [21:30:26.051] - flash jedec id: ef401700
+2025-06-26 21:30:26,051 - INFO - [21:30:26.051] - Finished
+2025-06-26 21:30:26,055 - INFO - [21:30:26.055] - get flash size: 0x00800000
+2025-06-26 21:30:26,056 - INFO - [21:30:26.056] - Program operation
+2025-06-26 21:30:26,056 - INFO - [21:30:26.056] - Dealing Index 0
+2025-06-26 21:30:26,056 - INFO - [21:30:26.056] - ========= programming chips\bl616\img_create_mcu\bootinfo.bin to 0x00000000
+2025-06-26 21:30:26,061 - INFO - [21:30:26.061] - flash para file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips/bl616/efuse_bootheader/flash_para.bin
+2025-06-26 21:30:26,062 - INFO - [21:30:26.062] - Set flash config
+2025-06-26 21:30:26,065 - INFO - [21:30:26.065] - Set para time cost(ms): 2.99951171875
+2025-06-26 21:30:26,066 - INFO - [21:30:26.066] - ========= flash load =========
+2025-06-26 21:30:26,066 - INFO - [21:30:26.066] - ========= flash erase =========
+2025-06-26 21:30:26,066 - INFO - [21:30:26.066] - Erase flash from 0x0 to 0xff
+2025-06-26 21:30:26,126 - INFO - [21:30:26.126] - Erase time cost(ms): 60.031005859375
+2025-06-26 21:30:26,130 - INFO - [21:30:26.130] - Load 256/256 {"progress":100}
+2025-06-26 21:30:26,131 - INFO - [21:30:26.131] - Load 256/256 {"progress":100}
+2025-06-26 21:30:26,131 - INFO - [21:30:26.131] - Write check
+2025-06-26 21:30:26,132 - INFO - [21:30:26.132] - Flash load time cost(ms): 4.038330078125
+2025-06-26 21:30:26,133 - INFO - [21:30:26.133] - Finished
+2025-06-26 21:30:26,133 - INFO - [21:30:26.133] - Sha caled by host: e28c6ca5efa1cb187215928fbbc6f0200f07256a93ea763484f0aaeb4361c35d
+2025-06-26 21:30:26,133 - INFO - [21:30:26.133] - xip mode Verify
+2025-06-26 21:30:26,135 - INFO - [21:30:26.135] - Read Sha256/256
+2025-06-26 21:30:26,135 - INFO - [21:30:26.135] - Flash xip readsha time cost(ms): 1.000732421875
+2025-06-26 21:30:26,135 - INFO - [21:30:26.135] - Finished
+2025-06-26 21:30:26,136 - INFO - [21:30:26.136] - Sha caled by dev: e28c6ca5efa1cb187215928fbbc6f0200f07256a93ea763484f0aaeb4361c35d
+2025-06-26 21:30:26,136 - INFO - [21:30:26.136] - Verify success
+2025-06-26 21:30:26,138 - INFO - [21:30:26.138] - Dealing Index 1
+2025-06-26 21:30:26,139 - INFO - [21:30:26.138] - ========= programming chips\bl616\img_create_mcu\img.bin to 0x00002000
+2025-06-26 21:30:26,141 - INFO - [21:30:26.141] - flash para file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips/bl616/efuse_bootheader/flash_para.bin
+2025-06-26 21:30:26,142 - INFO - [21:30:26.142] - Set flash config
+2025-06-26 21:30:26,144 - INFO - [21:30:26.144] - Set para time cost(ms): 1.96142578125
+2025-06-26 21:30:26,145 - INFO - [21:30:26.145] - ========= flash load =========
+2025-06-26 21:30:26,145 - INFO - [21:30:26.145] - ========= flash erase =========
+2025-06-26 21:30:26,145 - INFO - [21:30:26.145] - Erase flash from 0x2000 to 0xcd5f
+2025-06-26 21:30:26,787 - INFO - [21:30:26.787] - Erase time cost(ms): 641.978759765625
+2025-06-26 21:30:26,789 - INFO - [21:30:26.789] - decompress write rx timeout: 98.304
+2025-06-26 21:30:26,802 - INFO - [21:30:26.802] - decompress flash load 27236
+2025-06-26 21:30:26,813 - INFO - [21:30:26.813] - Load 2048/27236 {"progress":7}
+2025-06-26 21:30:26,825 - INFO - [21:30:26.824] - Load 4096/27236 {"progress":15}
+2025-06-26 21:30:26,841 - INFO - [21:30:26.841] - Load 6144/27236 {"progress":22}
+2025-06-26 21:30:26,856 - INFO - [21:30:26.856] - Load 8192/27236 {"progress":30}
+2025-06-26 21:30:26,875 - INFO - [21:30:26.874] - Load 10240/27236 {"progress":37}
+2025-06-26 21:30:26,892 - INFO - [21:30:26.891] - Load 12288/27236 {"progress":45}
+2025-06-26 21:30:26,904 - INFO - [21:30:26.904] - Load 14336/27236 {"progress":52}
+2025-06-26 21:30:26,920 - INFO - [21:30:26.920] - Load 16384/27236 {"progress":60}
+2025-06-26 21:30:26,936 - INFO - [21:30:26.936] - Load 18432/27236 {"progress":67}
+2025-06-26 21:30:26,948 - INFO - [21:30:26.948] - Load 20480/27236 {"progress":75}
+2025-06-26 21:30:26,964 - INFO - [21:30:26.964] - Load 22528/27236 {"progress":82}
+2025-06-26 21:30:26,981 - INFO - [21:30:26.981] - Load 24576/27236 {"progress":90}
+2025-06-26 21:30:26,997 - INFO - [21:30:26.997] - Load 26624/27236 {"progress":97}
+2025-06-26 21:30:27,014 - INFO - [21:30:27.014] - Load 27236/27236 {"progress":100}
+2025-06-26 21:30:27,016 - INFO - [21:30:27.015] - Load 27236/27236 {"progress":100}
+2025-06-26 21:30:27,018 - INFO - [21:30:27.018] - Write check
+2025-06-26 21:30:27,025 - INFO - [21:30:27.025] - Flash load time cost(ms): 236.107421875
+2025-06-26 21:30:27,025 - INFO - [21:30:27.025] - Finished
+2025-06-26 21:30:27,026 - INFO - [21:30:27.026] - Sha caled by host: ebc3453460f4448c02e1ba3e2b6b70f039ba5964959aad58a878bf87754f0225
+2025-06-26 21:30:27,026 - INFO - [21:30:27.026] - xip mode Verify
+2025-06-26 21:30:27,065 - INFO - [21:30:27.064] - Read Sha256/44384
+2025-06-26 21:30:27,065 - INFO - [21:30:27.065] - Flash xip readsha time cost(ms): 38.030517578125
+2025-06-26 21:30:27,065 - INFO - [21:30:27.065] - Finished
+2025-06-26 21:30:27,065 - INFO - [21:30:27.065] - Sha caled by dev: ebc3453460f4448c02e1ba3e2b6b70f039ba5964959aad58a878bf87754f0225
+2025-06-26 21:30:27,065 - INFO - [21:30:27.065] - Verify success
+2025-06-26 21:30:27,068 - INFO - [21:30:27.068] - Program Finished
+2025-06-26 21:30:27,068 - INFO - [21:30:27.068] - All time cost(ms): 2346.044189453125
+2025-06-26 21:30:27,173 - INFO - [21:30:27.172] - close interface
+2025-06-26 21:30:27,173 - INFO - [21:30:27.173] - [All Success]
+2025-06-26 21:30:29,225 - INFO - [21:30:29.225] - serial type is bouffalo
+2025-06-26 21:30:29,260 - INFO - [21:30:29.258] - Open COM3 Success
+2025-06-26 21:30:29,283 - INFO - [21:30:29.283] - Dump log
+2025-06-26 21:30:29,283 - INFO - [21:30:29.283] - ...
+2025-06-26 21:30:29,283 - INFO - psram suss:11
+2025-06-26 21:30:29,283 - INFO - custom 0x5f
+2025-06-26 21:30:29,283 - INFO - flash init 0
+2025-06-26 21:30:29,283 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:29,283 - INFO - [21:30:29.283] -
+2025-06-26 21:30:29,283 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:29,284 - INFO - ver:8.1.8
+2025-06-26 21:30:29,284 - INFO - user_fw
+2025-06-26 21:30:29,284 - INFO - lp_fw not found
+2025-06-26 21:30:29,284 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:29,284 - INFO - [21:30:29.284] - MFG not found
+2025-06-26 21:30:29,284 - INFO - entry ID 0 found
+2025-06-26 21:30:29,284 - INFO - Boot start
+2025-06-26 21:30:29,284 - INFO - Med
+2025-06-26 21:30:29,284 - INFO - [21:30:29.284] - ia boot main
+2025-06-26 21:30:29,284 - INFO - Group 0 not boot
+2025-06-26 21:30:29,284 - INFO - Group roll back
+2025-06-26 21:30:29,284 - INFO - Boot re
+2025-06-26 21:30:29,284 - INFO - [21:30:29.284] - turn 0x21c
+2025-06-26 21:30:29,284 - INFO - Check Rollback
+2025-06-26 21:30:29,284 - INFO - Media boot r
+2025-06-26 21:30:29,284 - INFO - [21:30:29.284] - eturn 540
+2025-06-26 21:30:29,284 - ERROR - Boot2 fail
+2025-06-26 21:30:29,784 - INFO - [21:30:29.784] - Dump log
+2025-06-26 21:30:29,785 - INFO - [21:30:29.784] - ...
+2025-06-26 21:30:29,785 - INFO - psram suss:11
+2025-06-26 21:30:29,785 - INFO - custom 0x5f
+2025-06-26 21:30:29,785 - INFO - flash init 0
+2025-06-26 21:30:29,785 - INFO - [21:30:29.785] - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:29,787 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:29,787 - INFO - ver:8.1.8
+2025-06-26 21:30:29,788 - INFO - user_fw
+2025-06-26 21:30:29,788 - INFO - lp_fw not found
+2025-06-26 21:30:29,788 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:29,788 - INFO - MFG not found
+2025-06-26 21:30:29,788 - INFO - entry ID 0 found
+2025-06-26 21:30:29,788 - INFO - Boot start
+2025-06-26 21:30:29,788 - INFO - Media boot main
+2025-06-26 21:30:29,788 - INFO - Group 0 not boot
+2025-06-26 21:30:29,788 - INFO - Group roll back
+2025-06-26 21:30:29,788 - INFO - Boot return 0x21c
+2025-06-26 21:30:29,788 - INFO - Check Rollback
+2025-06-26 21:30:29,789 - INFO - [21:30:29.789] -
+2025-06-26 21:30:29,789 - INFO - Media boot return 540
+2025-06-26 21:30:29,789 - ERROR - Boot2 fail
+2025-06-26 21:30:30,286 - INFO - [21:30:30.286] - Dump log
+2025-06-26 21:30:30,287 - INFO - [21:30:30.286] - ...
+2025-06-26 21:30:30,287 - INFO - psram suss:11
+2025-06-26 21:30:30,287 - INFO - custom 0x5f
+2025-06-26 21:30:30,287 - INFO - flash init 0
+2025-06-26 21:30:30,287 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:30,287 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:30,287 - INFO - ver:8.1.8
+2025-06-26 21:30:30,287 - INFO - user_fw
+2025-06-26 21:30:30,287 - INFO - lp_fw not found
+2025-06-26 21:30:30,287 - INFO - Activ
+2025-06-26 21:30:30,287 - INFO - [21:30:30.287] - e PT:1,Age 1
+2025-06-26 21:30:30,287 - INFO - MFG not found
+2025-06-26 21:30:30,287 - INFO - entry ID 0 found
+2025-06-26 21:30:30,288 - INFO - Boot start
+2025-06-26 21:30:30,288 - INFO - Media boot main
+2025-06-26 21:30:30,288 - INFO - Group 0 not boot
+2025-06-26 21:30:30,288 - INFO - Group roll back
+2025-06-26 21:30:30,288 - INFO - Boot return 0x21c
+2025-06-26 21:30:30,290 - INFO - [21:30:30.289] - Check Rollback
+2025-06-26 21:30:30,290 - INFO - Media boot return 540
+2025-06-26 21:30:30,290 - ERROR - Boot2 fail
+2025-06-26 21:30:30,788 - INFO - [21:30:30.788] - Dump log
+2025-06-26 21:30:30,789 - INFO - [21:30:30.789] - ...
+2025-06-26 21:30:30,789 - INFO - psram suss:11
+2025-06-26 21:30:30,789 - INFO - custom 0x5f
+2025-06-26 21:30:30,789 - INFO - flash init 0
+2025-06-26 21:30:30,789 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:30,789 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:30,789 - INFO - ver:8.1.8
+2025-06-26 21:30:30,789 - INFO - user_fw
+2025-06-26 21:30:30,789 - INFO - lp_fw
+2025-06-26 21:30:30,789 - INFO - [21:30:30.789] -  not found
+2025-06-26 21:30:30,789 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:30,789 - INFO - MFG not found
+2025-06-26 21:30:30,789 - INFO - entry ID 0 found
+2025-06-26 21:30:30,789 - INFO - Boot start
+2025-06-26 21:30:30,789 - INFO - Media boot main
+2025-06-26 21:30:30,789 - INFO - Group 0
+2025-06-26 21:30:30,790 - INFO - [21:30:30.790] -  not boot
+2025-06-26 21:30:30,790 - INFO - Group roll back
+2025-06-26 21:30:30,790 - INFO - Boot return 0x21c
+2025-06-26 21:30:30,790 - INFO - Check Rollback
+2025-06-26 21:30:30,791 - INFO - Media boot
+2025-06-26 21:30:30,791 - INFO - [21:30:30.791] - return 540
+2025-06-26 21:30:30,792 - ERROR - Boot2 fail
+2025-06-26 21:30:31,290 - INFO - [21:30:31.289] - Dump log
+2025-06-26 21:30:31,290 - INFO - [21:30:31.290] - ...
+2025-06-26 21:30:31,290 - INFO - psram suss:11
+2025-06-26 21:30:31,290 - INFO - custom 0x5f
+2025-06-26 21:30:31,291 - INFO - flash init 0
+2025-06-26 21:30:31,291 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:31,291 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:31,291 - INFO - ver:8.1.8
+2025-06-26 21:30:31,291 - INFO - user_fw
+2025-06-26 21:30:31,291 - INFO - lp_fw not found
+2025-06-26 21:30:31,291 - INFO - Active PT:1
+2025-06-26 21:30:31,291 - INFO - [21:30:31.291] - ,Age 1
+2025-06-26 21:30:31,291 - INFO - MFG not found
+2025-06-26 21:30:31,291 - INFO - entry ID 0 found
+2025-06-26 21:30:31,291 - INFO - Boot start
+2025-06-26 21:30:31,292 - INFO - Media boot main
+2025-06-26 21:30:31,292 - INFO - Group 0 not boot
+2025-06-26 21:30:31,292 - INFO - Group roll back
+2025-06-26 21:30:31,293 - INFO - Bo
+2025-06-26 21:30:31,293 - INFO - [21:30:31.293] - ot return 0x21c
+2025-06-26 21:30:31,293 - INFO - Check Rollback
+2025-06-26 21:30:31,295 - INFO - Media boot return 540
+2025-06-26 21:30:31,295 - ERROR - Boot2 fail
+2025-06-26 21:30:32,295 - INFO - [21:30:32.293] - Close COM3 Success
+2025-06-26 21:30:36,095 - INFO - [21:30:36.094] - tlv bin created success
+2025-06-26 21:30:36,101 - INFO - [21:30:36.100] - EFUSE_CFG
+2025-06-26 21:30:36,101 - INFO - [21:30:36.101] - BOOTHEADER_GROUP0_CFG
+2025-06-26 21:30:36,125 - INFO - [21:30:36.124] - Create bootheader using D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini
+2025-06-26 21:30:36,126 - INFO - [21:30:36.125] - Updating data according to <D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini[BOOTHEADER_GROUP0_CFG]>
+2025-06-26 21:30:36,130 - INFO - [21:30:36.128] - Created file len:256
+2025-06-26 21:30:36,132 - INFO - [21:30:36.132] - Create efuse using D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini
+2025-06-26 21:30:36,134 - INFO - [21:30:36.133] - Updating data according to <D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini[EFUSE_CFG]>
+2025-06-26 21:30:36,137 - INFO - [21:30:36.136] - Created file len:512
+2025-06-26 21:30:36,142 - INFO - [21:30:36.141] - Image create path: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu
+2025-06-26 21:30:36,144 - INFO - [21:30:36.142] - Config file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/img_create_cfg.ini
+2025-06-26 21:30:36,148 - INFO - [21:30:36.146] - img already have bootheader
+2025-06-26 21:30:36,149 - INFO - [21:30:36.148] - Image hash is b'ebc3453460f4448c02e1ba3e2b6b70f039ba5964959aad58a878bf87754f0225'
+2025-06-26 21:30:36,149 - INFO - [21:30:36.149] - Header crc: b'1a7df631'
+2025-06-26 21:30:36,149 - INFO - [21:30:36.149] - Write flash img
+2025-06-26 21:30:36,150 - INFO - [21:30:36.150] - Encrypt efuse data
+2025-06-26 21:30:36,153 - INFO - [21:30:36.153] - ========= eflash loader config =========
+2025-06-26 21:30:36,172 - INFO - [21:30:36.171] - Version: eflash_loader_v2.5.1
+2025-06-26 21:30:36,172 - INFO - [21:30:36.172] - Program Start
+2025-06-26 21:30:36,172 - INFO - [21:30:36.172] - ========= eflash loader cmd arguments =========
+2025-06-26 21:30:36,172 - INFO - [21:30:36.172] - Config file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\eflash_loader\eflash_loader_cfg.ini
+2025-06-26 21:30:36,173 - INFO - [21:30:36.172] - serial port is COM3 (PROG)
+2025-06-26 21:30:36,173 - INFO - [21:30:36.173] - cpu_reset=False
+2025-06-26 21:30:36,173 - INFO - [21:30:36.173] - chiptype: bl616
+2025-06-26 21:30:36,173 - INFO - [21:30:36.173] - ========= Interface is uart =========
+2025-06-26 21:30:36,173 - INFO - [21:30:36.173] - com speed: 2000000
+2025-06-26 21:30:36,173 - INFO - [21:30:36.173] - Bootrom load
+2025-06-26 21:30:36,173 - INFO - [21:30:36.173] - ========= get_boot_info =========
+2025-06-26 21:30:36,173 - INFO - [21:30:36.173] - ========= image get bootinfo =========
+2025-06-26 21:30:36,306 - INFO - [21:30:36.306] - Not ack OK
+2025-06-26 21:30:36,307 - INFO - [21:30:36.306] - result:
+2025-06-26 21:30:36,312 - INFO - [21:30:36.312] - default set DTR high
+2025-06-26 21:30:36,422 - INFO - [21:30:36.422] - usb serial port
+2025-06-26 21:30:36,485 - INFO - [21:30:36.485] - clean buf
+2025-06-26 21:30:36,487 - INFO - [21:30:36.487] - send sync
+2025-06-26 21:30:36,706 - INFO - [21:30:36.705] - ack is 4f4b
+2025-06-26 21:30:36,752 - INFO - [21:30:36.751] - shake hand success
+2025-06-26 21:30:37,269 - INFO - [21:30:37.266] - data read is b'01001606000001002712890123e62acf0eb498000f758010'
+2025-06-26 21:30:37,269 - INFO - [21:30:37.269] - ========= chipid: b40ecf2ae623 =========
+2025-06-26 21:30:37,269 - INFO - [21:30:37.269] - Get bootinfo time cost(ms): 1095.845703125
+2025-06-26 21:30:37,269 - INFO - [21:30:37.269] - change bdrate: 2000000
+2025-06-26 21:30:37,269 - INFO - [21:30:37.269] - Clock PLL set
+2025-06-26 21:30:37,270 - INFO - [21:30:37.270] - Set clock time cost(ms): 0.984130859375
+2025-06-26 21:30:37,404 - INFO - [21:30:37.404] - Read mac addr
+2025-06-26 21:30:37,405 - INFO - [21:30:37.405] - macaddr: b40ecf2ae623
+2025-06-26 21:30:37,405 - INFO - [21:30:37.405] - flash set para
+2025-06-26 21:30:37,407 - INFO - [21:30:37.406] - get flash pin cfg from bootinfo: 0x24
+2025-06-26 21:30:37,409 - INFO - [21:30:37.407] - set flash cfg: 14124
+2025-06-26 21:30:37,409 - INFO - [21:30:37.409] - Set flash config
+2025-06-26 21:30:37,411 - INFO - [21:30:37.411] - Set para time cost(ms): 1.98388671875
+2025-06-26 21:30:37,414 - INFO - [21:30:37.412] - ========= flash read jedec ID =========
+2025-06-26 21:30:37,417 - INFO - [21:30:37.417] - Read flash jedec ID
+2025-06-26 21:30:37,417 - INFO - [21:30:37.417] - flash jedec id: ef401700
+2025-06-26 21:30:37,418 - INFO - [21:30:37.418] - Finished
+2025-06-26 21:30:37,421 - INFO - [21:30:37.421] - get flash size: 0x00800000
+2025-06-26 21:30:37,421 - INFO - [21:30:37.421] - Program operation
+2025-06-26 21:30:37,421 - INFO - [21:30:37.421] - Dealing Index 0
+2025-06-26 21:30:37,421 - INFO - [21:30:37.421] - ========= programming chips\bl616\img_create_mcu\bootinfo.bin to 0x00000000
+2025-06-26 21:30:37,431 - INFO - [21:30:37.429] - flash para file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips/bl616/efuse_bootheader/flash_para.bin
+2025-06-26 21:30:37,432 - INFO - [21:30:37.431] - Set flash config
+2025-06-26 21:30:37,436 - INFO - [21:30:37.436] - Set para time cost(ms): 2.7880859375
+2025-06-26 21:30:37,436 - INFO - [21:30:37.436] - ========= flash load =========
+2025-06-26 21:30:37,437 - INFO - [21:30:37.437] - ========= flash erase =========
+2025-06-26 21:30:37,437 - INFO - [21:30:37.437] - Erase flash from 0x0 to 0xff
+2025-06-26 21:30:37,498 - INFO - [21:30:37.498] - Erase time cost(ms): 61.520751953125
+2025-06-26 21:30:37,501 - INFO - [21:30:37.501] - Load 256/256 {"progress":100}
+2025-06-26 21:30:37,503 - INFO - [21:30:37.502] - Load 256/256 {"progress":100}
+2025-06-26 21:30:37,503 - INFO - [21:30:37.503] - Write check
+2025-06-26 21:30:37,505 - INFO - [21:30:37.505] - Flash load time cost(ms): 4.961181640625
+2025-06-26 21:30:37,505 - INFO - [21:30:37.505] - Finished
+2025-06-26 21:30:37,506 - INFO - [21:30:37.506] - Sha caled by host: e28c6ca5efa1cb187215928fbbc6f0200f07256a93ea763484f0aaeb4361c35d
+2025-06-26 21:30:37,506 - INFO - [21:30:37.506] - xip mode Verify
+2025-06-26 21:30:37,508 - INFO - [21:30:37.508] - Read Sha256/256
+2025-06-26 21:30:37,509 - INFO - [21:30:37.508] - Flash xip readsha time cost(ms): 1.6806640625
+2025-06-26 21:30:37,509 - INFO - [21:30:37.509] - Finished
+2025-06-26 21:30:37,509 - INFO - [21:30:37.509] - Sha caled by dev: e28c6ca5efa1cb187215928fbbc6f0200f07256a93ea763484f0aaeb4361c35d
+2025-06-26 21:30:37,510 - INFO - [21:30:37.509] - Verify success
+2025-06-26 21:30:37,513 - INFO - [21:30:37.512] - Dealing Index 1
+2025-06-26 21:30:37,513 - INFO - [21:30:37.513] - ========= programming chips\bl616\img_create_mcu\img.bin to 0x00002000
+2025-06-26 21:30:37,515 - INFO - [21:30:37.515] - flash para file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips/bl616/efuse_bootheader/flash_para.bin
+2025-06-26 21:30:37,517 - INFO - [21:30:37.517] - Set flash config
+2025-06-26 21:30:37,519 - INFO - [21:30:37.519] - Set para time cost(ms): 2.015625
+2025-06-26 21:30:37,519 - INFO - [21:30:37.519] - ========= flash load =========
+2025-06-26 21:30:37,520 - INFO - [21:30:37.520] - ========= flash erase =========
+2025-06-26 21:30:37,520 - INFO - [21:30:37.520] - Erase flash from 0x2000 to 0xcd5f
+2025-06-26 21:30:38,158 - INFO - [21:30:38.158] - Erase time cost(ms): 638.68505859375
+2025-06-26 21:30:38,160 - INFO - [21:30:38.160] - decompress write rx timeout: 98.304
+2025-06-26 21:30:38,173 - INFO - [21:30:38.173] - decompress flash load 27236
+2025-06-26 21:30:38,184 - INFO - [21:30:38.184] - Load 2048/27236 {"progress":7}
+2025-06-26 21:30:38,195 - INFO - [21:30:38.195] - Load 4096/27236 {"progress":15}
+2025-06-26 21:30:38,211 - INFO - [21:30:38.211] - Load 6144/27236 {"progress":22}
+2025-06-26 21:30:38,228 - INFO - [21:30:38.228] - Load 8192/27236 {"progress":30}
+2025-06-26 21:30:38,244 - INFO - [21:30:38.244] - Load 10240/27236 {"progress":37}
+2025-06-26 21:30:38,262 - INFO - [21:30:38.262] - Load 12288/27236 {"progress":45}
+2025-06-26 21:30:38,273 - INFO - [21:30:38.273] - Load 14336/27236 {"progress":52}
+2025-06-26 21:30:38,289 - INFO - [21:30:38.289] - Load 16384/27236 {"progress":60}
+2025-06-26 21:30:38,306 - INFO - [21:30:38.306] - Load 18432/27236 {"progress":67}
+2025-06-26 21:30:38,316 - INFO - [21:30:38.316] - Load 20480/27236 {"progress":75}
+2025-06-26 21:30:38,333 - INFO - [21:30:38.333] - Load 22528/27236 {"progress":82}
+2025-06-26 21:30:38,350 - INFO - [21:30:38.349] - Load 24576/27236 {"progress":90}
+2025-06-26 21:30:38,366 - INFO - [21:30:38.366] - Load 26624/27236 {"progress":97}
+2025-06-26 21:30:38,383 - INFO - [21:30:38.383] - Load 27236/27236 {"progress":100}
+2025-06-26 21:30:38,383 - INFO - [21:30:38.383] - Load 27236/27236 {"progress":100}
+2025-06-26 21:30:38,384 - INFO - [21:30:38.384] - Write check
+2025-06-26 21:30:38,394 - INFO - [21:30:38.394] - Flash load time cost(ms): 233.610595703125
+2025-06-26 21:30:38,394 - INFO - [21:30:38.394] - Finished
+2025-06-26 21:30:38,398 - INFO - [21:30:38.398] - Sha caled by host: ebc3453460f4448c02e1ba3e2b6b70f039ba5964959aad58a878bf87754f0225
+2025-06-26 21:30:38,398 - INFO - [21:30:38.398] - xip mode Verify
+2025-06-26 21:30:38,436 - INFO - [21:30:38.436] - Read Sha256/44384
+2025-06-26 21:30:38,436 - INFO - [21:30:38.436] - Flash xip readsha time cost(ms): 37.07421875
+2025-06-26 21:30:38,436 - INFO - [21:30:38.436] - Finished
+2025-06-26 21:30:38,437 - INFO - [21:30:38.437] - Sha caled by dev: ebc3453460f4448c02e1ba3e2b6b70f039ba5964959aad58a878bf87754f0225
+2025-06-26 21:30:38,437 - INFO - [21:30:38.437] - Verify success
+2025-06-26 21:30:38,439 - INFO - [21:30:38.439] - Program Finished
+2025-06-26 21:30:38,440 - INFO - [21:30:38.440] - All time cost(ms): 2268.660400390625
+2025-06-26 21:30:38,548 - INFO - [21:30:38.547] - close interface
+2025-06-26 21:30:38,548 - INFO - [21:30:38.548] - [All Success]
+2025-06-26 21:30:39,951 - INFO - [21:30:39.951] - serial type is bouffalo
+2025-06-26 21:30:39,981 - INFO - [21:30:39.979] - Open COM3 Success
+2025-06-26 21:30:40,004 - INFO - [21:30:40.004] - Dump log
+2025-06-26 21:30:40,006 - INFO - [21:30:40.005] - ...
+2025-06-26 21:30:40,006 - INFO - psram suss:11
+2025-06-26 21:30:40,006 - INFO - custom 0x5f
+2025-06-26 21:30:40,006 - INFO - flash init 0
+2025-06-26 21:30:40,006 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:40,006 - INFO - [21:30:40.006] -
+2025-06-26 21:30:40,006 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:40,006 - INFO - ver:8.1.8
+2025-06-26 21:30:40,006 - INFO - user_fw
+2025-06-26 21:30:40,007 - INFO - lp_fw not found
+2025-06-26 21:30:40,007 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:40,007 - INFO - MFG not found
+2025-06-26 21:30:40,007 - INFO - entry ID 0 found
+2025-06-26 21:30:40,007 - INFO - Boot start
+2025-06-26 21:30:40,008 - INFO - Media boot main
+2025-06-26 21:30:40,008 - INFO - Group 0 not boot
+2025-06-26 21:30:40,008 - INFO - Group roll back
+2025-06-26 21:30:40,008 - INFO - Boot return 0x21c
+2025-06-26 21:30:40,009 - INFO - Check Rollback
+2025-06-26 21:30:40,009 - INFO - Media boot return 540
+2025-06-26 21:30:40,009 - ERROR - Boot2 fail
+2025-06-26 21:30:40,505 - INFO - [21:30:40.505] - Dump log
+2025-06-26 21:30:40,505 - INFO - [21:30:40.505] - ...
+2025-06-26 21:30:40,506 - INFO - psram suss:11
+2025-06-26 21:30:40,506 - INFO - custom 0x5f
+2025-06-26 21:30:40,506 - INFO - flash init 0
+2025-06-26 21:30:40,506 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:40,506 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:40,506 - INFO - ver:8.1.8
+2025-06-26 21:30:40,507 - INFO - user_fw
+2025-06-26 21:30:40,507 - INFO - lp_fw not found
+2025-06-26 21:30:40,508 - INFO - [21:30:40.508] -
+2025-06-26 21:30:40,508 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:40,508 - INFO - MFG not found
+2025-06-26 21:30:40,508 - INFO - entry ID 0 found
+2025-06-26 21:30:40,508 - INFO - Boot start
+2025-06-26 21:30:40,508 - INFO - Media boot main
+2025-06-26 21:30:40,509 - INFO - Group 0 not boot
+2025-06-26 21:30:40,509 - INFO - Group roll back
+2025-06-26 21:30:40,509 - INFO - Boot return 0x21c
+2025-06-26 21:30:40,509 - INFO - Check Rollback
+2025-06-26 21:30:40,509 - INFO - Media boot return 540
+2025-06-26 21:30:40,509 - ERROR - Boot2 fail
+2025-06-26 21:30:41,008 - INFO - [21:30:41.006] - Dump log
+2025-06-26 21:30:41,008 - INFO - [21:30:41.008] - ...
+2025-06-26 21:30:41,008 - INFO - psram suss:11
+2025-06-26 21:30:41,008 - INFO - custom 0x5f
+2025-06-26 21:30:41,008 - INFO - flash init 0
+2025-06-26 21:30:41,008 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:41,008 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:41,008 - INFO - ver:8.1.8
+2025-06-26 21:30:41,008 - INFO - user_fw
+2025-06-26 21:30:41,008 - INFO - lp_fw not found
+2025-06-26 21:30:41,008 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:41,009 - INFO - MFG not found
+2025-06-26 21:30:41,009 - INFO - entry ID 0 fo
+2025-06-26 21:30:41,009 - INFO - [21:30:41.009] - und
+2025-06-26 21:30:41,009 - INFO - Boot start
+2025-06-26 21:30:41,009 - INFO - Media boot main
+2025-06-26 21:30:41,009 - INFO - Group 0 not boot
+2025-06-26 21:30:41,009 - INFO - Group roll back
+2025-06-26 21:30:41,009 - INFO - Boot return 0x21c
+2025-06-26 21:30:41,010 - INFO - Check Rol
+2025-06-26 21:30:41,011 - INFO - [21:30:41.010] - lback
+2025-06-26 21:30:41,011 - INFO - Media boot return 540
+2025-06-26 21:30:41,011 - ERROR - Boot2 fail
+2025-06-26 21:30:41,509 - INFO - [21:30:41.509] - Dump log
+2025-06-26 21:30:41,510 - INFO - [21:30:41.510] - ...
+2025-06-26 21:30:41,510 - INFO - psram suss:11
+2025-06-26 21:30:41,510 - INFO - custom 0x5f
+2025-06-26 21:30:41,510 - INFO - flash init 0
+2025-06-26 21:30:41,510 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:41,510 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:41,510 - INFO - ver:8.1.8
+2025-06-26 21:30:41,510 - INFO - user_fw
+2025-06-26 21:30:41,510 - INFO - lp_fw not found
+2025-06-26 21:30:41,510 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:41,510 - INFO - MFG no
+2025-06-26 21:30:41,510 - INFO - [21:30:41.510] - t found
+2025-06-26 21:30:41,510 - INFO - entry ID 0 found
+2025-06-26 21:30:41,510 - INFO - Boot start
+2025-06-26 21:30:41,510 - INFO - Media boot main
+2025-06-26 21:30:41,510 - INFO - Group 0 not boot
+2025-06-26 21:30:41,510 - INFO - Group roll back
+2025-06-26 21:30:41,510 - INFO - Boot return 0x
+2025-06-26 21:30:41,510 - INFO - [21:30:41.510] - 21c
+2025-06-26 21:30:41,510 - INFO - Check Rollback
+2025-06-26 21:30:41,510 - INFO - Media boot return 540
+2025-06-26 21:30:41,511 - ERROR - Boot2 fail
+2025-06-26 21:30:42,010 - INFO - [21:30:42.010] - Dump log
+2025-06-26 21:30:42,011 - INFO - [21:30:42.011] - ...
+2025-06-26 21:30:42,011 - INFO - psram suss:11
+2025-06-26 21:30:42,011 - INFO - custom 0x5f
+2025-06-26 21:30:42,011 - INFO - flash init 0
+2025-06-26 21:30:42,011 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:42,011 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:42,011 - INFO - ver:8.1.8
+2025-06-26 21:30:42,011 - INFO - user_fw
+2025-06-26 21:30:42,011 - INFO - [21:30:42.011] -
+2025-06-26 21:30:42,012 - INFO - lp_fw not found
+2025-06-26 21:30:42,012 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:42,012 - INFO - MFG not found
+2025-06-26 21:30:42,012 - INFO - entry ID 0 found
+2025-06-26 21:30:42,012 - INFO - Boot start
+2025-06-26 21:30:42,012 - INFO - Media boot main
+2025-06-26 21:30:42,012 - INFO - Group 0 not boot
+2025-06-26 21:30:42,012 - INFO - Group rol
+2025-06-26 21:30:42,012 - INFO - [21:30:42.012] - l back
+2025-06-26 21:30:42,012 - INFO - Boot return 0x21c
+2025-06-26 21:30:42,012 - INFO - Check Rollback
+2025-06-26 21:30:42,012 - INFO - Media boot return 540
+2025-06-26 21:30:42,012 - ERROR - Boot2 fail
+2025-06-26 21:30:42,511 - INFO - [21:30:42.511] - Dump log
+2025-06-26 21:30:42,512 - INFO - [21:30:42.511] - ...
+2025-06-26 21:30:42,512 - INFO - psram suss:11
+2025-06-26 21:30:42,512 - INFO - custom 0x5f
+2025-06-26 21:30:42,512 - INFO - flash
+2025-06-26 21:30:42,512 - INFO - [21:30:42.512] - init 0
+2025-06-26 21:30:42,512 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:42,512 - INFO - Group=1,CPU Cou
+2025-06-26 21:30:42,512 - INFO - [21:30:42.512] - nt=1
+2025-06-26 21:30:42,512 - INFO - ver:8.1.8
+2025-06-26 21:30:42,512 - INFO - user_fw
+2025-06-26 21:30:42,512 - INFO - [21:30:42.512] -
+2025-06-26 21:30:42,512 - INFO - lp_fw not found
+2025-06-26 21:30:42,512 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:42,512 - INFO - M
+2025-06-26 21:30:42,512 - INFO - [21:30:42.512] - FG not found
+2025-06-26 21:30:42,512 - INFO - entry ID 0 found
+2025-06-26 21:30:42,512 - INFO - [21:30:42.512] - Boot start
+2025-06-26 21:30:42,512 - INFO - Media boot ma
+2025-06-26 21:30:42,512 - INFO - [21:30:42.512] - in
+2025-06-26 21:30:42,513 - INFO - Group 0 not boot
+2025-06-26 21:30:42,513 - INFO - Gr
+2025-06-26 21:30:42,513 - INFO - [21:30:42.513] - oup roll back
+2025-06-26 21:30:42,513 - INFO - Boot retu
+2025-06-26 21:30:42,513 - INFO - [21:30:42.513] - rn 0x21c
+2025-06-26 21:30:42,513 - INFO - Check Rollback
+2025-06-26 21:30:42,513 - INFO - [21:30:42.513] -
+2025-06-26 21:30:42,513 - INFO - Media
+2025-06-26 21:30:42,513 - INFO - [21:30:42.513] - boot return 540
+2025-06-26 21:30:42,513 - INFO - Boot2 f
+2025-06-26 21:30:42,513 - INFO - [21:30:42.513] - ail
+2025-06-26 21:30:43,015 - INFO - [21:30:43.014] - Dump log
+2025-06-26 21:30:43,015 - INFO - [21:30:43.015] - ...
+2025-06-26 21:30:43,015 - INFO - psram suss:11
+2025-06-26 21:30:43,015 - INFO - custom 0x5f
+2025-06-26 21:30:43,015 - INFO - flash init 0
+2025-06-26 21:30:43,015 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:43,016 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:43,016 - INFO - ver:8.1.8
+2025-06-26 21:30:43,016 - INFO - user_fw
+2025-06-26 21:30:43,016 - INFO - lp_fw not found
+2025-06-26 21:30:43,016 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:43,016 - INFO - MFG not found
+2025-06-26 21:30:43,016 - INFO - entry ID 0 found
+2025-06-26 21:30:43,016 - INFO - Boot start
+2025-06-26 21:30:43,016 - INFO - Media boot main
+2025-06-26 21:30:43,016 - INFO - Group 0 not boot
+2025-06-26 21:30:43,016 - INFO - Group roll back
+2025-06-26 21:30:43,016 - INFO - Boo
+2025-06-26 21:30:43,016 - INFO - [21:30:43.016] - t return 0x21c
+2025-06-26 21:30:43,016 - INFO - Check Rollback
+2025-06-26 21:30:43,016 - INFO - Media boot return 540
+2025-06-26 21:30:43,016 - ERROR - Boot2 fail
+2025-06-26 21:30:43,515 - INFO - [21:30:43.515] - Dump log
+2025-06-26 21:30:43,515 - INFO - [21:30:43.515] - ...
+2025-06-26 21:30:43,515 - INFO - psram suss:11
+2025-06-26 21:30:43,515 - INFO - custom 0x5f
+2025-06-26 21:30:43,515 - INFO - flash init 0
+2025-06-26 21:30:43,515 - INFO - Boot2 start:Apr 1
+2025-06-26 21:30:43,516 - INFO - [21:30:43.515] - 1 2025,10:40:49
+2025-06-26 21:30:43,516 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:43,516 - INFO - ver:8.1.8
+2025-06-26 21:30:43,517 - INFO - user_fw
+2025-06-26 21:30:43,517 - INFO - lp_fw not found
+2025-06-26 21:30:43,517 - INFO - Active PT:1,
+2025-06-26 21:30:43,518 - INFO - [21:30:43.518] - Age 1
+2025-06-26 21:30:43,518 - INFO - MFG not found
+2025-06-26 21:30:43,519 - INFO - entry ID 0 found
+2025-06-26 21:30:43,519 - INFO - Boot start
+2025-06-26 21:30:43,520 - INFO - Media boot main
+2025-06-26 21:30:43,520 - INFO - Group 0 not boot
+2025-06-26 21:30:43,520 - INFO - Group roll back
+2025-06-26 21:30:43,520 - INFO - Boot return 0x21c
+2025-06-26 21:30:43,520 - INFO - Check Rollback
+2025-06-26 21:30:43,521 - INFO - Media boot return 540
+2025-06-26 21:30:43,521 - ERROR - Boot2 fail
+2025-06-26 21:30:44,017 - INFO - [21:30:44.016] - Dump log
+2025-06-26 21:30:44,018 - INFO - [21:30:44.018] - ...
+2025-06-26 21:30:44,018 - INFO - psram suss:11
+2025-06-26 21:30:44,018 - INFO - custom 0x5f
+2025-06-26 21:30:44,018 - INFO - flash init 0
+2025-06-26 21:30:44,018 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:44,018 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:44,018 - INFO - ver:8.1.8
+2025-06-26 21:30:44,018 - INFO - user_fw
+2025-06-26 21:30:44,018 - INFO - lp_fw not found
+2025-06-26 21:30:44,018 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:44,018 - INFO - MFG not found
+2025-06-26 21:30:44,018 - INFO - entry ID 0 found
+2025-06-26 21:30:44,018 - INFO - Boot start
+2025-06-26 21:30:44,018 - INFO - Media
+2025-06-26 21:30:44,019 - INFO - [21:30:44.018] -  boot main
+2025-06-26 21:30:44,020 - INFO - Group 0 not boot
+2025-06-26 21:30:44,021 - INFO - Group roll back
+2025-06-26 21:30:44,021 - INFO - Boot return 0x21c
+2025-06-26 21:30:44,021 - INFO - Check Rollback
+2025-06-26 21:30:44,021 - INFO - Media boot return 540
+2025-06-26 21:30:44,022 - ERROR - Boot2 fail
+2025-06-26 21:30:44,519 - INFO - [21:30:44.518] - Dump log
+2025-06-26 21:30:44,519 - INFO - [21:30:44.519] - ...
+2025-06-26 21:30:44,520 - INFO - psram suss:11
+2025-06-26 21:30:44,520 - INFO - custom 0x5f
+2025-06-26 21:30:44,520 - INFO - flash i
+2025-06-26 21:30:44,520 - INFO - [21:30:44.520] - nit 0
+2025-06-26 21:30:44,520 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:44,520 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:44,520 - INFO - ver:8.1.8
+2025-06-26 21:30:44,520 - INFO - user_fw
+2025-06-26 21:30:44,520 - INFO - lp_fw not found
+2025-06-26 21:30:44,520 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:44,520 - INFO - MFG not found
+2025-06-26 21:30:44,520 - INFO - entry ID 0 found
+2025-06-26 21:30:44,520 - INFO - Boot start
+2025-06-26 21:30:44,520 - INFO - Media boot main
+2025-06-26 21:30:44,520 - INFO - Group 0 not boot
+2025-06-26 21:30:44,520 - INFO - Group roll back
+2025-06-26 21:30:44,520 - INFO - Boot return 0x21c
+2025-06-26 21:30:44,521 - INFO - Check Rollba
+2025-06-26 21:30:44,521 - INFO - [21:30:44.521] - ck
+2025-06-26 21:30:44,521 - INFO - Media boot return 540
+2025-06-26 21:30:44,521 - ERROR - Boot2 fail
+2025-06-26 21:30:45,020 - INFO - [21:30:45.020] - Dump log
+2025-06-26 21:30:45,021 - INFO - [21:30:45.021] - ...
+2025-06-26 21:30:45,021 - INFO - psram suss:11
+2025-06-26 21:30:45,021 - INFO - custom 0x5f
+2025-06-26 21:30:45,021 - INFO - flash init 0
+2025-06-26 21:30:45,021 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:45,021 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:45,021 - INFO - ver:8.1.8
+2025-06-26 21:30:45,021 - INFO - user_fw
+2025-06-26 21:30:45,021 - INFO - lp_fw not found
+2025-06-26 21:30:45,021 - INFO - Active
+2025-06-26 21:30:45,021 - INFO - [21:30:45.021] - PT:1,Age 1
+2025-06-26 21:30:45,021 - INFO - MFG not found
+2025-06-26 21:30:45,021 - INFO - entry ID 0 found
+2025-06-26 21:30:45,021 - INFO - Boot start
+2025-06-26 21:30:45,021 - INFO - Media boot main
+2025-06-26 21:30:45,022 - INFO - Group 0 not boot
+2025-06-26 21:30:45,022 - INFO - Group roll back
+2025-06-26 21:30:45,022 - INFO - Boot
+2025-06-26 21:30:45,022 - INFO - [21:30:45.022] -  return 0x21c
+2025-06-26 21:30:45,023 - INFO - Check Rollback
+2025-06-26 21:30:45,023 - INFO - Media boot return 540
+2025-06-26 21:30:45,023 - ERROR - Boot2 fail
+2025-06-26 21:30:45,522 - INFO - [21:30:45.522] - Dump log
+2025-06-26 21:30:45,523 - INFO - [21:30:45.522] - ...
+2025-06-26 21:30:45,523 - INFO - psram suss:11
+2025-06-26 21:30:45,523 - INFO - custom 0x5f
+2025-06-26 21:30:45,523 - INFO - flash init 0
+2025-06-26 21:30:45,523 - INFO - Boot2 start:Apr 11 2025,10:40:49
+2025-06-26 21:30:45,523 - INFO - Group=1,CPU Count=1
+2025-06-26 21:30:45,523 - INFO - ver:8.1.8
+2025-06-26 21:30:45,523 - INFO - user_fw
+2025-06-26 21:30:45,523 - INFO - lp_fw
+2025-06-26 21:30:45,523 - INFO - [21:30:45.523] - not found
+2025-06-26 21:30:45,523 - INFO - Active PT:1,Age 1
+2025-06-26 21:30:45,523 - INFO - MFG not found
+2025-06-26 21:30:45,523 - INFO - entry ID 0 found
+2025-06-26 21:30:45,523 - INFO - Boot start
+2025-06-26 21:30:45,523 - INFO - Media boot main
+2025-06-26 21:30:45,523 - INFO - [21:30:45.523] -
+2025-06-26 21:30:45,524 - INFO - Group 0 not boot
+2025-06-26 21:30:45,525 - INFO - Group roll back
+2025-06-26 21:30:45,525 - INFO - Boot return 0x21c
+2025-06-26 21:30:45,526 - INFO - Ch
+2025-06-26 21:30:45,526 - INFO - [21:30:45.526] - eck Rollback
+2025-06-26 21:30:45,527 - INFO - Media boot return 540
+2025-06-26 21:30:45,527 - ERROR - Boot2 fail
+2025-06-26 21:30:46,040 - INFO - [21:30:46.039] - Close COM3 Success
+2025-06-26 21:30:46,046 - INFO - [21:30:46.045] - tlv bin created success
+2025-06-26 21:30:46,052 - INFO - [21:30:46.051] - EFUSE_CFG
+2025-06-26 21:30:46,052 - INFO - [21:30:46.052] - BOOTHEADER_GROUP0_CFG
+2025-06-26 21:30:46,074 - INFO - [21:30:46.071] - Create bootheader using D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini
+2025-06-26 21:30:46,075 - INFO - [21:30:46.074] - Updating data according to <D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini[BOOTHEADER_GROUP0_CFG]>
+2025-06-26 21:30:46,077 - INFO - [21:30:46.077] - Created file len:256
+2025-06-26 21:30:46,080 - INFO - [21:30:46.079] - Create efuse using D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini
+2025-06-26 21:30:46,081 - INFO - [21:30:46.081] - Updating data according to <D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/efuse_bootheader_cfg.ini[EFUSE_CFG]>
+2025-06-26 21:30:46,084 - INFO - [21:30:46.083] - Created file len:512
+2025-06-26 21:30:46,088 - INFO - [21:30:46.087] - Image create path: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu
+2025-06-26 21:30:46,089 - INFO - [21:30:46.088] - Config file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\img_create_mcu/img_create_cfg.ini
+2025-06-26 21:30:46,092 - INFO - [21:30:46.091] - img already have bootheader
+2025-06-26 21:30:46,092 - INFO - [21:30:46.092] - Image hash is b'ebc3453460f4448c02e1ba3e2b6b70f039ba5964959aad58a878bf87754f0225'
+2025-06-26 21:30:46,093 - INFO - [21:30:46.092] - Header crc: b'1a7df631'
+2025-06-26 21:30:46,093 - INFO - [21:30:46.093] - Write flash img
+2025-06-26 21:30:46,094 - INFO - [21:30:46.094] - Encrypt efuse data
+2025-06-26 21:30:46,097 - INFO - [21:30:46.096] - ========= eflash loader config =========
+2025-06-26 21:30:46,118 - INFO - [21:30:46.118] - Version: eflash_loader_v2.5.1
+2025-06-26 21:30:46,118 - INFO - [21:30:46.118] - Program Start
+2025-06-26 21:30:46,118 - INFO - [21:30:46.118] - ========= eflash loader cmd arguments =========
+2025-06-26 21:30:46,119 - INFO - [21:30:46.119] - Config file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips\bl616\eflash_loader\eflash_loader_cfg.ini
+2025-06-26 21:30:46,120 - INFO - [21:30:46.120] - serial port is COM3 (PROG)
+2025-06-26 21:30:46,120 - INFO - [21:30:46.120] - cpu_reset=False
+2025-06-26 21:30:46,120 - INFO - [21:30:46.120] - chiptype: bl616
+2025-06-26 21:30:46,120 - INFO - [21:30:46.120] - ========= Interface is uart =========
+2025-06-26 21:30:46,120 - INFO - [21:30:46.120] - com speed: 2000000
+2025-06-26 21:30:46,120 - INFO - [21:30:46.120] - Bootrom load
+2025-06-26 21:30:46,121 - INFO - [21:30:46.121] - ========= get_boot_info =========
+2025-06-26 21:30:46,121 - INFO - [21:30:46.121] - ========= image get bootinfo =========
+2025-06-26 21:30:46,336 - INFO - [21:30:46.336] - Not ack OK
+2025-06-26 21:30:46,336 - INFO - [21:30:46.336] - FL
+2025-06-26 21:30:46,336 - INFO - [21:30:46.336] - result: FL
+2025-06-26 21:30:46,341 - INFO - [21:30:46.340] - default set DTR high
+2025-06-26 21:30:46,445 - INFO - [21:30:46.445] - usb serial port
+2025-06-26 21:30:46,508 - INFO - [21:30:46.508] - clean buf
+2025-06-26 21:30:46,511 - INFO - [21:30:46.511] - send sync
+2025-06-26 21:30:46,725 - INFO - [21:30:46.725] - ack is 4f4b
+2025-06-26 21:30:46,771 - INFO - [21:30:46.771] - shake hand success
+2025-06-26 21:30:47,288 - INFO - [21:30:47.287] - data read is b'01001606000001002712890123e62acf0eb498000f758010'
+2025-06-26 21:30:47,288 - INFO - [21:30:47.288] - ========= chipid: b40ecf2ae623 =========
+2025-06-26 21:30:47,288 - INFO - [21:30:47.288] - Get bootinfo time cost(ms): 1166.9951171875
+2025-06-26 21:30:47,288 - INFO - [21:30:47.288] - change bdrate: 2000000
+2025-06-26 21:30:47,289 - INFO - [21:30:47.289] - Clock PLL set
+2025-06-26 21:30:47,290 - INFO - [21:30:47.290] - Set clock time cost(ms): 1.000244140625
+2025-06-26 21:30:47,425 - INFO - [21:30:47.425] - Read mac addr
+2025-06-26 21:30:47,425 - INFO - [21:30:47.425] - macaddr: b40ecf2ae623
+2025-06-26 21:30:47,426 - INFO - [21:30:47.426] - flash set para
+2025-06-26 21:30:47,426 - INFO - [21:30:47.426] - get flash pin cfg from bootinfo: 0x24
+2025-06-26 21:30:47,427 - INFO - [21:30:47.426] - set flash cfg: 14124
+2025-06-26 21:30:47,428 - INFO - [21:30:47.428] - Set flash config
+2025-06-26 21:30:47,430 - INFO - [21:30:47.430] - Set para time cost(ms): 2.00341796875
+2025-06-26 21:30:47,430 - INFO - [21:30:47.430] - ========= flash read jedec ID =========
+2025-06-26 21:30:47,430 - INFO - [21:30:47.430] - Read flash jedec ID
+2025-06-26 21:30:47,431 - INFO - [21:30:47.430] - flash jedec id: ef401700
+2025-06-26 21:30:47,431 - INFO - [21:30:47.431] - Finished
+2025-06-26 21:30:47,435 - INFO - [21:30:47.435] - get flash size: 0x00800000
+2025-06-26 21:30:47,435 - INFO - [21:30:47.435] - Program operation
+2025-06-26 21:30:47,435 - INFO - [21:30:47.435] - Dealing Index 0
+2025-06-26 21:30:47,435 - INFO - [21:30:47.435] - ========= programming chips\bl616\img_create_mcu\bootinfo.bin to 0x00000000
+2025-06-26 21:30:47,439 - INFO - [21:30:47.439] - flash para file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips/bl616/efuse_bootheader/flash_para.bin
+2025-06-26 21:30:47,440 - INFO - [21:30:47.440] - Set flash config
+2025-06-26 21:30:47,442 - INFO - [21:30:47.442] - Set para time cost(ms): 1.86767578125
+2025-06-26 21:30:47,442 - INFO - [21:30:47.442] - ========= flash load =========
+2025-06-26 21:30:47,444 - INFO - [21:30:47.444] - ========= flash erase =========
+2025-06-26 21:30:47,444 - INFO - [21:30:47.444] - Erase flash from 0x0 to 0xff
+2025-06-26 21:30:47,504 - INFO - [21:30:47.503] - Erase time cost(ms): 59.04150390625
+2025-06-26 21:30:47,507 - INFO - [21:30:47.507] - Load 256/256 {"progress":100}
+2025-06-26 21:30:47,507 - INFO - [21:30:47.507] - Load 256/256 {"progress":100}
+2025-06-26 21:30:47,507 - INFO - [21:30:47.507] - Write check
+2025-06-26 21:30:47,509 - INFO - [21:30:47.509] - Flash load time cost(ms): 3.997314453125
+2025-06-26 21:30:47,509 - INFO - [21:30:47.509] - Finished
+2025-06-26 21:30:47,510 - INFO - [21:30:47.510] - Sha caled by host: e28c6ca5efa1cb187215928fbbc6f0200f07256a93ea763484f0aaeb4361c35d
+2025-06-26 21:30:47,511 - INFO - [21:30:47.511] - xip mode Verify
+2025-06-26 21:30:47,513 - INFO - [21:30:47.513] - Read Sha256/256
+2025-06-26 21:30:47,513 - INFO - [21:30:47.513] - Flash xip readsha time cost(ms): 1.002685546875
+2025-06-26 21:30:47,513 - INFO - [21:30:47.513] - Finished
+2025-06-26 21:30:47,514 - INFO - [21:30:47.513] - Sha caled by dev: e28c6ca5efa1cb187215928fbbc6f0200f07256a93ea763484f0aaeb4361c35d
+2025-06-26 21:30:47,514 - INFO - [21:30:47.514] - Verify success
+2025-06-26 21:30:47,515 - INFO - [21:30:47.515] - Dealing Index 1
+2025-06-26 21:30:47,515 - INFO - [21:30:47.515] - ========= programming chips\bl616\img_create_mcu\img.bin to 0x00002000
+2025-06-26 21:30:47,520 - INFO - [21:30:47.520] - flash para file: D:\Software\bouffalo\BouffaloLabDevCube-v1.9.0\chips/bl616/efuse_bootheader/flash_para.bin
+2025-06-26 21:30:47,521 - INFO - [21:30:47.521] - Set flash config
+2025-06-26 21:30:47,524 - INFO - [21:30:47.523] - Set para time cost(ms): 2.0078125
+2025-06-26 21:30:47,525 - INFO - [21:30:47.524] - ========= flash load =========
+2025-06-26 21:30:47,525 - INFO - [21:30:47.525] - ========= flash erase =========
+2025-06-26 21:30:47,526 - INFO - [21:30:47.526] - Erase flash from 0x2000 to 0xcd5f
+2025-06-26 21:30:48,168 - INFO - [21:30:48.168] - Erase time cost(ms): 641.763427734375
+2025-06-26 21:30:48,169 - INFO - [21:30:48.168] - decompress write rx timeout: 98.304
+2025-06-26 21:30:48,186 - INFO - [21:30:48.186] - decompress flash load 27236
+2025-06-26 21:30:48,197 - INFO - [21:30:48.197] - Load 2048/27236 {"progress":7}
+2025-06-26 21:30:48,208 - INFO - [21:30:48.208] - Load 4096/27236 {"progress":15}
+2025-06-26 21:30:48,224 - INFO - [21:30:48.224] - Load 6144/27236 {"progress":22}
+2025-06-26 21:30:48,240 - INFO - [21:30:48.240] - Load 8192/27236 {"progress":30}
+2025-06-26 21:30:48,259 - INFO - [21:30:48.258] - Load 10240/27236 {"progress":37}
+2025-06-26 21:30:48,275 - INFO - [21:30:48.275] - Load 12288/27236 {"progress":45}
+2025-06-26 21:30:48,286 - INFO - [21:30:48.286] - Load 14336/27236 {"progress":52}
+2025-06-26 21:30:48,302 - INFO - [21:30:48.302] - Load 16384/27236 {"progress":60}
+2025-06-26 21:30:48,319 - INFO - [21:30:48.319] - Load 18432/27236 {"progress":67}
+2025-06-26 21:30:48,330 - INFO - [21:30:48.330] - Load 20480/27236 {"progress":75}
+2025-06-26 21:30:48,347 - INFO - [21:30:48.346] - Load 22528/27236 {"progress":82}
+2025-06-26 21:30:48,363 - INFO - [21:30:48.363] - Load 24576/27236 {"progress":90}
+2025-06-26 21:30:48,379 - INFO - [21:30:48.379] - Load 26624/27236 {"progress":97}
+2025-06-26 21:30:48,397 - INFO - [21:30:48.397] - Load 27236/27236 {"progress":100}
+2025-06-26 21:30:48,397 - INFO - [21:30:48.397] - Load 27236/27236 {"progress":100}
+2025-06-26 21:30:48,398 - INFO - [21:30:48.398] - Write check
+2025-06-26 21:30:48,408 - INFO - [21:30:48.407] - Flash load time cost(ms): 239.18798828125
+2025-06-26 21:30:48,409 - INFO - [21:30:48.408] - Finished
+2025-06-26 21:30:48,409 - INFO - [21:30:48.409] - Sha caled by host: ebc3453460f4448c02e1ba3e2b6b70f039ba5964959aad58a878bf87754f0225
+2025-06-26 21:30:48,409 - INFO - [21:30:48.409] - xip mode Verify
+2025-06-26 21:30:48,447 - INFO - [21:30:48.447] - Read Sha256/44384
+2025-06-26 21:30:48,447 - INFO - [21:30:48.447] - Flash xip readsha time cost(ms): 37.30322265625
+2025-06-26 21:30:48,448 - INFO - [21:30:48.448] - Finished
+2025-06-26 21:30:48,451 - INFO - [21:30:48.451] - Sha caled by dev: ebc3453460f4448c02e1ba3e2b6b70f039ba5964959aad58a878bf87754f0225
+2025-06-26 21:30:48,451 - INFO - [21:30:48.451] - Verify success
+2025-06-26 21:30:48,453 - INFO - [21:30:48.453] - Program Finished
+2025-06-26 21:30:48,453 - INFO - [21:30:48.453] - All time cost(ms): 2334.98828125
+2025-06-26 21:30:48,562 - INFO - [21:30:48.560] - close interface
+2025-06-26 21:30:48,562 - INFO - [21:30:48.562] - [All Success]

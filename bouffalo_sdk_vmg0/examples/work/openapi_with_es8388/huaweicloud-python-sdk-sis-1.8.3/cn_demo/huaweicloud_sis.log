@@ -1,0 +1,3 @@
+[2025-07-25 17:41:42,915] - [INFO] - [websocket open]
+[2025-07-25 17:41:42,922] - [ERROR] - [now status is WebsocketStatus.STATE_START_WAITING receive error resp {"resp_type":"ERROR","trace_id":"b7ec36d4-9078-4359-b89f-39669710dd55","error_code":"SIS.0004","error_msg":"not subscribe this service."}]
+[2025-07-25 17:41:42,927] - [INFO] - [websocket close]

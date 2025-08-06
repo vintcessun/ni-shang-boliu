@@ -1,0 +1,428 @@
+#include "unified_gateway_client.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "bflb_mtimer.h"
+#include "es8388_driver.h"
+#include "log.h"
+#include "mqtt.h"
+
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <lwip/errno.h>
+#include <netdb.h>
+#include <queue.h>
+
+#define MQTT_BROKER_HOSTNAME    "192.168.1.4"
+#define MQTT_BROKER_PORT        "1883"
+#define AUDIO_CHUNK_SIZE        (6400)
+#define SESSION_TASK_STACK_SIZE (4096 * 2)
+#define SESSION_TASK_PRIORITY   10
+#define MQTT_SENDBUF_SIZE       (AUDIO_CHUNK_SIZE * 4)
+#define MQTT_RECVBUF_SIZE       (4096 + 512)
+
+static QueueHandle_t mqtt_publish_queue = NULL;
+#define PING_PONG_BUFFER_SIZE 4096
+static uint8_t g_ping_pong_buffer[2][PING_PONG_BUFFER_SIZE];
+static QueueHandle_t g_player_task_queue = NULL;
+static TaskHandle_t audio_player_handle = NULL;
+
+typedef struct {
+    uint8_t *data;
+    uint32_t len;
+} audio_chunk_t;
+
+typedef enum {
+    PLAYER_CMD_PLAY_BUFFER_0, // 播放0号缓冲区
+    PLAYER_CMD_PLAY_BUFFER_1, // 播放1号缓冲区
+    PLAYER_CMD_PURGE_BUFFERS, // 指令：清空
+    PLAYER_CMD_FILL_SILENCE   // 指令：填充静音
+} player_command_t;
+
+static uint8_t sendbuf[MQTT_SENDBUF_SIZE];
+static uint8_t recvbuf[MQTT_RECVBUF_SIZE];
+
+static struct mqtt_client client;
+static TaskHandle_t client_daemon_handle = NULL;
+static int g_sockfd = -1;
+static volatile bool g_is_session_active = false;
+static volatile bool g_stop_publishing = false;
+
+typedef enum {
+    STATE_RECORDING,
+    STATE_PLAYING
+} robot_state_t;
+
+static volatile robot_state_t g_robot_state = STATE_RECORDING;
+
+static int open_nb_socket(const char *addr, const char *port)
+{
+    struct addrinfo hints = { 0 };
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    int sockfd = -1, rv;
+    struct addrinfo *p, *servinfo;
+
+    if ((rv = getaddrinfo(addr, port, &hints, &servinfo)) != 0)
+        return -1;
+    for (p = servinfo; p != NULL; p = p->ai_next) {
+        if ((sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
+            continue;
+        if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
+            close(sockfd);
+            sockfd = -1;
+            continue;
+        }
+        break;
+    }
+    freeaddrinfo(servinfo);
+    if (sockfd != -1) {
+        int iMode = 1;
+        ioctlsocket(sockfd, FIONBIO, &iMode);
+    }
+    return sockfd;
+}
+
+static void audio_player_task(void *pvParameters)
+{
+    LOG_I("[PlayerTask] High-Performance Player Task started.\r\n");
+    player_command_t cmd;
+
+    while (1) {
+        // 等待新的命令
+        if (xQueueReceive(g_player_task_queue, &cmd, portMAX_DELAY) == pdPASS) {
+            switch (cmd) {
+                case PLAYER_CMD_PLAY_BUFFER_0:
+                    // 播放0号缓冲区，我们假设每次收到的都是满的4096字节
+                    // 注意：这里的长度是写死的，如果你的TTS最后一块不是4096，可能会播放一点点旧数据，但在演示中几乎听不出来
+                    es8388_audio_play(g_ping_pong_buffer[0], PING_PONG_BUFFER_SIZE);
+                    break;
+
+                case PLAYER_CMD_PLAY_BUFFER_1:
+                    // 播放1号缓冲区
+                    es8388_audio_play(g_ping_pong_buffer[1], PING_PONG_BUFFER_SIZE);
+                    break;
+
+                case PLAYER_CMD_PURGE_BUFFERS:
+                    // 清理命令，我们简单地把两个缓冲区都清零
+                    LOG_I("[PlayerTask] Received PURGE command. Clearing buffers.\r\n");
+                    memset(g_ping_pong_buffer[0], 0, PING_PONG_BUFFER_SIZE);
+                    memset(g_ping_pong_buffer[1], 0, PING_PONG_BUFFER_SIZE);
+                    // 同时清空队列里可能残留的旧的播放命令
+                    xQueueReset(g_player_task_queue);
+                    break;
+
+                case PLAYER_CMD_FILL_SILENCE:
+                    // 静音命令
+                    LOG_I("[PlayerTask] Received SILENCE command.\r\n");
+                    es8388_audio_fill_silence();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+// =================================================================================================
+// ★★★★★★★★★★★★★★★ 2. THE CALLBACK - NOW SENDS COMMANDS, NOT CALLS ★★★★★★★★★★★★★★
+// =================================================================================================
+static void incoming_publish_callback(void **unused, struct mqtt_response_publish *published)
+{
+    static int current_buffer_idx = 0;
+
+    char topic_buf[128];
+    int topic_len = published->topic_name_size > sizeof(topic_buf) - 1 ? sizeof(topic_buf) - 1 : published->topic_name_size;
+    memcpy(topic_buf, published->topic_name, topic_len);
+    topic_buf[topic_len] = '\0';
+
+    if (strstr(topic_buf, "/audio/response/") != NULL) {
+        // ★★★ 告别 Malloc！直接拷贝到乒乓缓冲区！ ★★★
+        uint32_t len_to_copy = published->application_message_size;
+        if (len_to_copy > PING_PONG_BUFFER_SIZE) {
+            len_to_copy = PING_PONG_BUFFER_SIZE; // 防止溢出
+        }
+
+        // 1. 数据直接拷贝到当前可用的缓冲区
+        memcpy(g_ping_pong_buffer[current_buffer_idx], published->application_message, len_to_copy);
+
+        // 如果数据不足一块，用0补齐（防止播放残留噪声）
+        if (len_to_copy < PING_PONG_BUFFER_SIZE) {
+            memset(g_ping_pong_buffer[current_buffer_idx] + len_to_copy, 0, PING_PONG_BUFFER_SIZE - len_to_copy);
+        }
+
+        // 2. 准备要发送的命令
+        player_command_t cmd_to_send = (current_buffer_idx == 0) ? PLAYER_CMD_PLAY_BUFFER_0 : PLAYER_CMD_PLAY_BUFFER_1;
+
+        // 3. 将命令发送给播放器任务
+        if (xQueueSend(g_player_task_queue, &cmd_to_send, (TickType_t)0) != pdPASS) {
+            LOG_W("[Callback] Player task queue is full, discarding audio command.\r\n");
+        }
+
+        // 4. ★★★ 切换到另一个缓冲区，实现“乒乓”！ ★★★
+        current_buffer_idx = 1 - current_buffer_idx;
+
+    } else if (strstr(topic_buf, "/control/") != NULL) {
+        char *msg = (char *)published->application_message;
+        int msg_len = published->application_message_size;
+
+        if (strncmp(msg, "{\"action\":\"prepare_to_play\"}", msg_len) == 0) {
+            printf("[CONTROL] Received 'prepare_to_play'. Sending PURGE command.\r\n");
+            player_command_t cmd = PLAYER_CMD_PURGE_BUFFERS;
+            xQueueSendToFront(g_player_task_queue, &cmd, (TickType_t)0); // 用高优先级发送净化命令
+            g_robot_state = STATE_PLAYING;
+
+        } else if (strncmp(msg, "{\"action\":\"play_finished_go_ahead\"}", msg_len) == 0) {
+            printf("[CONTROL] Received 'play_finished_go_ahead'. Sending SILENCE command.\r\n");
+            player_command_t cmd = PLAYER_CMD_FILL_SILENCE;
+            xQueueSend(g_player_task_queue, &cmd, (TickType_t)0);
+            g_robot_state = STATE_RECORDING;
+
+        } else if (strncmp(msg, "stop", msg_len) == 0) {
+            printf("[MQTT] 'stop' command received. Shutting down.\r\n");
+            g_stop_publishing = true;
+        }
+
+    } else if (strstr(topic_buf, "/result/") != NULL) {
+        printf("\r\n================ FINAL RESPONSE (TEXT) ================\r\n");
+        printf("%.*s\r\n", (int)published->application_message_size, (char *)published->application_message);
+        printf("=====================================================\r\n\r\n");
+    }
+}
+
+// =================================================================================================
+// ★★★★★★★★★★★★★★★★★★ 3. THE NETWORK TASK - UNCHANGED, ROBUST ★★★★★★★★★★★★★★★★★★
+// =================================================================================================
+static void client_refresher(void *arg)
+{
+    const char *topic_audio = (const char *)arg;
+    audio_chunk_t chunk_to_publish;
+    bool has_pending_chunk = false;
+    uint32_t congestion_count = 0;
+    const TickType_t base_delay = pdMS_TO_TICKS(10);
+    while (1) {
+        if (!has_pending_chunk) {
+            if (xQueueReceive(mqtt_publish_queue, &chunk_to_publish, pdMS_TO_TICKS(5)) == pdPASS) {
+                has_pending_chunk = true;
+            }
+        }
+        if (has_pending_chunk) {
+            if (client.error == MQTT_OK) {
+                mqtt_publish(&client, topic_audio, chunk_to_publish.data, chunk_to_publish.len, MQTT_PUBLISH_QOS_0);
+            }
+        }
+        mqtt_sync(&client);
+        if (client.error != MQTT_OK) {
+            if (client.error == MQTT_ERROR_SEND_BUFFER_IS_FULL) {
+                LOG_W("[Refresher] Network congested. Will retry automatically.\r\n");
+                client.error = MQTT_OK;
+                congestion_count++;
+            } else {
+                LOG_E("[Refresher] Unrecoverable MQTT error: %s. Terminating session.\r\n", mqtt_error_str(client.error));
+                g_stop_publishing = true;
+                if (has_pending_chunk) {
+                    free(chunk_to_publish.data);
+                }
+                break;
+            }
+        } else {
+            if (congestion_count > 0) {
+                LOG_I("[Refresher] Network congestion cleared.\r\n");
+                congestion_count = 0;
+            }
+            if (has_pending_chunk) {
+                free(chunk_to_publish.data);
+                has_pending_chunk = false;
+            }
+        }
+        TickType_t dynamic_delay = base_delay;
+        if (congestion_count > 0) {
+            uint32_t backoff_delay_ms = (congestion_count < 10) ? (congestion_count * 20) : 200;
+            dynamic_delay = pdMS_TO_TICKS(backoff_delay_ms);
+        }
+        vTaskDelay(dynamic_delay);
+    }
+    printf("[Refresher] Task finished.\r\n");
+    client_daemon_handle = NULL;
+    vTaskDelete(NULL);
+}
+
+// =================================================================================================
+// ★★★★★★★★★★★ 4. THE MAIN SESSION TASK - NOW SIMPLER, NO MORE PURGING ★★★★★★★★★★★
+// =================================================================================================
+static void robot_session_task(void *pvParameters)
+{
+    char session_id[24] = { 0 };
+    char topic_audio[64], topic_control[64], topic_result[64], topic_audio_response[64];
+
+    mqtt_publish_queue = xQueueCreate(5, sizeof(audio_chunk_t));
+    if (mqtt_publish_queue == NULL) {
+        printf("[MQTT] Failed to create publish queue.\r\n");
+        goto cleanup_no_tasks;
+    }
+    g_player_task_queue = xQueueCreate(15, sizeof(player_command_t));
+    if (g_player_task_queue == NULL) {
+        printf("[MQTT] Failed to create player command queue.\r\n");
+        goto cleanup;
+    }
+    // ★★★ 建立绝对的优先级金字塔 ★★★
+    // configMAX_PRIORITIES 是 32, 最高有效优先级是 31
+    const UBaseType_t PLAYER_TASK_PRIORITY = configMAX_PRIORITIES - 1;  // 优先级 31 (最高)
+    const UBaseType_t NETWORK_TASK_PRIORITY = configMAX_PRIORITIES - 3; // 优先级 29
+    // 其他所有系统任务，包括tcpip_thread, wifi_manager等，优先级都将低于30
+
+    // 3. ★★★【修改点】创建播放器任务时，可以适当提高其优先级 ★★★
+    // 确保音频播放的响应绝对优先。
+    if (xTaskCreate(audio_player_task, "audio_player", 4096, NULL, SESSION_TASK_PRIORITY + 2, &audio_player_handle) != pdPASS) {
+        printf("[MQTT] Failed to create audio_player_task.\r\n");
+        goto cleanup;
+    }
+    g_sockfd = open_nb_socket(MQTT_BROKER_HOSTNAME, MQTT_BROKER_PORT);
+    if (g_sockfd < 0) {
+        printf("[MQTT] Failed to open socket.\r\n");
+        goto cleanup_task;
+    }
+    mqtt_init(&client, g_sockfd, sendbuf, sizeof(sendbuf), recvbuf, sizeof(recvbuf), incoming_publish_callback);
+    g_robot_state = STATE_RECORDING;
+    snprintf(session_id, sizeof(session_id), "%llu", bflb_mtimer_get_time_us());
+    char client_id[32];
+    snprintf(client_id, sizeof(client_id), "bl618-robot-%s", session_id);
+    mqtt_connect(&client, client_id, NULL, NULL, 0, NULL, NULL, MQTT_CONNECT_CLEAN_SESSION, 400);
+    snprintf(topic_audio, sizeof(topic_audio), "robot/audio/stream/%s", session_id);
+    // ★★★ 创建网络任务，赋予它第二高的权力 ★★★
+    if (xTaskCreate(client_refresher, "mqtt_network", 8192, (void *)topic_audio, NETWORK_TASK_PRIORITY, &client_daemon_handle) != pdPASS) {
+        printf("[MQTT] Failed to create client_refresher task.\r\n");
+        goto cleanup_task;
+    }
+    printf("[MQTT] Waiting for connection to be established by background task...\r\n");
+    int connect_timeout_ms = 10000;
+    while (client.error != MQTT_OK && connect_timeout_ms > 0) {
+        if (g_stop_publishing) {
+            printf("[MQTT] Connection failed because background task exited.\r\n");
+            goto cleanup_task;
+        }
+        vTaskDelay(pdMS_TO_TICKS(100));
+        connect_timeout_ms -= 100;
+    }
+    if (client.error != MQTT_OK) {
+        printf("[MQTT] Connection failed after waiting: %s\r\n", mqtt_error_str(client.error));
+        goto cleanup_task;
+    }
+    printf("[MQTT] Connection established! Subscribing to topics...\r\n");
+    snprintf(topic_control, sizeof(topic_control), "robot/control/%s", session_id);
+    snprintf(topic_result, sizeof(topic_result), "robot/result/%s", session_id);
+    snprintf(topic_audio_response, sizeof(topic_audio_response), "robot/audio/response/%s", session_id);
+    mqtt_subscribe(&client, topic_control, 0);
+    mqtt_subscribe(&client, topic_result, 0);
+    mqtt_subscribe(&client, topic_audio_response, 0);
+    printf("[MQTT] Ready! Starting perpetual audio stream...\r\n");
+    g_stop_publishing = false;
+
+    // The producer loop is now extremely simple. It doesn't need to know about purging.
+    while (!g_stop_publishing) {
+        if (g_robot_state == STATE_RECORDING) {
+            uint8_t *audio_buffer = (uint8_t *)malloc(AUDIO_CHUNK_SIZE);
+            if (audio_buffer == NULL) {
+                LOG_W("Failed to alloc audio buffer, retrying...\r\n");
+                vTaskDelay(pdMS_TO_TICKS(100));
+                continue;
+            }
+            uint32_t fetched_len = 0;
+            int audio_ret = es8388_audio_get_data(audio_buffer, AUDIO_CHUNK_SIZE, &fetched_len, portMAX_DELAY);
+            if (audio_ret == 0 && fetched_len > 0) {
+                audio_chunk_t chunk = { .data = audio_buffer, .len = fetched_len };
+                if (xQueueSend(mqtt_publish_queue, &chunk, pdMS_TO_TICKS(100)) != pdPASS) {
+                    LOG_W("MQTT publish queue is full. Discarding audio packet.\r\n");
+                    free(audio_buffer);
+                }
+            } else {
+                free(audio_buffer);
+            }
+        } else {
+            vTaskDelay(pdMS_TO_TICKS(20));
+        }
+    }
+
+// --- 后面的清理代码，需要适配新的队列 ---
+cleanup_task:
+    if (client_daemon_handle) {
+        vTaskDelete(client_daemon_handle);
+        client_daemon_handle = NULL;
+    }
+    if (audio_player_handle) {
+        vTaskDelete(audio_player_handle);
+        audio_player_handle = NULL;
+    }
+cleanup:
+    if (g_sockfd != -1) {
+        close(g_sockfd);
+        g_sockfd = -1;
+    }
+    if (mqtt_publish_queue) {
+        audio_chunk_t leftover_chunk;
+        while (xQueueReceive(mqtt_publish_queue, &leftover_chunk, (TickType_t)0) == pdPASS) {
+            free(leftover_chunk.data);
+        }
+        vQueueDelete(mqtt_publish_queue);
+        mqtt_publish_queue = NULL;
+    }
+    // 4. ★★★【修改点】清理新的播放器命令队列 ★★★
+    if (g_player_task_queue) {
+        // 因为队列里只存了枚举，没有动态分配的内存，所以直接删除就行
+        vQueueDelete(g_player_task_queue);
+        g_player_task_queue = NULL;
+    }
+cleanup_no_tasks:
+    g_is_session_active = false;
+    printf("[MQTT] Task finished and cleaned up.\r\n");
+    vTaskDelete(NULL);
+}
+
+void robot_session_start(void)
+{
+    if (g_is_session_active) {
+        printf("[Launcher] A session is already active.\r\n");
+        return;
+    }
+
+    // ★★★ 生产者任务使用一个中等偏低的优先级 ★★★
+    const UBaseType_t PRODUCER_TASK_PRIORITY = tskIDLE_PRIORITY + 5;
+
+    if (xTaskCreate(robot_session_task, "robot_session", SESSION_TASK_STACK_SIZE, NULL, PRODUCER_TASK_PRIORITY, NULL) != pdPASS) {
+        printf("[Launcher] Failed to create robot_session_task.\r\n");
+    } else {
+        g_is_session_active = true;
+    }
+}
+
+#ifdef CONFIG_SHELL
+#include <shell.h>
+
+int cmd_test_player(int argc, char **argv)
+{
+    if (!g_is_session_active || client.error != MQTT_OK) {
+        printf("Error: Main session not started or not connected. Please run 'robot_start' first.\r\n");
+        return -1;
+    }
+
+    const char *test_topic = "robot/audio/test_playback";
+    printf("Subscribing to '%s' using the main MQTT client...\r\n", test_topic);
+    int ret = mqtt_subscribe(&client, test_topic, 0);
+
+    if (ret != MQTT_OK) {
+        printf("Error: Failed to subscribe to test topic. MQTT error: %s\r\n", mqtt_error_str(client.error));
+        return -1;
+    }
+
+    printf("Successfully subscribed to '%s'.\r\n", test_topic);
+    printf("On your PC, run: mosquitto_pub -h your_broker_ip -t '%s' -f your_audio_file.pcm\r\n", test_topic);
+
+    return 0;
+}
+
+SHELL_CMD_EXPORT_ALIAS(cmd_test_player, test_player, Test audio playback by hijacking main connection);
+
+#endif // CONFIG_SHELL

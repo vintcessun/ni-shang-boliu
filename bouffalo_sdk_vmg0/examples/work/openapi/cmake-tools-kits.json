@@ -1,0 +1,13 @@
+[
+  {
+    "name": "riscv64-unknown-elf-gcc",
+    "compilers": {
+      "C": "/opt/toolchain_gcc_t-head_linux/bin/riscv64-unknown-elf-gcc",
+      "CXX": "/opt/toolchain_gcc_t-head_linux/bin/riscv64-unknown-elf-g++"
+    },
+    "environmentVariables": {
+      "PATH": "/opt/toolchain_gcc_t-head_linux/bin:${env:PATH}"
+    },
+    "description": "Bouffalo Lab RISC-V GCC Toolchain"
+  }
+]

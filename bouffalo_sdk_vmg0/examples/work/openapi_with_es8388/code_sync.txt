@@ -1,0 +1,3132 @@
+--- START OF AISTUDIO CODE SYNC BUNDLE ---
+--- Generated on 2025年 07月 03日 星期四 18:32:36 CST ---
+
+--- START OF FILE src/main.c ---
+
+/****************************************************************************
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.  The
+ * ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ ****************************************************************************/
+
+/****************************************************************************
+ * Included Files
+ ****************************************************************************/
+
+#include "FreeRTOS.h"
+#include "task.h"
+#include "timers.h"
+#include "mem.h"
+
+#include <lwip/tcpip.h>
+#include <lwip/sockets.h>
+#include <lwip/netdb.h>
+
+#include "bl_fw_api.h"
+#include "wifi_mgmr_ext.h"
+#include "wifi_mgmr.h"
+
+#include "bflb_irq.h"
+#include "bflb_uart.h"
+
+#include "bl616_glb.h"
+#include "rfparam_adapter.h"
+
+#include "board.h"
+#include "shell.h"
+
+#define DBG_TAG "MAIN"
+#include "log.h"
+#include "auto_connect.h"
+
+struct bflb_device_s *gpio;
+
+/****************************************************************************
+ * Pre-processor Definitions
+ ****************************************************************************/
+
+#define WIFI_STACK_SIZE  (1536)
+#define TASK_PRIORITY_FW (16)
+
+/****************************************************************************
+ * Private Types
+ ****************************************************************************/
+
+/****************************************************************************
+ * Private Data
+ ****************************************************************************/
+
+static struct bflb_device_s *uart0;
+
+static TaskHandle_t wifi_fw_task;
+
+static wifi_conf_t conf = {
+    .country_code = "CN",
+};
+
+extern void shell_init_with_task(struct bflb_device_s *shell);
+
+/****************************************************************************
+ * Private Function Prototypes
+ ****************************************************************************/
+
+/****************************************************************************
+ * Functions
+ ****************************************************************************/
+
+int wifi_start_firmware_task(void)
+{
+    LOG_I("Starting wifi ...\r\n");
+
+    /* enable wifi clock */
+
+    GLB_PER_Clock_UnGate(GLB_AHB_CLOCK_IP_WIFI_PHY | GLB_AHB_CLOCK_IP_WIFI_MAC_PHY | GLB_AHB_CLOCK_IP_WIFI_PLATFORM);
+    GLB_AHB_MCU_Software_Reset(GLB_AHB_MCU_SW_WIFI);
+
+    /* Enable wifi irq */
+
+    extern void interrupt0_handler(void);
+    bflb_irq_attach(WIFI_IRQn, (irq_callback)interrupt0_handler, NULL);
+    bflb_irq_enable(WIFI_IRQn);
+
+    xTaskCreate(wifi_main, (char *)"fw", WIFI_STACK_SIZE, NULL, TASK_PRIORITY_FW, &wifi_fw_task);
+
+    return 0;
+}
+
+volatile uint32_t wifi_state = 0;
+void wifi_event_handler(uint32_t code)
+{
+    switch (code) {
+        case CODE_WIFI_ON_INIT_DONE: {
+            LOG_I("[APP] [EVT] %s, CODE_WIFI_ON_INIT_DONE\r\n", __func__);
+            wifi_mgmr_init(&conf);
+        } break;
+        case CODE_WIFI_ON_MGMR_DONE: {
+            LOG_I("[APP] [EVT] %s, CODE_WIFI_ON_MGMR_DONE\r\n", __func__);
+            auto_connect_signal_wifi_ready();
+
+        } break;
+        case CODE_WIFI_ON_SCAN_DONE: {
+            LOG_I("[APP] [EVT] %s, CODE_WIFI_ON_SCAN_DONE\r\n", __func__);
+            wifi_mgmr_sta_scanlist();
+        } break;
+        case CODE_WIFI_ON_CONNECTED: {
+            LOG_I("[APP] [EVT] %s, CODE_WIFI_ON_CONNECTED\r\n", __func__);
+            void mm_sec_keydump();
+            mm_sec_keydump();
+        } break;
+        case CODE_WIFI_ON_GOT_IP: {
+            wifi_state = 1;
+            LOG_I("[APP] [EVT] %s, CODE_WIFI_ON_GOT_IP\r\n", __func__);
+            LOG_I("[SYS] Memory left is %d Bytes\r\n", kfree_size());
+        } break;
+        case CODE_WIFI_ON_DISCONNECT: {
+            wifi_state = 0;
+            LOG_I("[APP] [EVT] %s, CODE_WIFI_ON_DISCONNECT\r\n", __func__);
+        } break;
+        case CODE_WIFI_ON_AP_STARTED: {
+            LOG_I("[APP] [EVT] %s, CODE_WIFI_ON_AP_STARTED\r\n", __func__);
+        } break;
+        case CODE_WIFI_ON_AP_STOPPED: {
+            LOG_I("[APP] [EVT] %s, CODE_WIFI_ON_AP_STOPPED\r\n", __func__);
+        } break;
+        case CODE_WIFI_ON_AP_STA_ADD: {
+            LOG_I("[APP] [EVT] [AP] [ADD] %lld\r\n", xTaskGetTickCount());
+        } break;
+        case CODE_WIFI_ON_AP_STA_DEL: {
+            LOG_I("[APP] [EVT] [AP] [DEL] %lld\r\n", xTaskGetTickCount());
+        } break;
+        default: {
+            LOG_I("[APP] [EVT] Unknown code %u \r\n", code);
+        }
+    }
+}
+
+int main(void)
+{
+    board_init();
+
+    uart0 = bflb_device_get_by_name("uart0");
+    shell_init_with_task(uart0);
+
+    if (0 != rfparam_init(0, NULL, 0)) {
+        LOG_I("PHY RF init failed!\r\n");
+        return 0;
+    }
+
+    LOG_I("PHY RF init success!\r\n");
+
+    tcpip_init(NULL, NULL);
+    wifi_start_firmware_task();
+    // auto_connect_init("NEAUDX327-2.4G", "327327327");
+    // auto_connect_init("许强的大热点", "wwwwwwww");
+    // auto_connect_init("Oneplus 9", "Micelove2023,./");
+    // auto_connect_init("DESKTOP-LQQSQHV 6761", "4|gA5417");
+    // auto_connect_init("CU_bYFU", "Micelove2023,./");
+    auto_connect_init("CU_404_NotFound_2.4G", "Micelove2023,./");
+
+    vTaskStartScheduler();
+
+    while (1) {
+    }
+}
+
+--- END OF FILE src/main.c ---
+
+
+--- START OF FILE modules/unified_gateway_client/include/unified_gateway_client.h ---
+
+#ifndef UNIFIED_GATEWAY_CLIENT_H
+#define UNIFIED_GATEWAY_CLIENT_H
+
+/**
+ * @brief 启动一个全新的机器人MQTT会话任务。
+ * @note 调用此函数前，请确保Wi-Fi已连接，并且音频采集已启动。
+ */
+void robot_session_start(void);
+
+#endif // UNIFIED_GATEWAY_CLIENT_H
+--- END OF FILE modules/unified_gateway_client/include/unified_gateway_client.h ---
+
+
+--- START OF FILE modules/unified_gateway_client/src/unified_gateway_client.c ---
+
+#include "unified_gateway_client.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "bflb_mtimer.h"
+#include "es8388_driver.h"
+#include "log.h"
+#include "mqtt.h"
+
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <lwip/errno.h>
+#include <netdb.h>
+#include <queue.h>
+
+#define MQTT_BROKER_HOSTNAME    "192.168.1.4"
+#define MQTT_BROKER_PORT        "1883"
+#define AUDIO_CHUNK_SIZE        (1600)
+#define SESSION_TASK_STACK_SIZE (4096 * 2)
+#define SESSION_TASK_PRIORITY   10
+#define MQTT_SENDBUF_SIZE       (AUDIO_CHUNK_SIZE * 4)
+#define MQTT_RECVBUF_SIZE       (4096 + 512)
+
+static QueueHandle_t mqtt_publish_queue = NULL;
+#define PING_PONG_BUFFER_SIZE (2048)
+static uint8_t g_ping_pong_buffer[2][PING_PONG_BUFFER_SIZE];
+static QueueHandle_t g_player_task_queue = NULL;
+static TaskHandle_t audio_player_handle = NULL;
+
+typedef struct {
+    uint8_t *data;
+    uint32_t len;
+} audio_chunk_t;
+
+typedef enum {
+    PLAYER_CMD_PLAY_BUFFER_0, // 播放0号缓冲区
+    PLAYER_CMD_PLAY_BUFFER_1, // 播放1号缓冲区
+    PLAYER_CMD_PURGE_BUFFERS, // 指令：清空
+    PLAYER_CMD_FILL_SILENCE   // 指令：填充静音
+} player_command_t;
+
+static uint8_t sendbuf[MQTT_SENDBUF_SIZE];
+static uint8_t recvbuf[MQTT_RECVBUF_SIZE];
+
+static struct mqtt_client client;
+static TaskHandle_t client_daemon_handle = NULL;
+static int g_sockfd = -1;
+static volatile bool g_is_session_active = false;
+static volatile bool g_stop_publishing = false;
+
+typedef enum {
+    STATE_RECORDING,
+    STATE_PLAYING
+} robot_state_t;
+
+static volatile robot_state_t g_robot_state = STATE_RECORDING;
+
+static int open_nb_socket(const char *addr, const char *port)
+{
+    struct addrinfo hints = { 0 };
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    int sockfd = -1, rv;
+    struct addrinfo *p, *servinfo;
+
+    if ((rv = getaddrinfo(addr, port, &hints, &servinfo)) != 0)
+        return -1;
+    for (p = servinfo; p != NULL; p = p->ai_next) {
+        if ((sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
+            continue;
+        if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
+            close(sockfd);
+            sockfd = -1;
+            continue;
+        }
+        break;
+    }
+    freeaddrinfo(servinfo);
+    if (sockfd != -1) {
+        int iMode = 1;
+        ioctlsocket(sockfd, FIONBIO, &iMode);
+    }
+    return sockfd;
+}
+
+static void audio_player_task(void *pvParameters)
+{
+    LOG_I("[PlayerTask] High-Performance Player Task started.\r\n");
+    player_command_t cmd;
+
+    while (1) {
+        // 等待新的命令
+        if (xQueueReceive(g_player_task_queue, &cmd, portMAX_DELAY) == pdPASS) {
+            switch (cmd) {
+                case PLAYER_CMD_PLAY_BUFFER_0:
+                    // 播放0号缓冲区，我们假设每次收到的都是满的4096字节
+                    // 注意：这里的长度是写死的，如果你的TTS最后一块不是4096，可能会播放一点点旧数据，但在演示中几乎听不出来
+                    es8388_audio_play(g_ping_pong_buffer[0], PING_PONG_BUFFER_SIZE);
+                    break;
+
+                case PLAYER_CMD_PLAY_BUFFER_1:
+                    // 播放1号缓冲区
+                    es8388_audio_play(g_ping_pong_buffer[1], PING_PONG_BUFFER_SIZE);
+                    break;
+
+                case PLAYER_CMD_PURGE_BUFFERS:
+                    // 清理命令，我们简单地把两个缓冲区都清零
+                    LOG_I("[PlayerTask] Received PURGE command. Clearing buffers.\r\n");
+                    memset(g_ping_pong_buffer[0], 0, PING_PONG_BUFFER_SIZE);
+                    memset(g_ping_pong_buffer[1], 0, PING_PONG_BUFFER_SIZE);
+                    // 同时清空队列里可能残留的旧的播放命令
+                    xQueueReset(g_player_task_queue);
+                    break;
+
+                case PLAYER_CMD_FILL_SILENCE:
+                    // 静音命令
+                    LOG_I("[PlayerTask] Received SILENCE command.\r\n");
+                    es8388_audio_fill_silence();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+// =================================================================================================
+// ★★★★★★★★★★★★★★★ 2. THE CALLBACK - NOW SENDS COMMANDS, NOT CALLS ★★★★★★★★★★★★★★
+// =================================================================================================
+static void incoming_publish_callback(void **unused, struct mqtt_response_publish *published)
+{
+    static int current_buffer_idx = 0;
+
+    char topic_buf[128];
+    int topic_len = published->topic_name_size > sizeof(topic_buf) - 1 ? sizeof(topic_buf) - 1 : published->topic_name_size;
+    memcpy(topic_buf, published->topic_name, topic_len);
+    topic_buf[topic_len] = '\0';
+
+    if (strstr(topic_buf, "/audio/response/") != NULL) {
+        // ★★★ 告别 Malloc！直接拷贝到乒乓缓冲区！ ★★★
+        uint32_t len_to_copy = published->application_message_size;
+        if (len_to_copy > PING_PONG_BUFFER_SIZE) {
+            len_to_copy = PING_PONG_BUFFER_SIZE; // 防止溢出
+        }
+
+        // 1. 数据直接拷贝到当前可用的缓冲区
+        memcpy(g_ping_pong_buffer[current_buffer_idx], published->application_message, len_to_copy);
+
+        // 如果数据不足一块，用0补齐（防止播放残留噪声）
+        if (len_to_copy < PING_PONG_BUFFER_SIZE) {
+            memset(g_ping_pong_buffer[current_buffer_idx] + len_to_copy, 0, PING_PONG_BUFFER_SIZE - len_to_copy);
+        }
+
+        // 2. 准备要发送的命令
+        player_command_t cmd_to_send = (current_buffer_idx == 0) ? PLAYER_CMD_PLAY_BUFFER_0 : PLAYER_CMD_PLAY_BUFFER_1;
+
+        // 3. 将命令发送给播放器任务
+        if (xQueueSend(g_player_task_queue, &cmd_to_send, (TickType_t)0) != pdPASS) {
+            LOG_W("[Callback] Player task queue is full, discarding audio command.\r\n");
+        }
+
+        // 4. ★★★ 切换到另一个缓冲区，实现“乒乓”！ ★★★
+        current_buffer_idx = 1 - current_buffer_idx;
+
+    } else if (strstr(topic_buf, "/control/") != NULL) {
+        char *msg = (char *)published->application_message;
+        int msg_len = published->application_message_size;
+
+        if (strncmp(msg, "{\"action\":\"prepare_to_play\"}", msg_len) == 0) {
+            printf("[CONTROL] Received 'prepare_to_play'. Sending PURGE command.\r\n");
+            player_command_t cmd = PLAYER_CMD_PURGE_BUFFERS;
+            xQueueSendToFront(g_player_task_queue, &cmd, (TickType_t)0); // 用高优先级发送净化命令
+            g_robot_state = STATE_PLAYING;
+
+        } else if (strncmp(msg, "{\"action\":\"play_finished_go_ahead\"}", msg_len) == 0) {
+            printf("[CONTROL] Received 'play_finished_go_ahead'. Sending SILENCE command.\r\n");
+            player_command_t cmd = PLAYER_CMD_FILL_SILENCE;
+            xQueueSend(g_player_task_queue, &cmd, (TickType_t)0);
+            g_robot_state = STATE_RECORDING;
+
+        } else if (strncmp(msg, "stop", msg_len) == 0) {
+            printf("[MQTT] 'stop' command received. Shutting down.\r\n");
+            g_stop_publishing = true;
+        }
+
+    } else if (strstr(topic_buf, "/result/") != NULL) {
+        printf("\r\n================ FINAL RESPONSE (TEXT) ================\r\n");
+        printf("%.*s\r\n", (int)published->application_message_size, (char *)published->application_message);
+        printf("=====================================================\r\n\r\n");
+    }
+}
+
+// =================================================================================================
+// ★★★★★★★★★★★★★★★★★★ 3. THE NETWORK TASK - UNCHANGED, ROBUST ★★★★★★★★★★★★★★★★★★
+// =================================================================================================
+static void client_refresher(void *arg)
+{
+    const char *topic_audio = (const char *)arg;
+    audio_chunk_t chunk_to_publish;
+    bool has_pending_chunk = false;
+    uint32_t congestion_count = 0;
+    const TickType_t base_delay = pdMS_TO_TICKS(10);
+    while (1) {
+        if (!has_pending_chunk) {
+            if (xQueueReceive(mqtt_publish_queue, &chunk_to_publish, pdMS_TO_TICKS(5)) == pdPASS) {
+                has_pending_chunk = true;
+            }
+        }
+        if (has_pending_chunk) {
+            if (client.error == MQTT_OK) {
+                mqtt_publish(&client, topic_audio, chunk_to_publish.data, chunk_to_publish.len, MQTT_PUBLISH_QOS_0);
+            }
+        }
+        mqtt_sync(&client);
+        if (client.error != MQTT_OK) {
+            if (client.error == MQTT_ERROR_SEND_BUFFER_IS_FULL) {
+                LOG_W("[Refresher] Network congested. Will retry automatically.\r\n");
+                client.error = MQTT_OK;
+                congestion_count++;
+            } else {
+                LOG_E("[Refresher] Unrecoverable MQTT error: %s. Terminating session.\r\n", mqtt_error_str(client.error));
+                g_stop_publishing = true;
+                if (has_pending_chunk) {
+                    free(chunk_to_publish.data);
+                }
+                break;
+            }
+        } else {
+            if (congestion_count > 0) {
+                LOG_I("[Refresher] Network congestion cleared.\r\n");
+                congestion_count = 0;
+            }
+            if (has_pending_chunk) {
+                free(chunk_to_publish.data);
+                has_pending_chunk = false;
+            }
+        }
+        TickType_t dynamic_delay = base_delay;
+        if (congestion_count > 0) {
+            uint32_t backoff_delay_ms = (congestion_count < 10) ? (congestion_count * 20) : 200;
+            dynamic_delay = pdMS_TO_TICKS(backoff_delay_ms);
+        }
+        vTaskDelay(dynamic_delay);
+    }
+    printf("[Refresher] Task finished.\r\n");
+    client_daemon_handle = NULL;
+    vTaskDelete(NULL);
+}
+
+// =================================================================================================
+// ★★★★★★★★★★★ 4. THE MAIN SESSION TASK - NOW SIMPLER, NO MORE PURGING ★★★★★★★★★★★
+// =================================================================================================
+static void robot_session_task(void *pvParameters)
+{
+    char session_id[24] = { 0 };
+    char topic_audio[64], topic_control[64], topic_result[64], topic_audio_response[64];
+
+    mqtt_publish_queue = xQueueCreate(5, sizeof(audio_chunk_t));
+    if (mqtt_publish_queue == NULL) {
+        printf("[MQTT] Failed to create publish queue.\r\n");
+        goto cleanup_no_tasks;
+    }
+    g_player_task_queue = xQueueCreate(15, sizeof(player_command_t));
+    if (g_player_task_queue == NULL) {
+        printf("[MQTT] Failed to create player command queue.\r\n");
+        goto cleanup;
+    }
+    // ★★★ 建立绝对的优先级金字塔 ★★★
+    // configMAX_PRIORITIES 是 32, 最高有效优先级是 31
+    const UBaseType_t PLAYER_TASK_PRIORITY = configMAX_PRIORITIES - 1;  // 优先级 31 (最高)
+    const UBaseType_t NETWORK_TASK_PRIORITY = configMAX_PRIORITIES - 3; // 优先级 29
+    // 其他所有系统任务，包括tcpip_thread, wifi_manager等，优先级都将低于30
+
+    // 3. ★★★【修改点】创建播放器任务时，可以适当提高其优先级 ★★★
+    // 确保音频播放的响应绝对优先。
+    if (xTaskCreate(audio_player_task, "audio_player", 4096, NULL, SESSION_TASK_PRIORITY + 2, &audio_player_handle) != pdPASS) {
+        printf("[MQTT] Failed to create audio_player_task.\r\n");
+        goto cleanup;
+    }
+    g_sockfd = open_nb_socket(MQTT_BROKER_HOSTNAME, MQTT_BROKER_PORT);
+    if (g_sockfd < 0) {
+        printf("[MQTT] Failed to open socket.\r\n");
+        goto cleanup_task;
+    }
+    mqtt_init(&client, g_sockfd, sendbuf, sizeof(sendbuf), recvbuf, sizeof(recvbuf), incoming_publish_callback);
+    g_robot_state = STATE_RECORDING;
+    snprintf(session_id, sizeof(session_id), "%llu", bflb_mtimer_get_time_us());
+    char client_id[32];
+    snprintf(client_id, sizeof(client_id), "bl618-robot-%s", session_id);
+    mqtt_connect(&client, client_id, NULL, NULL, 0, NULL, NULL, MQTT_CONNECT_CLEAN_SESSION, 400);
+    snprintf(topic_audio, sizeof(topic_audio), "robot/audio/stream/%s", session_id);
+    // ★★★ 创建网络任务，赋予它第二高的权力 ★★★
+    if (xTaskCreate(client_refresher, "mqtt_network", 8192, (void *)topic_audio, NETWORK_TASK_PRIORITY, &client_daemon_handle) != pdPASS) {
+        printf("[MQTT] Failed to create client_refresher task.\r\n");
+        goto cleanup_task;
+    }
+    printf("[MQTT] Waiting for connection to be established by background task...\r\n");
+    int connect_timeout_ms = 10000;
+    while (client.error != MQTT_OK && connect_timeout_ms > 0) {
+        if (g_stop_publishing) {
+            printf("[MQTT] Connection failed because background task exited.\r\n");
+            goto cleanup_task;
+        }
+        vTaskDelay(pdMS_TO_TICKS(100));
+        connect_timeout_ms -= 100;
+    }
+    if (client.error != MQTT_OK) {
+        printf("[MQTT] Connection failed after waiting: %s\r\n", mqtt_error_str(client.error));
+        goto cleanup_task;
+    }
+    printf("[MQTT] Connection established! Subscribing to topics...\r\n");
+    snprintf(topic_control, sizeof(topic_control), "robot/control/%s", session_id);
+    snprintf(topic_result, sizeof(topic_result), "robot/result/%s", session_id);
+    snprintf(topic_audio_response, sizeof(topic_audio_response), "robot/audio/response/%s", session_id);
+    mqtt_subscribe(&client, topic_control, 0);
+    mqtt_subscribe(&client, topic_result, 0);
+    mqtt_subscribe(&client, topic_audio_response, 0);
+    printf("[MQTT] Ready! Starting perpetual audio stream...\r\n");
+    g_stop_publishing = false;
+
+    // The producer loop is now extremely simple. It doesn't need to know about purging.
+    while (!g_stop_publishing) {
+        if (g_robot_state == STATE_RECORDING) {
+            uint8_t *audio_buffer = (uint8_t *)malloc(AUDIO_CHUNK_SIZE);
+            if (audio_buffer == NULL) {
+                LOG_W("Failed to alloc audio buffer, retrying...\r\n");
+                vTaskDelay(pdMS_TO_TICKS(100));
+                continue;
+            }
+            uint32_t fetched_len = 0;
+            int audio_ret = es8388_audio_get_data(audio_buffer, AUDIO_CHUNK_SIZE, &fetched_len, portMAX_DELAY);
+            if (audio_ret == 0 && fetched_len > 0) {
+                audio_chunk_t chunk = { .data = audio_buffer, .len = fetched_len };
+                if (xQueueSend(mqtt_publish_queue, &chunk, pdMS_TO_TICKS(100)) != pdPASS) {
+                    LOG_W("MQTT publish queue is full. Discarding audio packet.\r\n");
+                    free(audio_buffer);
+                }
+            } else {
+                free(audio_buffer);
+            }
+        } else {
+            vTaskDelay(pdMS_TO_TICKS(20));
+        }
+    }
+
+// --- 后面的清理代码，需要适配新的队列 ---
+cleanup_task:
+    if (client_daemon_handle) {
+        vTaskDelete(client_daemon_handle);
+        client_daemon_handle = NULL;
+    }
+    if (audio_player_handle) {
+        vTaskDelete(audio_player_handle);
+        audio_player_handle = NULL;
+    }
+cleanup:
+    if (g_sockfd != -1) {
+        close(g_sockfd);
+        g_sockfd = -1;
+    }
+    if (mqtt_publish_queue) {
+        audio_chunk_t leftover_chunk;
+        while (xQueueReceive(mqtt_publish_queue, &leftover_chunk, (TickType_t)0) == pdPASS) {
+            free(leftover_chunk.data);
+        }
+        vQueueDelete(mqtt_publish_queue);
+        mqtt_publish_queue = NULL;
+    }
+    // 4. ★★★【修改点】清理新的播放器命令队列 ★★★
+    if (g_player_task_queue) {
+        // 因为队列里只存了枚举，没有动态分配的内存，所以直接删除就行
+        vQueueDelete(g_player_task_queue);
+        g_player_task_queue = NULL;
+    }
+cleanup_no_tasks:
+    g_is_session_active = false;
+    printf("[MQTT] Task finished and cleaned up.\r\n");
+    vTaskDelete(NULL);
+}
+
+void robot_session_start(void)
+{
+    if (g_is_session_active) {
+        printf("[Launcher] A session is already active.\r\n");
+        return;
+    }
+
+    // ★★★ 生产者任务使用一个中等偏低的优先级 ★★★
+    const UBaseType_t PRODUCER_TASK_PRIORITY = tskIDLE_PRIORITY + 5;
+
+    if (xTaskCreate(robot_session_task, "robot_session", SESSION_TASK_STACK_SIZE, NULL, PRODUCER_TASK_PRIORITY, NULL) != pdPASS) {
+        printf("[Launcher] Failed to create robot_session_task.\r\n");
+    } else {
+        g_is_session_active = true;
+    }
+}
+
+#ifdef CONFIG_SHELL
+#include <shell.h>
+
+int cmd_test_player(int argc, char **argv)
+{
+    if (!g_is_session_active || client.error != MQTT_OK) {
+        printf("Error: Main session not started or not connected. Please run 'robot_start' first.\r\n");
+        return -1;
+    }
+
+    const char *test_topic = "robot/audio/test_playback";
+    printf("Subscribing to '%s' using the main MQTT client...\r\n", test_topic);
+    int ret = mqtt_subscribe(&client, test_topic, 0);
+
+    if (ret != MQTT_OK) {
+        printf("Error: Failed to subscribe to test topic. MQTT error: %s\r\n", mqtt_error_str(client.error));
+        return -1;
+    }
+
+    printf("Successfully subscribed to '%s'.\r\n", test_topic);
+    printf("On your PC, run: mosquitto_pub -h your_broker_ip -t '%s' -f your_audio_file.pcm\r\n", test_topic);
+
+    return 0;
+}
+
+SHELL_CMD_EXPORT_ALIAS(cmd_test_player, test_player, Test audio playback by hijacking main connection);
+
+#endif // CONFIG_SHELL
+--- END OF FILE modules/unified_gateway_client/src/unified_gateway_client.c ---
+
+
+--- START OF FILE modules/audio_es8388/include/es8388_driver.h ---
+
+#ifndef ES8388_DRIVER_H
+#define ES8388_DRIVER_H
+
+#include <stdint.h>
+#include "portmacro.h" // 包含 FreeRTOS 的 portmacro.h 以使用 TickType_t 和其他类型
+
+/**
+ * @brief 音频模块初始化状态
+ */
+typedef enum {
+    AUDIO_STATE_UNINITIALIZED,
+    AUDIO_STATE_INITIALIZED,
+    AUDIO_STATE_CAPTURING
+} audio_module_state_t;
+
+/**
+ * @brief 初始化 ES8388 音频编解码器及相关I2S和DMA。
+ *
+ * @return int 0 表示成功, 非 0 表示失败。
+ */
+int es8388_audio_init(void);
+
+/**
+ * @brief 启动音频采集。
+ *
+ * @return int 0 表示成功, 非 0 表示失败。
+ */
+int es8388_audio_start_capture(void);
+
+/**
+ * @brief 停止音频采集。
+ *
+ * @return int 0 表示成功, 非 0 表示失败。
+ */
+int es8388_audio_stop_capture(void); // 确保此名称与 .c 文件中的定义一致
+
+/**
+ * @brief 反初始化音频模块，释放资源。
+ */
+void es8388_audio_deinit(void);
+
+/**
+ * @brief 获取当前音频模块状态。
+ *
+ * @return audio_module_state_t 当前状态。
+ */
+audio_module_state_t es8388_audio_get_state(void);
+
+/**
+ * @brief 获取最近捕获的音频数据。
+ *
+ * @param buffer 指向目标缓冲区的指针，用于复制音频数据。
+ * @param buffer_size 目标缓冲区的最大长度。
+ * @param out_len [OUT] 实际复制到目标缓冲区的音频数据长度。
+ * @param timeout_ticks 超时等待的时间（单位：ticks）。
+ * @return int 0 表示成功获取数据，非 0 表示失败。
+ */
+int es8388_audio_get_data(uint8_t *buffer, uint32_t buffer_size, uint32_t *out_len, TickType_t timeout_ticks); // 增加超时参数
+
+/**
+ * @brief Plays a chunk of audio data.
+ * @param data Pointer to the audio data buffer.
+ * @param len Length of the audio data in bytes.
+ * @return 0 on success, negative error code on failure.
+ */
+int es8388_audio_play(const uint8_t *data, uint32_t len);
+
+/**
+ * @brief Fills the upcoming DMA audio buffers with silence.
+ *        This function should be called when transitioning from playback back to recording
+ *        to prevent old audio data from being looped.
+ * @return 0 on success, negative error code on failure.
+ */
+int es8388_audio_fill_silence(void);
+
+#endif // ES8388_DRIVER_H
+
+--- END OF FILE modules/audio_es8388/include/es8388_driver.h ---
+
+
+--- START OF FILE modules/audio_es8388/src/es8388_driver.c ---
+
+// es8388_driver.c - REBORN AND BATTLE-HARDENED
+
+#include "FreeRTOS.h"
+#include "es8388_driver.h"
+#include "board.h"
+#include "bflb_gpio.h"
+#include "bflb_l1c.h"
+#include "bflb_mtimer.h"
+#include "bflb_i2c.h"
+#include "bl616_glb.h"
+#include "bflb_dma.h"
+#include "bsp_es8388.h"
+#include "bflb_i2s.h"
+#include "log.h"
+#include <string.h>
+#include "task.h"
+#include <semphr.h>
+
+// --- 模块内部变量 ---
+static struct bflb_device_s *i2s0_dev;
+static struct bflb_device_s *dma0_ch0_dev; // TX
+static struct bflb_device_s *dma0_ch1_dev; // RX
+
+// RX (录音) 相关的定义 (保持不变，工作得很好)
+#define RX_BUFFER_SIZE 1600 // 或者3200，取决于你希望一次DMA录多久
+static uint8_t rx_audio_buffer[RX_BUFFER_SIZE] __attribute__((aligned(4)));
+static SemaphoreHandle_t rx_buffer_ready_sem = NULL;
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+//              ★★★ 播放逻辑 - 全新、硬核、防抖动的多块缓冲机制 ★★★
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+
+// 定义每个DMA传输块的大小，这个值应该等于或大于网络上收到的单个音频包大小
+#define TX_DMA_BLOCK_SIZE 2048 // 播放块大小，也应该相应减小
+// 定义我们使用多少个块来做缓冲。越多的块能提供越好的抗网络抖动能力，但会增加延迟和内存消耗。4个是很好的起点。
+#define TX_DMA_BLOCK_NUM  (4)
+// 总的环形缓冲区大小
+#define TX_BUFFER_SIZE    (TX_DMA_BLOCK_SIZE * TX_DMA_BLOCK_NUM)
+
+// 这是我们真正的物理环形缓冲区，DMA将从这里循环读取数据
+static uint8_t tx_audio_buffer[TX_BUFFER_SIZE] __attribute__((aligned(4)));
+
+// ★★★ 核心武器：计数信号量 ★★★
+// 这个信号量代表了应用程序“可以填充”的空闲块的数量。
+// 初始化时有 TX_DMA_BLOCK_NUM 个，当应用填充一个块，就消耗一个。当DMA播放完一个块，就在中断里释放一个。
+// 这就是我们的“流控”机制！
+static SemaphoreHandle_t tx_blocks_available_sem = NULL;
+
+// ★★★ 写指针（按块索引）★★★
+// 用来标记下一个要被应用层写入的块是哪一个
+static volatile uint32_t tx_write_block_idx = 0;
+
+static ES8388_Cfg_Type es8388_codec_cfg = {
+    .work_mode = ES8388_CODEC_MDOE,
+    .role = ES8388_SLAVE,
+    .mic_input_mode = ES8388_SINGLE_ENDED_MIC,
+    .mic_pga = ES8388_MIC_PGA_6DB,
+    .i2s_frame = ES8388_LEFT_JUSTIFY_FRAME,
+    .data_width = ES8388_DATA_LEN_16,
+};
+static audio_module_state_t current_audio_state = AUDIO_STATE_UNINITIALIZED;
+
+// --- DMA 中断服务函数 ---
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+//              ★★★ 这是新架构的脉搏！ ★★★
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+static void dma0_ch0_tx_isr_callback(void *arg)
+{
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    // DMA 刚刚播放完一个块，这意味着这个块现在“空闲”了。
+    // 我们释放一个信号量，告诉在 es8388_audio_play 中等待的播放任务：
+    // “嘿，哥们，你可以再填充一个新的数据块了！”
+    if (tx_blocks_available_sem != NULL) {
+        xSemaphoreGiveFromISR(tx_blocks_available_sem, &xHigherPriorityTaskWoken);
+        // 如果释放信号量唤醒了一个更高优先级的任务，我们立刻进行任务切换，保证音频数据被最快填充。
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    }
+}
+
+static void dma0_ch1_rx_isr_callback(void *arg)
+{
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    if (rx_buffer_ready_sem != NULL) {
+        xSemaphoreGiveFromISR(rx_buffer_ready_sem, &xHigherPriorityTaskWoken);
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    }
+}
+
+// --- 内部辅助函数 ---
+static int audio_i2s_gpio_init(void)
+{
+    struct bflb_device_s *gpio_dev;
+    gpio_dev = bflb_device_get_by_name("gpio");
+    bflb_gpio_init(gpio_dev, GPIO_PIN_1, GPIO_FUNC_I2S | GPIO_ALTERNATE | GPIO_PULLUP | GPIO_SMT_EN | GPIO_DRV_1);
+    bflb_gpio_init(gpio_dev, GPIO_PIN_10, GPIO_FUNC_I2S | GPIO_ALTERNATE | GPIO_PULLUP | GPIO_SMT_EN | GPIO_DRV_1);
+    bflb_gpio_init(gpio_dev, GPIO_PIN_3, GPIO_FUNC_I2S | GPIO_ALTERNATE | GPIO_PULLUP | GPIO_SMT_EN | GPIO_DRV_1);
+    bflb_gpio_init(gpio_dev, GPIO_PIN_0, GPIO_FUNC_I2S | GPIO_ALTERNATE | GPIO_PULLUP | GPIO_SMT_EN | GPIO_DRV_1);
+    bflb_gpio_init(gpio_dev, GPIO_PIN_2, GPIO_FUNC_CLKOUT | GPIO_ALTERNATE | GPIO_PULLUP | GPIO_SMT_EN | GPIO_DRV_1);
+    return 0;
+}
+
+static void audio_mclk_out_init(void)
+{
+    GLB_Set_I2S_CLK(ENABLE, 2, GLB_I2S_DI_SEL_I2S_DI_INPUT, GLB_I2S_DO_SEL_I2S_DO_OUTPT);
+    GLB_Set_Chip_Clock_Out2_Sel(G LB_CHIP_CLK_OUT_2_I2S_REF_CLK);
+}
+
+static int audio_i2s_dma_init(void)
+{
+    // ★★★ DMA LLI (链表) 设置需要改变，以支持块状循环传输 ★★★
+    static struct bflb_dma_channel_lli_pool_s tx_llipool[TX_DMA_BLOCK_NUM];
+    static struct bflb_dma_channel_lli_transfer_s tx_transfers[TX_DMA_BLOCK_NUM];
+
+    static struct bflb_dma_channel_lli_pool_s rx_llipool[10]; // RX部分保持不变
+    static struct bflb_dma_channel_lli_transfer_s rx_transfers[1];
+
+    struct bflb_i2s_config_s i2s_cfg = {
+        .bclk_freq_hz = 8000 * 16 * 2, // 确保与TTS服务生成的采样率一致
+        .role = I2S_ROLE_MASTER,
+        .format_mode = I2S_MODE_LEFT_JUSTIFIED,
+        .channel_mode = I2S_CHANNEL_MODE_NUM_1,
+        .frame_width = I2S_SLOT_WIDTH_16,
+        .data_width = I2S_SLOT_WIDTH_16,
+        .fs_offset_cycle = 0,
+        .tx_fifo_threshold = 4,
+        .rx_fifo_threshold = 4,
+    };
+    struct bflb_dma_channel_config_s rx_dma_cfg = {
+        .direction = DMA_PERIPH_TO_MEMORY, .src_req = DMA_REQUEST_I2S_RX, .dst_req = DMA_REQUEST_NONE, .src_addr_inc = DMA_ADDR_INCREMENT_DISABLE, .dst_addr_inc = DMA_ADDR_INCREMENT_ENABLE, .src_burst_count = DMA_BURST_INCR1, .dst_burst_count = DMA_BURST_INCR1, .src_width = DMA_DATA_WIDTH_16BIT, .dst_width = DMA_DATA_WIDTH_16BIT
+    };
+    struct bflb_dma_channel_config_s tx_dma_cfg = {
+        .direction = DMA_MEMORY_TO_PERIPH,
+        .src_req = DMA_REQUEST_NONE,
+        .dst_req = DMA_REQUEST_I2S_TX,
+        .src_addr_inc = DMA_ADDR_INCREMENT_ENABLE,
+        .dst_addr_inc = DMA_ADDR_INCREMENT_DISABLE,
+        .src_burst_count = DMA_BURST_INCR1,
+        .dst_burst_count = DMA_BURST_INCR1,
+        .src_width = DMA_DATA_WIDTH_16BIT,
+        .dst_width = DMA_DATA_WIDTH_16BIT,
+    };
+
+    i2s0_dev = bflb_device_get_by_name("i2s0");
+    bflb_i2s_init(i2s0_dev, &i2s_cfg);
+    bflb_i2s_link_txdma(i2s0_dev, true);
+    bflb_i2s_link_rxdma(i2s0_dev, true);
+
+    dma0_ch0_dev = bflb_device_get_by_name("dma0_ch0");
+    dma0_ch1_dev = bflb_device_get_by_name("dma0_ch1");
+    bflb_dma_channel_init(dma0_ch0_dev, &tx_dma_cfg);
+    bflb_dma_channel_init(dma0_ch1_dev, &rx_dma_cfg);
+
+    bflb_dma_channel_irq_attach(dma0_ch0_dev, dma0_ch0_tx_isr_callback, NULL);
+    bflb_dma_channel_irq_attach(dma0_ch1_dev, dma0_ch1_rx_isr_callback, NULL);
+
+    // RX DMA 设置 (保持不变)
+    rx_transfers[0].src_addr = (uint32_t)DMA_ADDR_I2S_RDR;
+    rx_transfers[0].dst_addr = (uint32_t)rx_audio_buffer;
+    rx_transfers[0].nbytes = sizeof(rx_audio_buffer);
+    uint32_t num_lli_rx = bflb_dma_channel_lli_reload(dma0_ch1_dev, rx_llipool, 10, rx_transfers, 1);
+    bflb_dma_channel_lli_link_head(dma0_ch1_dev, rx_llipool, num_lli_rx);
+
+    // ★★★ TX DMA 设置 (全新，核心！) ★★★
+    // 我们不再是一次性传输整个大缓冲区，而是创建 N 个传输任务，每个任务传输一个块。
+    // 然后把这些任务链接成一个环，DMA就会永无止境地、一块一块地循环播放。
+    for (int i = 0; i < TX_DMA_BLOCK_NUM; i++) {
+        tx_transfers[i].src_addr = (uint32_t)(tx_audio_buffer + (i * TX_DMA_BLOCK_SIZE));
+        tx_transfers[i].dst_addr = (uint32_t)DMA_ADDR_I2S_TDR;
+        tx_transfers[i].nbytes = TX_DMA_BLOCK_SIZE;
+    }
+    uint32_t num_lli_tx = bflb_dma_channel_lli_reload(dma0_ch0_dev, tx_llipool, TX_DMA_BLOCK_NUM, tx_transfers, TX_DMA_BLOCK_NUM);
+    bflb_dma_channel_lli_link_head(dma0_ch0_dev, tx_llipool, num_lli_tx);
+
+    return 0;
+}
+
+// --- 公共接口函数实现 ---
+int es8388_audio_init(void)
+{
+    if (current_audio_state != AUDIO_STATE_UNINITIALIZED) {
+        return 0;
+    }
+    LOG_I("Initializing ES8388 audio module (Battle-Hardened V3)...\r\n");
+    board_i2c0_gpio_init();
+    ES8388_Init(&es8388_codec_cfg);
+    ES8388_Set_Voice_Volume(300);
+    audio_i2s_gpio_init();
+    audio_mclk_out_init();
+
+    // ★★★ 把DMA初始化放在所有状态初始化之前 ★★★
+    if (audio_i2s_dma_init() != 0) {
+        LOG_E("I2S and DMA init failed!\r\n");
+        return -1;
+    }
+
+    // ★★★ 确保在最开始时，信号量是全新的 ★★★
+    if (tx_blocks_available_sem != NULL) {
+        vSemaphoreDelete(tx_blocks_available_sem);
+    }
+    tx_blocks_available_sem = xSemaphoreCreateCounting(TX_DMA_BLOCK_NUM, TX_DMA_BLOCK_NUM);
+    if (tx_blocks_available_sem == NULL) {
+        LOG_E("Failed to create tx_blocks_available_sem! PANIC!\r\n");
+        return -1;
+    }
+    tx_write_block_idx = 0;
+
+    if (rx_buffer_ready_sem == NULL) {
+        rx_buffer_ready_sem = xSemaphoreCreateBinary();
+    }
+
+    memset(tx_audio_buffer, 0, TX_BUFFER_SIZE);
+    bflb_l1c_dcache_clean_range((void *)tx_audio_buffer, TX_BUFFER_SIZE);
+
+    current_audio_state = AUDIO_STATE_INITIALIZED;
+    LOG_I("ES8388 audio module initialized and ready for the final battle.\r\n");
+    return 0;
+}
+
+int es8388_audio_start_capture(void)
+{
+    if (current_audio_state == AUDIO_STATE_UNINITIALIZED) {
+        return -1;
+    }
+    if (current_audio_state == AUDIO_STATE_CAPTURING) {
+        return 0;
+    }
+    LOG_I("Starting audio capture and playback engine...\r\n");
+    bflb_dma_channel_start(dma0_ch0_dev);
+    bflb_dma_channel_start(dma0_ch1_dev);
+    bflb_i2s_feature_control(i2s0_dev, I2S_CMD_DATA_ENABLE, I2S_CMD_DATA_ENABLE_RX | I2S_CMD_DATA_ENABLE_TX);
+    current_audio_state = AUDIO_STATE_CAPTURING;
+    return 0;
+}
+
+int es8388_audio_stop_capture(void)
+{
+    if (current_audio_state != AUDIO_STATE_CAPTURING) {
+        return 0;
+    }
+    LOG_I("Stopping audio capture...\r\n");
+    bflb_i2s_feature_control(i2s0_dev, I2S_CMD_DATA_ENABLE, 0);
+    bflb_dma_channel_stop(dma0_ch1_dev);
+    bflb_dma_channel_stop(dma0_ch0_dev);
+    current_audio_state = AUDIO_STATE_INITIALIZED;
+    return 0;
+}
+
+void es8388_audio_deinit(void)
+{
+    if (current_audio_state == AUDIO_STATE_UNINITIALIZED) {
+        return;
+    }
+    if (current_audio_state == AUDIO_STATE_CAPTURING) {
+        es8388_audio_stop_capture();
+    }
+    LOG_I("Deinitializing ES8388 audio module...\r\n");
+    if (dma0_ch0_dev) {
+        bflb_dma_channel_irq_detach(dma0_ch0_dev);
+    }
+    if (dma0_ch1_dev) {
+        bflb_dma_channel_irq_detach(dma0_ch1_dev);
+    }
+    if (tx_blocks_available_sem) {
+        vSemaphoreDelete(tx_blocks_available_sem);
+        tx_blocks_available_sem = NULL;
+    }
+
+    i2s0_dev = NULL;
+    dma0_ch0_dev = NULL;
+    dma0_ch1_dev = NULL;
+    current_audio_state = AUDIO_STATE_UNINITIALIZED;
+}
+
+audio_module_state_t es8388_audio_get_state(void)
+{
+    return current_audio_state;
+}
+
+int es8388_audio_get_data(uint8_t *buffer, uint32_t buffer_size, uint32_t *out_len, TickType_t timeout_ticks)
+{
+    if (out_len) {
+        *out_len = 0;
+    }
+    if (current_audio_state != AUDIO_STATE_CAPTURING) {
+        return -1;
+    }
+    if (!buffer || buffer_size == 0) {
+        return -2;
+    }
+
+    // 等待DMA完成录音的信号
+    if (xSemaphoreTake(rx_buffer_ready_sem, timeout_ticks) == pdTRUE) {
+        // 计算要拷贝的长度，取目标buffer和我们实际录音buffer大小的较小值
+        uint32_t len_to_copy = (buffer_size < RX_BUFFER_SIZE) ? buffer_size : RX_BUFFER_SIZE;
+
+        // ★★★ 核心操作：一个简单的 memcpy ★★★
+        // 在拷贝前，让CPU的缓存失效，确保我们读到的是DMA写入的最新数据
+        bflb_l1c_dcache_invalidate_range((void *)rx_audio_buffer, RX_BUFFER_SIZE);
+
+        // 把录音DMA缓冲区的数据，直接拷贝到外部传入的buffer里
+        memcpy(buffer, rx_audio_buffer, len_to_copy);
+
+        if (out_len) {
+            *out_len = len_to_copy;
+        }
+        return 0;
+    } else {
+        // 超时，没等到数据
+        return -3;
+    }
+}
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+//              ★★★ 新的、绝对可靠的、永不卡顿的音频播放函数 ★★★
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+int es8388_audio_play(const uint8_t *data, uint32_t len)
+{
+    if (current_audio_state != AUDIO_STATE_CAPTURING) {
+        LOG_E("Play failed: Audio engine not in capturing/playing state.\r\n");
+        return -1;
+    }
+    if (!data || len == 0) {
+        return -2; // 无效参数
+    }
+
+    const uint8_t *p_data = data;
+    uint32_t remaining_len = len;
+
+    // 循环，直到把传入的所有数据都送入环形缓冲区
+    while (remaining_len > 0) {
+        // 1. 等待一个空闲的DMA块
+        if (xSemaphoreTake(tx_blocks_available_sem, portMAX_DELAY) != pdTRUE) {
+            LOG_E("Play failed: Timeout waiting for a free DMA block.\r\n");
+            return -4;
+        }
+
+        // 2. 计算目标地址和本次要拷贝的长度
+        uint8_t *dest_addr = tx_audio_buffer + (tx_write_block_idx * TX_DMA_BLOCK_SIZE);
+        uint32_t len_to_copy = (remaining_len > TX_DMA_BLOCK_SIZE) ? TX_DMA_BLOCK_SIZE : remaining_len;
+
+        // ★★★ 核心操作：一个简单的 memcpy ★★★
+        memcpy(dest_addr, p_data, len_to_copy);
+
+        // 如果数据不足一个块，用0补齐
+        if (len_to_copy < TX_DMA_BLOCK_SIZE) {
+            memset(dest_addr + len_to_copy, 0, TX_DMA_BLOCK_SIZE - len_to_copy);
+        }
+
+        // 4. 【关键】刷新CPU缓存，把我们刚写入的数据，真正地推送到物理内存，让DMA能看到
+        bflb_l1c_dcache_clean_range((void *)dest_addr, TX_DMA_BLOCK_SIZE);
+
+        // 5. 更新指针和索引
+        p_data += len_to_copy;
+        remaining_len -= len_to_copy;
+        tx_write_block_idx = (tx_write_block_idx + 1) % TX_DMA_BLOCK_NUM;
+    }
+
+    return 0;
+}
+
+int es8388_audio_fill_silence(void)
+{
+    if (current_audio_state != AUDIO_STATE_CAPTURING) {
+        return -1;
+    }
+
+    // 这个函数的哲学是：我不知道DMA现在读到哪里了，我也不知道缓冲区里有什么。
+    // 我只知道，我要用最快的速度，把整个环形缓冲区，用静音数据覆盖一遍。
+    // 这样做，可以确保在下一次播放开始前，无论DMA读到哪里，读到的都是静音。
+
+    LOG_I("[Driver] Filling entire TX buffer with silence to prevent looping noise.\r\n");
+
+    // ★★★ 我们不再停止DMA，也不再操作信号量，因为这太危险了 ★★★
+    // 我们只是默默地、安全地修改内存内容。
+
+    // 1. 把整个物理缓冲区清零
+    memset(tx_audio_buffer, 0, TX_BUFFER_SIZE);
+
+    // 2. 刷新整个缓冲区的D-Cache，确保DMA能看到我们的修改
+    bflb_l1c_dcache_clean_range((void *)tx_audio_buffer, TX_BUFFER_SIZE);
+
+    // 我们甚至不需要重置 tx_write_block_idx。
+    // 因为下一次 es8388_audio_play 被调用时，它会从 tx_write_block_idx 当前的位置继续写入。
+    // 而它前面的所有块，都已经被我们清零了，所以是绝对安全的。
+
+    return 0;
+}
+--- END OF FILE modules/audio_es8388/src/es8388_driver.c ---
+
+
+--- START OF FILE modules/cli_cmds/src/my_cli_cmds.c ---
+
+// my_cli_cmds.c - Shell 命令实现与网络请求测试
+#include "requests.h"
+#include "my_cli_cmds.h"
+#include "log.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include <string.h>
+#include <stdlib.h>
+#include "semphr.h"
+#include "https.h"
+#include "wifi_mgmr_ext.h"
+#include "http_client.h"
+#include "https_client.h"
+#include "simpleopenapi_client.h"
+#include "url_parser.h"
+#include "es8388_driver.h"
+#include "unified_gateway_client.h"
+#ifdef CONFIG_SHELL
+#include "shell.h"
+#endif
+
+#define TEST_RESP_BUF_SIZE      4096
+#define TASK_STACK_SIZE_NET     8192
+#define CURL_MAX_HEADERS_LEN    512
+#define CURL_DEFAULT_TIMEOUT_MS 15000
+
+extern volatile uint32_t wifi_state;
+
+int check_wifi_state(void)
+{
+    return (wifi_state == 1) ? 0 : 1;
+}
+
+// 固定参数网络请求任务
+typedef struct {
+    const char *method;
+    const char *url;
+    const char *content_type;
+    const char *body;
+    int timeout_ms;
+} fixed_request_args_t;
+static void request_test_task(void *pvParameters);
+static void http_get_test_task(void *pvParameters);
+static void https_get_test_task(void *pvParameters);
+static void http_post_test_task(void *pvParameters);
+static void https_post_test_task(void *pvParameters);
+
+static void request_test_task(void *pvParameters)
+{
+    fixed_request_args_t *args = (fixed_request_args_t *)pvParameters;
+    uint8_t *resp_buf_ptr = NULL;
+    int final_status = REQ_ERR_INTERNAL;
+
+    if (check_wifi_state() != 0) {
+        LOG_E("%s %s Task Error: WiFi not connected!\r\n", args->method, args->url);
+        goto task_exit_fixed;
+    }
+
+    LOG_I("%s %s Test Task Started (using send_request)...\r\n", args->method, args->url);
+    resp_buf_ptr = malloc(TEST_RESP_BUF_SIZE);
+    if (!resp_buf_ptr) {
+        LOG_E("Failed to allocate response buffer (%d bytes)\r\n", TEST_RESP_BUF_SIZE);
+        goto task_exit_fixed;
+    }
+    LOG_D("Response buffer allocated (%d bytes) at %p\r\n", TEST_RESP_BUF_SIZE, resp_buf_ptr);
+    resp_buf_ptr[0] = '\0';
+
+    RequestOptions opts = {
+        .method = args->method,
+        .url = args->url,
+        .timeout_ms = args->timeout_ms,
+        .content_type = args->content_type,
+        .request_body = args->body,
+        .body_len = args->body ? strlen(args->body) : 0,
+        .custom_headers = NULL
+    };
+    Response resp = {
+        .response_buf = resp_buf_ptr,
+        .response_buf_len = TEST_RESP_BUF_SIZE,
+        .status_code = 0,
+        .actual_resp_len = 0
+    };
+
+    final_status = send_request(&opts, &resp);
+
+    LOG_I("send_request returned: %d\r\n", final_status);
+    LOG_I("Response status_code: %d, Actual length: %d\r\n", resp.status_code, resp.actual_resp_len);
+
+    if (resp.status_code >= 200 && resp.status_code < 300) {
+        LOG_I("%s %s Success! Status Code: %d\r\n", args->method, args->url, resp.status_code);
+        if (resp.actual_resp_len > 0) {
+            printf("--- Start Response Body (%d bytes, newlines replaced with space) ---\r\n", resp.actual_resp_len);
+            for (int i = 0; i < resp.actual_resp_len; i++) {
+                char current_char = resp.response_buf[i];
+                if (current_char != '\n' && current_char != '\r') {
+                    printf("%c", current_char);
+                } else {
+                    printf(" ");
+                }
+            }
+            printf("\r\n--- End Response Body ---\r\n");
+        } else {
+            LOG_I("Response body is empty.\r\n");
+        }
+    } else if (resp.status_code > 0) {
+        LOG_E("%s %s Failed! HTTP Status Code: %d\r\n", args->method, args->url, resp.status_code);
+        if (resp.actual_resp_len > 0) {
+            printf("--- Start Error Body (%d bytes, newlines replaced with space) ---\r\n", resp.actual_resp_len);
+            for (int i = 0; i < resp.actual_resp_len; i++) {
+                char current_char = resp.response_buf[i];
+                if (current_char != '\n' && current_char != '\r') {
+                    printf("%c", current_char);
+                } else {
+                    printf(" ");
+                }
+            }
+            printf("\r\n--- End Error Body ---\r\n");
+        }
+    } else {
+        LOG_E("%s %s Client Failed! Error code: %d (%s)\r\n", args->method, args->url, resp.status_code,
+              resp.status_code == REQ_ERR_TIMEOUT        ? "Timeout" :
+              resp.status_code == REQ_ERR_CONNECT        ? "Connection/TLS Failed" :
+              resp.status_code == REQ_ERR_DNS            ? "DNS Failed" :
+              resp.status_code == REQ_ERR_BAD_REQUEST    ? "Bad Request/URL Parse Failed" :
+              resp.status_code == REQ_ERR_MEM            ? "Memory Allocation Failed" :
+              resp.status_code == REQ_ERR_RESP_TOO_LARGE ? "Response Too Large" :
+              resp.status_code == REQ_ERR_RESP_PARSE     ? "Response Parse Failed" :
+                                                           "Other Client Error");
+    }
+
+task_exit_fixed:
+    if (resp_buf_ptr) {
+        LOG_D("Freeing fixed request response buffer at %p\r\n", resp_buf_ptr);
+        free(resp_buf_ptr);
+    }
+    LOG_I("%s %s Test Task Finished.\r\n", args->method, args->url);
+    vTaskDelete(NULL);
+}
+
+static void http_get_test_task(void *pvParameters)
+{
+    static fixed_request_args_t args = { "GET", "http://httpbin.org/get?source=bl618_send_request_http", NULL, NULL, 15000 };
+    request_test_task(&args);
+}
+
+static void https_get_test_task(void *pvParameters)
+{
+    static fixed_request_args_t args = { "GET", "https://httpbin.org/get", NULL, NULL, 20000 };
+    request_test_task(&args);
+}
+
+static void http_post_test_task(void *pvParameters)
+{
+    static fixed_request_args_t args = { "POST", "http://httpbin.org/post", "application/json", "{\"chip\":\"BL618_send_req_http\", \"message\":\"Hello again!\"}", 15000 };
+    request_test_task(&args);
+}
+
+static void https_post_test_task(void *pvParameters)
+{
+    static fixed_request_args_t args = { "POST", "https://httpbin.org/post", "application/json", "{\"source\":\"BL618_send_request\", \"secure\":true}", 20000 };
+    request_test_task(&args);
+}
+
+#ifdef CONFIG_SHELL
+
+// Shell 命令：打印问候语
+enum { GREET_OK = 0,
+       GREET_ARGERR = -1 };
+static int cmd_greet(int argc, char **argv)
+{
+    if (argc == 1) {
+        LOG_I("Hello from your companion robot!\r\n");
+    } else if (argc == 2) {
+        LOG_I("Hello %s, nice to meet you!\r\n", argv[1]);
+    } else {
+        LOG_E("Usage: greet [name]\r\n");
+        return GREET_ARGERR;
+    }
+    return GREET_OK;
+}
+
+// Shell 命令：机器人动作模拟
+static int cmd_robot_action(int argc, char **argv)
+{
+    if (argc < 2) {
+        LOG_E("Usage: action <move|turn|dance> [value]\r\n");
+        return -1;
+    }
+    const char *action_type = argv[1];
+    if (strcmp(action_type, "move") == 0 && argc == 3) {
+        int steps = atoi(argv[2]);
+        LOG_I("Executing move forward: %d steps (simulated)\r\n", steps);
+    } else if (strcmp(action_type, "turn") == 0 && argc == 3) {
+        int angle = atoi(argv[2]);
+        LOG_I("Executing turn left: %d degrees (simulated)\r\n", angle);
+    } else if (strcmp(action_type, "dance") == 0 && argc == 3) {
+        int pattern = atoi(argv[2]);
+        LOG_I("Executing dance pattern: %d (simulated)\r\n", pattern);
+    } else {
+        LOG_E("Unknown or invalid action.\r\n");
+        return -1;
+    }
+    return 0;
+}
+
+// Shell 命令：测试 URL 解析
+static int cmd_test_url_parse(int argc, char **argv)
+{
+    if (argc != 2) {
+        LOG_E("Usage: test_parseurl <url_string>\r\n");
+        return -1;
+    }
+    parsed_url_t parsed_result;
+    int ret = parse_url(argv[1], &parsed_result);
+    if (ret == URL_PARSE_OK) {
+        LOG_I("URL OK: scheme=%s, host=%s, port=%u, path=%s\r\n", parsed_result.scheme, parsed_result.host, parsed_result.port, parsed_result.path);
+    } else {
+        LOG_E("URL parse error: %d\r\n", ret);
+        return -1;
+    }
+    return 0;
+}
+
+// Shell 命令：测试中文输出
+static int cmd_chinese_test(int argc, char **argv)
+{
+    LOG_I("测试中文输出：你好，世界！\r\n");
+    return 0;
+}
+
+static int cmd_test_http_get(int argc, char **argv)
+{
+    BaseType_t task_ret = xTaskCreate(http_get_test_task, "http_get_test", TASK_STACK_SIZE_NET, NULL, 10, NULL);
+    if (task_ret != pdPASS) {
+        printf("Error: Failed to create HTTP GET test task! (ret=%ld)\r\n", task_ret);
+        return -1;
+    }
+    printf("HTTP GET test task created. Check logs for results (httpbin.org/get).\r\n");
+    return 0;
+}
+
+static int cmd_test_https_get(int argc, char **argv)
+{
+    BaseType_t task_ret = xTaskCreate(https_get_test_task, "https_get_test", TASK_STACK_SIZE_NET, NULL, 10, NULL);
+    if (task_ret != pdPASS) {
+        printf("Error: Failed to create HTTPS GET test task! (ret=%ld)\r\n", task_ret);
+        return -1;
+    }
+    printf("HTTPS GET test task created. Check logs for results (httpbin.org/get).\r\n");
+    return 0;
+}
+
+static int cmd_test_http_post(int argc, char **argv)
+{
+    BaseType_t task_ret = xTaskCreate(http_post_test_task, "http_post_test", TASK_STACK_SIZE_NET, NULL, 10, NULL);
+    if (task_ret != pdPASS) {
+        printf("Error: Failed to create HTTP POST test task! (ret=%ld)\r\n", task_ret);
+        return -1;
+    }
+    printf("HTTP POST test task created. Check logs for results.\r\n");
+    return 0;
+}
+
+static int cmd_test_https_post(int argc, char **argv)
+{
+    BaseType_t task_ret = xTaskCreate(https_post_test_task, "https_post_test", TASK_STACK_SIZE_NET, NULL, 10, NULL);
+    if (task_ret != pdPASS) {
+        printf("Error: Failed to create HTTPS POST test task! (ret=%ld)\r\n", task_ret);
+        return -1;
+    }
+    printf("HTTPS POST test task created. Check logs for results.\r\n");
+    return 0;
+}
+
+// curl 命令后台任务与参数解析
+typedef struct {
+    char *url;
+    char *method;
+    char *headers;
+    char *body;
+    char *content_type;
+    int timeout_ms;
+} curl_task_params_t;
+static void curl_task(void *pvParameters);
+static int cmd_curl(int argc, char **argv);
+
+static void curl_task(void *pvParameters)
+{
+    curl_task_params_t *params = (curl_task_params_t *)pvParameters;
+    uint8_t *resp_buf_ptr = NULL;
+    const int resp_buf_size = TEST_RESP_BUF_SIZE;
+    int final_status = REQ_ERR_INTERNAL;
+
+    Response resp = {
+        .response_buf = NULL,
+        .response_buf_len = resp_buf_size,
+        .status_code = 0,
+        .actual_resp_len = 0
+    };
+
+    if (!params || !params->url || !params->method) {
+        LOG_E("Curl Task: Invalid parameters received.\r\n");
+        goto task_cleanup_curl;
+    }
+
+    if (check_wifi_state() != 0) {
+        LOG_E("Curl Task: WiFi not connected! Aborting request to %s\r\n", params->url);
+        final_status = REQ_ERR_CONNECT;
+        goto task_cleanup_curl;
+    }
+
+    LOG_I("Curl Task: Starting %s request to %s\r\n", params->method, params->url);
+
+    resp_buf_ptr = malloc(resp_buf_size);
+    if (!resp_buf_ptr) {
+        LOG_E("Curl Task: Failed to allocate response buffer (%d bytes)\r\n", resp_buf_size);
+        final_status = REQ_ERR_MEM;
+        goto task_cleanup_curl;
+    }
+    LOG_D("Curl Task: Response buffer allocated (%d bytes) at %p\r\n", resp_buf_size, resp_buf_ptr);
+    resp_buf_ptr[0] = '\0';
+    resp.response_buf = resp_buf_ptr;
+
+    RequestOptions opts = {
+        .method = params->method,
+        .url = params->url,
+        .custom_headers = params->headers,
+        .content_type = params->content_type,
+        .request_body = params->body,
+        .body_len = (params->body ? strlen(params->body) : 0),
+        .timeout_ms = params->timeout_ms
+    };
+
+    resp.response_buf = resp_buf_ptr;
+    resp.response_buf_len = resp_buf_size;
+    resp.status_code = 0;
+    resp.actual_resp_len = 0;
+
+    TickType_t tick_start = xTaskGetTickCount();
+    LOG_I("Curl Task: Sending request...\r\n");
+    final_status = send_request(&opts, &resp);
+    TickType_t tick_end = xTaskGetTickCount();
+    uint32_t elapsed_ms = (tick_end - tick_start) * 1000 / configTICK_RATE_HZ;
+    LOG_I("Curl Task: Request finished. Time elapsed: %lu ms\r\n", (unsigned long)elapsed_ms);
+
+    printf("\r\n-------------------- Curl Result --------------------\r\n");
+    printf("URL: %s\r\n", params->url);
+    printf("Method: %s\r\n", params->method);
+    printf("HTTP Status Code: %d\r\n", resp.status_code);
+    printf("Time elapsed: %lu ms\r\n", (unsigned long)elapsed_ms);
+
+    if (resp.actual_resp_len > 0) {
+        printf("Response Body (%d bytes, newlines replaced with space):\r\n", resp.actual_resp_len);
+        printf("<<<--- START BODY --->>>\r\n");
+        for (int i = 0; i < resp.actual_resp_len; i++) {
+            char current_char = resp.response_buf[i];
+            if (current_char != '\n' && current_char != '\r') {
+                printf("%c", current_char);
+            } else {
+                printf(" ");
+            }
+        }
+        printf("\r\n<<<--- END BODY --->>>\r\n");
+    } else {
+        printf("Response Body: (empty)\r\n");
+    }
+
+    if (final_status < 0 && final_status != resp.status_code) {
+        printf("Client Error Code: %d (%s)\r\n", final_status,
+               final_status == REQ_ERR_TIMEOUT        ? "Timeout" :
+               final_status == REQ_ERR_CONNECT        ? "Connection/TLS Failed" :
+               final_status == REQ_ERR_DNS            ? "DNS Failed" :
+               final_status == REQ_ERR_BAD_REQUEST    ? "Bad Request/URL Parse Failed" :
+               final_status == REQ_ERR_MEM            ? "Memory Allocation Failed" :
+               final_status == REQ_ERR_RESP_TOO_LARGE ? "Response Too Large" :
+               final_status == REQ_ERR_RESP_PARSE     ? "Response Parse Failed" :
+                                                        "Other Client Error");
+    }
+    printf("-----------------------------------------------------\r\n");
+
+task_cleanup_curl:
+    if (resp_buf_ptr) {
+        LOG_D("Curl Task: Freeing response buffer at %p\r\n", resp_buf_ptr);
+        free(resp_buf_ptr);
+    }
+    if (params) {
+        LOG_D("Curl Task: Freeing task parameters...\r\n");
+        if (params->url)
+            free(params->url);
+        if (params->headers)
+            free(params->headers);
+        if (params->body)
+            free(params->body);
+        free(params);
+    }
+
+    LOG_I("Curl Task Finished.\r\n");
+    vTaskDelete(NULL);
+}
+
+static int cmd_curl(int argc, char **argv)
+{
+    if (argc < 2) {
+        printf("Usage: curl <URL> [-H \"Header: Value\"] [-d 'data'] [timeout_ms]\r\n");
+        printf("Example:\r\n");
+        printf("  curl http://httpbin.org/get\r\n");
+        printf("  curl https://httpbin.org/post -H \"Content-Type: application/json\" -d '{\"value\":1}'\r\n");
+        printf("  curl https://api.deepseek.com/... -H \"Authorization: Bearer sk-...\" -H \"Content-Type: application/json\" -d '{\"model\":...}' 20000\r\n");
+        return -1;
+    }
+
+    curl_task_params_t *params = NULL;
+    char *url_arg = NULL;
+    char *method_arg = "GET";
+    char *body_arg = NULL;
+    char *headers_arg = NULL;
+    char *content_type_arg = NULL;
+    int timeout_arg = CURL_DEFAULT_TIMEOUT_MS;
+    size_t headers_current_len = 0;
+
+    headers_arg = malloc(CURL_MAX_HEADERS_LEN);
+    params = malloc(sizeof(curl_task_params_t));
+    if (!params || !headers_arg) {
+        printf("Error: Cannot allocate memory for task parameters or headers\r\n");
+        if (params)
+            free(params);
+        if (headers_arg)
+            free(headers_arg);
+        return -1;
+    }
+    headers_arg[0] = '\0';
+    memset(params, 0, sizeof(curl_task_params_t));
+
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-H") == 0) {
+            if (i + 1 < argc) {
+                i++;
+                size_t header_len = strlen(argv[i]);
+                if (headers_current_len + header_len + 2 >= CURL_MAX_HEADERS_LEN) {
+                    printf("Error: Total header length exceeds limit (%d bytes)\r\n", CURL_MAX_HEADERS_LEN);
+                    goto parse_error_curl;
+                }
+                strcat(headers_arg, argv[i]);
+                strcat(headers_arg, "\r\n");
+                headers_current_len += header_len + 2;
+
+                if (content_type_arg == NULL && strncasecmp(argv[i], "Content-Type:", 13) == 0) {
+                    const char *ct_start = argv[i] + 13;
+                    while (*ct_start == ' ')
+                        ct_start++;
+                    content_type_arg = (char *)ct_start;
+                }
+            } else {
+                printf("Error: -H requires an argument\r\n");
+                goto parse_error_curl;
+            }
+        } else if (strcmp(argv[i], "-d") == 0) {
+            if (i + 1 < argc) {
+                i++;
+                if (body_arg != NULL) {
+                    printf("Error: Multiple -d arguments are not supported\r\n");
+                    goto parse_error_curl;
+                }
+                body_arg = strdup(argv[i]);
+                if (!body_arg) {
+                    printf("Error: Cannot allocate memory for request body\r\n");
+                    goto parse_error_curl;
+                }
+                method_arg = "POST";
+            } else {
+                printf("Error: -d requires an argument\r\n");
+                goto parse_error_curl;
+            }
+        } else {
+            char *endptr;
+            long val = strtol(argv[i], &endptr, 10);
+            if (*endptr == '\0' && argv[i][0] != '\0' && val > 0) {
+                timeout_arg = (int)val;
+            } else if (url_arg == NULL) {
+                url_arg = strdup(argv[i]);
+                if (!url_arg) {
+                    printf("Error: Cannot allocate memory for URL\r\n");
+                    goto parse_error_curl;
+                }
+            } else {
+                printf("Error: Unknown argument or URL already set: %s\r\n", argv[i]);
+                goto parse_error_curl;
+            }
+        }
+    }
+
+    if (url_arg == NULL) {
+        printf("Error: URL is required\r\n");
+        goto parse_error_curl;
+    }
+
+    params->url = url_arg;
+    params->method = method_arg;
+    if (headers_current_len > 0) {
+        params->headers = headers_arg;
+    } else {
+        free(headers_arg);
+        params->headers = NULL;
+        headers_arg = NULL;
+    }
+    params->body = body_arg;
+    params->content_type = content_type_arg;
+    params->timeout_ms = timeout_arg;
+
+    BaseType_t task_ret = xTaskCreate(curl_task,
+                                      "curl_task",
+                                      TASK_STACK_SIZE_NET,
+                                      params,
+                                      10,
+                                      NULL);
+
+    if (task_ret != pdPASS) {
+        printf("Error: Failed to create curl task (ret=%ld)\r\n", task_ret);
+        if (params) {
+            if (params->url)
+                free(params->url);
+            if (params->headers)
+                free(params->headers);
+            if (params->body)
+                free(params->body);
+            free(params);
+        }
+        return -1;
+    }
+
+    printf("Curl task created for %s. Check logs for progress...\r\n", url_arg);
+    return 0;
+
+parse_error_curl:
+    printf("Cleaning up due to parsing error...\r\n");
+    if (url_arg)
+        free(url_arg);
+    if (headers_arg)
+        free(headers_arg);
+    if (body_arg)
+        free(body_arg);
+    if (params)
+        free(params);
+    return -1;
+}
+
+// Shell 命令：调用 Chat 聊天
+static int cmd_simpleopenapi_chat(int argc, char **argv)
+{
+    if (argc < 2) {
+        printf("Usage: chat <user_message>\r\n");
+        return -1;
+    }
+    size_t total_len = 0;
+    for (int i = 1; i < argc; i++)
+        total_len += strlen(argv[i]) + 1;
+    if (total_len == 0)
+        return -1;
+    char *full_message = malloc(total_len);
+    if (!full_message)
+        return -1;
+    full_message[0] = '\0';
+    for (int i = 1; i < argc; i++) {
+        strcat(full_message, argv[i]);
+        if (i < argc - 1)
+            strcat(full_message, " ");
+    }
+    int ret = simple_openapi_chat_async(full_message);
+    free(full_message);
+    if (ret != 0) {
+        printf("Error: Failed to initiate Chat request (Error code: %d)\r\n", ret);
+        return -1;
+    }
+    printf("Chat request initiated. Check logs for response...\r\n");
+    return 0;
+}
+
+// --- 新增: ES8388 音频控制 Shell 命令 ---
+
+/**
+ * @brief Shell command to initialize and start ES8388 audio capture.
+ */
+static int cmd_audio_start(int argc, char **argv)
+{
+    LOG_I("Attempting to initialize and start audio capture...\r\n");
+
+    // 获取当前状态，避免重复初始化或启动
+    audio_module_state_t current_state = es8388_audio_get_state();
+
+    if (current_state == AUDIO_STATE_UNINITIALIZED) {
+        if (es8388_audio_init() != 0) {
+            LOG_E("ES8388 audio initialization failed.\r\n");
+            return -1;
+        }
+        LOG_I("ES8388 audio module initialized.\r\n");
+    } else if (current_state == AUDIO_STATE_CAPTURING) {
+        LOG_W("Audio capture is already active.\r\n");
+        return 0;
+    }
+    // 如果是 AUDIO_STATE_INITIALIZED 状态，则直接尝试启动
+
+    if (es8388_audio_start_capture() != 0) {
+        LOG_E("Failed to start ES8388 audio capture.\r\n");
+        return -2; // 使用不同的错误码以便区分
+    }
+    LOG_I("ES8388 audio capture started.\r\n");
+    return 0;
+}
+
+/**
+ * @brief Shell command to stop ES8388 audio capture and deinitialize the module.
+ */
+static int cmd_audio_stop(int argc, char **argv)
+{
+    LOG_I("Attempting to stop audio capture and deinitialize module...\r\n");
+
+    audio_module_state_t current_state = es8388_audio_get_state();
+
+    if (current_state == AUDIO_STATE_CAPTURING) {
+        if (es8388_audio_stop_capture() != 0) {
+            LOG_E("Failed to stop ES8388 audio capture, but will attempt deinit.\r\n");
+            // 即使停止失败，也尝试反初始化
+        } else {
+            LOG_I("ES8388 audio capture stopped.\r\n");
+        }
+    } else if (current_state == AUDIO_STATE_UNINITIALIZED) {
+        LOG_W("Audio module is not initialized or already deinitialized.\r\n");
+        return 0; // 无需操作
+    } else {
+        LOG_I("Audio capture was not active, proceeding to deinit.\r\n");
+    }
+
+    es8388_audio_deinit(); // 清理资源
+    LOG_I("ES8388 audio module deinitialized.\r\n");
+    return 0;
+}
+
+/**
+ * @brief Shell command to get a chunk of audio data (for testing).
+ */
+static int cmd_audio_get_data(int argc, char **argv)
+{
+#define TEMP_AUDIO_CHUNK_SIZE 1024 // 定义一个临时缓冲区大小用于测试
+    static uint8_t temp_audio_buffer[TEMP_AUDIO_CHUNK_SIZE];
+    uint32_t data_len = 0;
+
+    LOG_I("Attempting to get audio data...\r\n");
+    if (es8388_audio_get_state() != AUDIO_STATE_CAPTURING) {
+        LOG_E("Audio capture is not active. Start capture first with 'audio_start'.\r\n");
+        return -1;
+    }
+    TickType_t get_data_timeout = pdMS_TO_TICKS(1000); // 或者给1秒的富余，等待DMA填充完毕
+    int ret = es8388_audio_get_data(temp_audio_buffer, TEMP_AUDIO_CHUNK_SIZE, &data_len, get_data_timeout);
+    if (ret == 0 && data_len > 0) {
+        LOG_I("Successfully retrieved %lu bytes of audio data.\r\n", data_len);
+        // 为简单起见，这里只打印前几个字节作为示例
+        // 注意：直接打印二进制音频数据到控制台可能不可读
+        printf("First few bytes (hex): ");
+        for (int i = 0; i < 16 && i < data_len; i++) {
+            printf("%02X ", temp_audio_buffer[i]);
+        }
+        printf("\r\n");
+    } else if (ret == -3) {
+        LOG_W("Audio data not ready yet (DMA transfer might be ongoing).\r\n");
+    } else {
+        LOG_E("Failed to get audio data, error code: %d, data_len: %lu\r\n", ret, data_len);
+    }
+    return ret;
+}
+
+// 配置接收端 PC 的 IP 地址和端口
+#define LAN_PCM_SERVER_IP            "10.0.0.2" // <<--- 【已更新为您日志中提供的IP地址】
+#define LAN_PCM_SERVER_PORT          8000
+#define LAN_PCM_SERVER_PATH          "/api/v1/asr/stream" // 与Python服务器脚本中的 UPLOAD_PATH 一致
+
+// 定义发送时单次从音频驱动获取的数据块大小
+#define LAN_AUDIO_FETCH_CHUNK_SIZE   (32000)
+#define DEFAULT_AUDIO_CHUNKS_TO_SEND 30 // 默认发送30个数据块 (约 15 秒音频: 30 * 0.5s)
+
+static uint8_t lan_audio_chunk_buffer[LAN_AUDIO_FETCH_CHUNK_SIZE];
+// --- 新增: 为 multipart/form-data 请求体创建一个更大的缓冲区 ---
+// 需要容纳音频数据本身 + 所有 multipart 头部信息（大约需要额外300-400字节）
+#define LAN_MULTIPART_BODY_BUFFER_SIZE (LAN_AUDIO_FETCH_CHUNK_SIZE + 512)
+static uint8_t multipart_body_buffer[LAN_MULTIPART_BODY_BUFFER_SIZE];
+/**
+ * @brief Shell command to send multiple chunks of captured audio data to a LAN server.
+ * [全新方案] 将 session_id 放在 URL 中，请求体为原始二进制流。
+ * Usage: send_audio_lan [num_chunks]
+ */
+static int cmd_send_audio_lan(int argc, char **argv)
+{
+    if (es8388_audio_get_state() != AUDIO_STATE_CAPTURING) {
+        LOG_E("音频未在采集中，请先运行 'audio_start' 命令。\r\n");
+        return -1;
+    }
+
+    int num_chunks_to_send = DEFAULT_AUDIO_CHUNKS_TO_SEND;
+    if (argc > 1) {
+        int arg_chunks = atoi(argv[1]);
+        if (arg_chunks > 0) {
+            num_chunks_to_send = arg_chunks;
+        }
+    }
+    LOG_I("准备发送 %d 个音频数据块 (每块 %d 字节)。\r\n", num_chunks_to_send, LAN_AUDIO_FETCH_CHUNK_SIZE);
+
+    // 1. 生成本次流式会话的 session_id
+    char session_id_str[24];
+    snprintf(session_id_str, sizeof(session_id_str), "%llu", bflb_mtimer_get_time_us());
+    LOG_I("本次会话 Session ID: %s\r\n", session_id_str);
+
+    // ★★★★★【核心修改】★★★★★
+    // 2. 将 session_id 拼接到 URL 路径的末尾
+    char server_url[128];
+    snprintf(server_url, sizeof(server_url), "http://%s:%d%s/%s",
+             LAN_PCM_SERVER_IP, LAN_PCM_SERVER_PORT, LAN_PCM_SERVER_PATH, session_id_str);
+    LOG_I("目标服务器 URL: %s\r\n", server_url);
+
+    uint32_t fetched_data_len = 0;
+    int audio_ret = -1;
+    int successfully_sent_chunks = 0;
+
+    for (int i = 0; i < num_chunks_to_send; i++) {
+        LOG_I("正在准备第 %d/%d 个数据块...\r\n", i + 1, num_chunks_to_send);
+        TickType_t get_data_timeout = pdMS_TO_TICKS(1000);
+        audio_ret = es8388_audio_get_data(lan_audio_chunk_buffer, LAN_AUDIO_FETCH_CHUNK_SIZE, &fetched_data_len, get_data_timeout);
+
+        if (audio_ret != 0 || fetched_data_len == 0) {
+            LOG_E("获取音频数据失败 (返回: %d)。\r\n", audio_ret);
+            if (i == 0)
+                return -2;
+            goto send_summary_lan_v2;
+        }
+
+        // 3. ★恢复到最原始的 RequestOptions★，不再需要任何复杂的头部和body拼接！
+        RequestOptions opts = {
+            .method = "POST",
+            .url = server_url,
+            .custom_headers = "Connection: Keep-Alive\r\n", // 可以保留，或设为 NULL
+            .content_type = "application/octet-stream",     // 发送原始二进制流
+            .request_body = (const char *)lan_audio_chunk_buffer,
+            .body_len = fetched_data_len,
+            .timeout_ms = 10000
+        };
+
+        uint8_t http_resp_buf[256];
+        Response http_resp_data = { .response_buf = http_resp_buf, .response_buf_len = sizeof(http_resp_buf) };
+
+        LOG_I("正在发送第 %d/%d 个数据块 (%lu 字节) 到 %s...\r\n", i + 1, num_chunks_to_send, fetched_data_len, server_url);
+        int send_status = send_request(&opts, &http_resp_data);
+
+        if (send_status >= 200 && send_status < 300) {
+            LOG_I("第 %d/%d 个数据块发送成功。HTTP 状态码: %d。\r\n", i + 1, num_chunks_to_send, send_status);
+            if (http_resp_data.actual_resp_len > 0) {
+                LOG_I("服务器响应: %.*s\r\n", http_resp_data.actual_resp_len, http_resp_data.response_buf);
+            }
+            successfully_sent_chunks++;
+        } else {
+            LOG_E("第 %d/%d 个数据块发送失败。send_request 返回: %d\r\n", i + 1, num_chunks_to_send, send_status);
+            goto send_summary_lan_v2;
+        }
+    }
+
+send_summary_lan_v2:
+    LOG_I("发送总结：总共尝试发送 %d 个数据块，成功发送 %d 个。\r\n", num_chunks_to_send, successfully_sent_chunks);
+    return 0;
+}
+
+static int cmd_robot_start(int argc, char **argv)
+{
+    printf("Command: robot_start\r\n");
+
+    // 步骤 1: 启动音频采集 (由“专人”负责)
+    // 检查是否已经初始化，避免重复操作
+    if (es8388_audio_get_state() == AUDIO_STATE_UNINITIALIZED) {
+        printf("Audio not initialized. Initializing...\r\n");
+        if (es8388_audio_init() != 0) {
+            printf("Error: Audio module initialization failed.\r\n");
+            return -1;
+        }
+    }
+    if (es8388_audio_get_state() != AUDIO_STATE_CAPTURING) {
+        printf("Audio not capturing. Starting capture...\r\n");
+        if (es8388_audio_start_capture() != 0) {
+            printf("Error: Failed to start audio capture.\r\n");
+            return -2;
+        }
+    }
+    printf("Audio system is ready.\r\n");
+
+    // 步骤 2: 调用我们新的MQTT会话启动函数
+    printf("Starting MQTT session task...\r\n");
+    robot_session_start();
+
+    return 0;
+}
+
+// Shell 命令注册
+SHELL_CMD_EXPORT_ALIAS(cmd_greet, greet, Greet the user : greet[name]);
+SHELL_CMD_EXPORT_ALIAS(cmd_robot_action, action, Robot action : action<move | turn | dance>[value]);
+SHELL_CMD_EXPORT_ALIAS(cmd_test_http_get, test_http_get, Test HTTP GET to httpbin.org / get);
+SHELL_CMD_EXPORT_ALIAS(cmd_test_https_get, test_https_get, Test HTTPS GET to httpbin.org / get);
+SHELL_CMD_EXPORT_ALIAS(cmd_test_http_post, test_http_post, Test HTTP POST to httpbin.org / post);
+SHELL_CMD_EXPORT_ALIAS(cmd_test_https_post, test_https_post, Test HTTPS POST to httpbin.org / post);
+SHELL_CMD_EXPORT_ALIAS(cmd_test_url_parse, test_parseurl, Test the URL parser : test_parseurl<url>);
+SHELL_CMD_EXPORT_ALIAS(cmd_chinese_test, test_chinese, Test Chinese output : test_chinese);
+SHELL_CMD_EXPORT_ALIAS(cmd_curl, curl, "Simple curl: curl <URL> [-H H:V] [-d 'data'] [timeout]");
+SHELL_CMD_EXPORT_ALIAS(cmd_simpleopenapi_chat, chat, Send message to Chat API : chat<message>);
+SHELL_CMD_EXPORT_ALIAS(cmd_audio_start, audio_start, Initialize and start ES8388 audio capture);
+SHELL_CMD_EXPORT_ALIAS(cmd_audio_stop, audio_stop, Stop ES8388 audio capture and deinitialize);
+SHELL_CMD_EXPORT_ALIAS(cmd_audio_get_data, audio_get, Get a chunk of captured audio data (for testing));
+SHELL_CMD_EXPORT_ALIAS(cmd_send_audio_lan, send_audio_lan, Send audio to LAN.Usage : send_audio_lan[num_chunks]);
+SHELL_CMD_EXPORT_ALIAS(cmd_robot_start, robot_start, Start the main conversation loop of the robot);
+#endif
+--- END OF FILE modules/cli_cmds/src/my_cli_cmds.c ---
+
+
+--- START OF FILE /home/cagedbird/Projects/asr_go_service/main.go ---
+
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"os/exec"
+	"strings"
+	"sync"
+	"time"
+
+	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"github.com/google/uuid"
+	"github.com/gorilla/websocket"
+)
+
+// --- 配置常量 ---
+const (
+	mqttBroker          = "tcp://localhost:1883"
+	pythonLLMServiceURL = "http://localhost:8000/chat"
+	wsURL               = "wss://dashscope.aliyuncs.com/api-ws/v1/inference"
+	cloudVadTimeout     = 5 * time.Second
+)
+
+// --- MQTT 主题 (Topics) ---
+const (
+	topicAudioStream         = "robot/audio/stream/+"
+	topicControlPrefix       = "robot/control/"
+	topicResultPrefix        = "robot/result/"
+	topicAudioResponsePrefix = "robot/audio/response/"
+)
+
+// -- run-task 指令的数据结构 --
+type ASRRequestHeader struct {
+	Action    string `json:"action"`
+	TaskID    string `json:"task_id"`
+	Streaming string `json:"streaming"`
+}
+
+type ASRRequestParameters struct {
+	Format                     string `json:"format"`
+	SampleRate                 int    `json:"sample_rate"`
+	SemanticPunctuationEnabled bool   `json:"semantic_punctuation_enabled"` // 开启云端智能断句
+}
+
+type ASRRequestPayload struct {
+	TaskGroup  string                 `json:"task_group"`
+	Task       string                 `json:"task"`
+	Function   string                 `json:"function"`
+	Model      string                 `json:"model"`
+	Parameters ASRRequestParameters   `json:"parameters"`
+	Input      map[string]interface{} `json:"input"`
+}
+
+type ASRRequestEvent struct {
+	Header  ASRRequestHeader  `json:"header"`
+	Payload ASRRequestPayload `json:"payload"`
+}
+
+// -- 服务端事件的数据结构 (完全参照文档重写) --
+type ResponseHeader struct {
+	TaskID       string `json:"task_id"`
+	Event        string `json:"event"`
+	ErrorCode    string `json:"error_code,omitempty"`
+	ErrorMessage string `json:"error_message,omitempty"`
+}
+
+type Sentence struct {
+	BeginTime   int    `json:"begin_time"`
+	EndTime     int    `json:"end_time"` // 在中间结果中为 null，Go的json库会自动处理
+	Text        string `json:"text"`
+	SentenceEnd bool   `json:"sentence_end"` // 这才是我们需要的、最关键的信号！
+}
+
+type Output struct {
+	Sentence Sentence `json:"sentence"`
+}
+
+type ResponsePayload struct {
+	Output Output `json:"output"`
+}
+
+type ResponseEvent struct {
+	Header  ResponseHeader  `json:"header"`
+	Payload ResponsePayload `json:"payload"`
+}
+
+// -- 其他辅助结构体 --
+type ChatRequest struct {
+	UserMessage string `json:"user_message"`
+}
+
+type ChatResponse struct {
+	AIResponse string `json:"ai_response"`
+}
+
+// --- 会话状态管理 ---
+type SessionState struct {
+	SessionID    string
+	pcmChannel   chan []byte
+	stopChannel  chan bool
+	finalASRText string
+	mu           sync.RWMutex
+}
+
+var sessions = make(map[string]*SessionState)
+var sessionsMu sync.Mutex
+var mqttClient mqtt.Client
+
+// logf: 一个带会话ID的日志打印函数
+func logf(sessionID, format string, a ...interface{}) {
+	log.Printf("[%s] %s", sessionID, fmt.Sprintf(format, a...))
+}
+
+// onMessageReceived: 所有MQTT消息的统一入口
+func onMessageReceived(client mqtt.Client, msg mqtt.Message) {
+	topic := msg.Topic()
+	payload := msg.Payload()
+
+	if strings.HasPrefix(topic, "robot/audio/stream/") {
+		parts := strings.Split(topic, "/")
+		if len(parts) != 4 {
+			return
+		}
+		sessionID := parts[3]
+
+		sessionsMu.Lock()
+		session, ok := sessions[sessionID]
+		if !ok {
+			session = &SessionState{
+				SessionID:   sessionID,
+				pcmChannel:  make(chan []byte, 100),
+				stopChannel: make(chan bool, 1),
+			}
+			sessions[sessionID] = session
+			go sessionWorker(session)
+			logf(sessionID, "New session started by first audio packet.")
+		}
+		sessionsMu.Unlock()
+
+		select {
+		case session.pcmChannel <- payload:
+		default:
+			logf(sessionID, "WARN: PCM channel is full. Discarding audio packet.")
+		}
+	}
+}
+
+const asrTurnTimeout = 4 * time.Second // 在最后一句话结束后，如果2秒没新话，就结束这一轮
+
+// main.go
+
+// ========================================================================================================
+// ★★★ sessionWorker V5.0 - The Ultimate Simplification (Pure 8kHz Mono Pipeline) ★★★
+// ========================================================================================================
+func sessionWorker(s *SessionState) {
+	sessionID := s.SessionID
+	logf(sessionID, "Worker started for turn (V5.0 Mono Pipeline).")
+	defer func() {
+		sessionsMu.Lock()
+		delete(sessions, sessionID)
+		sessionsMu.Unlock()
+		logf(sessionID, "Worker for turn finished and cleaned up.")
+	}()
+
+	// 1. --- 连接阿里云ASR WebSocket (逻辑不变) ---
+	apiKey := os.Getenv("DASHSCOPE_API_KEY")
+	header := http.Header{
+		"Authorization": {"Bearer " + apiKey},
+	}
+	conn, _, err := websocket.DefaultDialer.Dial(wsURL, header)
+	if err != nil {
+		logf(sessionID, "ERROR: Failed to connect to WebSocket: %v", err)
+		return
+	}
+	defer conn.Close()
+	logf(sessionID, "Connected to WebSocket.")
+
+	// 2. --- 并发处理ASR返回结果 (逻辑不变) ---
+	taskStarted := make(chan bool, 1)
+	var asrWg sync.WaitGroup
+	asrWg.Add(1)
+
+	doneChan := make(chan struct{})
+	var closeOnce sync.Once
+
+	go func() {
+		defer asrWg.Done()
+
+		// 这个超时逻辑依然重要，用于检测用户是否停止说话
+		turnTimer := time.NewTimer(asrTurnTimeout * 2)
+		defer turnTimer.Stop()
+
+		go func() {
+			<-turnTimer.C
+			logf(sessionID, "ASR turn ended (no new speech for %v).", asrTurnTimeout)
+			closeOnce.Do(func() { close(doneChan) })
+		}()
+
+		var completeSentences []string
+		var currentSentence string
+
+		for {
+			_, message, err := conn.ReadMessage()
+			if err != nil {
+				return
+			}
+
+			var resp ResponseEvent
+			if err := json.Unmarshal(message, &resp); err != nil {
+				continue
+			}
+
+			switch resp.Header.Event {
+			case "task-started":
+				taskStarted <- true
+			case "result-generated":
+				newText := resp.Payload.Output.Sentence.Text
+				if newText == "" {
+					continue
+				}
+				turnTimer.Reset(asrTurnTimeout)
+				if resp.Payload.Output.Sentence.SentenceEnd {
+					completeSentences = append(completeSentences, newText)
+					currentSentence = ""
+				} else {
+					currentSentence = newText
+				}
+				fullText := strings.Join(completeSentences, "") + currentSentence
+				logf(sessionID, "ASR intermediate result: '%s'", fullText)
+				s.mu.Lock()
+				s.finalASRText = fullText
+				s.mu.Unlock()
+			case "task-finished", "task-failed":
+				logf(sessionID, "ASR task ended (event: %s, msg: %s)", resp.Header.Event, resp.Header.ErrorMessage)
+				closeOnce.Do(func() { close(doneChan) })
+				return
+			}
+		}
+	}()
+
+	// 3. --- 发送ASR启动指令 (★核心修改：采样率改为8000★) ---
+	taskID := uuid.New().String()
+	runTaskCmd := ASRRequestEvent{
+		Header: ASRRequestHeader{Action: "run-task", TaskID: taskID, Streaming: "duplex"},
+		Payload: ASRRequestPayload{
+			TaskGroup: "audio",
+			Task:      "asr",
+			Function:  "recognition",
+			Model:     "paraformer-realtime-v2",
+			Parameters: ASRRequestParameters{
+				Format: "pcm",
+				// ★★★ 核心修改：明确告诉云端，我们发送的是8kHz的音频！ ★★★
+				SampleRate:                 8000,
+				SemanticPunctuationEnabled: true,
+			},
+			Input: make(map[string]interface{}),
+		},
+	}
+	if err := conn.WriteJSON(runTaskCmd); err != nil {
+		logf(sessionID, "ERROR: Failed to send run-task command: %v", err)
+		return
+	}
+
+	select {
+	case <-taskStarted:
+		logf(sessionID, "ASR task started successfully. Now processing audio stream.")
+	case <-time.After(10 * time.Second):
+		logf(sessionID, "ERROR: Timeout waiting for task-started event.")
+		return
+	}
+
+	// 4. --- ★★★ 主循环：接收并转发单声道音频 (彻底简化！) ★★★ ---
+mainLoop:
+	for {
+		select {
+		case pcmMono, ok := <-s.pcmChannel: // 从MQTT收到的已经是纯净的8kHz单声道数据
+			if !ok {
+				break mainLoop
+			}
+
+			// ★★★ 不再需要任何“双转单”处理！直接转发！ ★★★
+			if err := conn.WriteMessage(websocket.BinaryMessage, pcmMono); err != nil {
+				logf(sessionID, "ERROR: Failed to write mono pcm to websocket: %v", err)
+				break mainLoop
+			}
+
+		case <-doneChan: // 当ASR子协程检测到超时或结束时，退出主循环
+			break mainLoop
+		}
+	}
+
+	// 5. --- 结束ASR任务 & 获取最终结果 (逻辑不变) ---
+	logf(sessionID, "Audio processing finished.")
+	time.Sleep(200 * time.Millisecond) // 等待一下，确保最后的音频包发送完毕
+	finishTaskCmd := ASRRequestEvent{
+		Header:  ASRRequestHeader{Action: "finish-task", TaskID: taskID, Streaming: "duplex"},
+		Payload: ASRRequestPayload{Input: make(map[string]interface{})},
+	}
+	conn.WriteJSON(finishTaskCmd)
+	asrWg.Wait() // 等待ASR协程完全退出
+	s.mu.RLock()
+	finalText := s.finalASRText
+	s.mu.RUnlock()
+
+	if finalText == "" {
+		logf(sessionID, "WARN: Final ASR text is empty. This was a silent turn. Publishing 'go_ahead' to client to re-enable mic.")
+		mqttClient.Publish(topicControlPrefix+sessionID, 0, false, "{\"action\":\"play_finished_go_ahead\"}")
+		return
+	}
+
+	// 6. --- 调用LLM (逻辑不变) ---
+	logf(sessionID, "Final ASR Text: '%s'. Calling LLM...", finalText)
+	llmReqPayload := map[string]string{"user_message": finalText}
+	llmReqBody, _ := json.Marshal(llmReqPayload)
+	llmClient := &http.Client{Timeout: 60 * time.Second}
+	llmReq, _ := http.NewRequest("POST", pythonLLMServiceURL, bytes.NewBuffer(llmReqBody))
+	llmReq.Header.Set("Content-Type", "application/json")
+	llmReq.Header.Set("X-API-Key", "testkey1")
+	llmResp, err := llmClient.Do(llmReq)
+
+	if err != nil {
+		logf(sessionID, "ERROR: Calling Python LLM failed: %v", err)
+	} else {
+		defer llmResp.Body.Close()
+		var pyResp ChatResponse
+		if llmResp.StatusCode == http.StatusOK && json.NewDecoder(llmResp.Body).Decode(&pyResp) == nil {
+			llmText := pyResp.AIResponse
+			logf(sessionID, "LLM response received: '%s'.", llmText)
+
+			// 7. --- ★★★ 调用TTS并发送单声道音频 (彻底简化！) ★★★ ---
+			logf(sessionID, "Publishing text result to debug topic...")
+			mqttClient.Publish(topicResultPrefix+sessionID, 0, false, []byte(llmText))
+
+			logf(sessionID, "Calling TTS service to generate 8kHz mono audio...")
+			audioData, err := textToSpeech(llmText) // textToSpeech 内部已配置为生成8k单声道
+
+			if err != nil {
+				logf(sessionID, "ERROR: TTS service failed: %v", err)
+			} else {
+				logf(sessionID, "Received %d bytes of 8kHz mono TTS audio.", len(audioData))
+
+				logf(sessionID, "Commanding client to prepare for playback...")
+				mqttClient.Publish(topicControlPrefix+sessionID, 0, false, "{\"action\":\"prepare_to_play\"}")
+				time.Sleep(100 * time.Millisecond)
+
+				logf(sessionID, "Publishing audio chunks...")
+				const audioChunkSize = 2048 // 我们可以用一个更小的块大小
+
+				// ★★★ 不再需要任何“单转双”处理！直接发送audioData！ ★★★
+				for i := 0; i < len(audioData); i += audioChunkSize {
+					end := i + audioChunkSize
+					if end > len(audioData) {
+						end = len(audioData)
+					}
+					chunk := audioData[i:end]
+					mqttClient.Publish(topicAudioResponsePrefix+sessionID, 0, false, chunk)
+
+					// ★★★ 核心修改：基于8kHz单声道计算流控延时 ★★★
+					// 我们的I2S引擎采样率是8000Hz, 每个采样点是单声道16-bit, 即2字节。
+					// 所以每秒消耗的字节数是 8000 * 2 = 16000 字节。
+					// 换算成毫秒 = (len(chunk) * 1000) / 16000
+					sleepMillis := (len(chunk) * 1000) / (8000 * 2)
+					time.Sleep(time.Duration(sleepMillis) * time.Millisecond)
+				}
+
+				logf(sessionID, "All audio chunks sent. Commanding client to resume recording...")
+				mqttClient.Publish(topicControlPrefix+sessionID, 0, false, "{\"action\":\"play_finished_go_ahead\"}")
+			}
+		} else {
+			bodyBytes, _ := io.ReadAll(llmResp.Body)
+			logf(sessionID, "ERROR: LLM returned non-200 status (%d) or bad JSON. Body: %s", llmResp.StatusCode, string(bodyBytes))
+		}
+	}
+}
+
+// --- Main Function ---
+func main() {
+	if os.Getenv("DASHSCOPE_API_KEY") == "" {
+		log.Fatal("ERROR: Environment variable DASHSCOPE_API_KEY is not set!")
+	}
+	if _, err := exec.LookPath("ffmpeg"); err != nil {
+		log.Fatal("ERROR: ffmpeg command not found in system PATH!")
+	}
+
+	opts := mqtt.NewClientOptions().AddBroker(mqttBroker).SetClientID("go_asr_gateway")
+	opts.SetDefaultPublishHandler(onMessageReceived)
+
+	mqttClient = mqtt.NewClient(opts)
+	if token := mqttClient.Connect(); token.Wait() && token.Error() != nil {
+		log.Fatalf("ERROR: Failed to connect to MQTT broker: %v", token.Error())
+	}
+
+	if token := mqttClient.Subscribe(topicAudioStream, 1, nil); token.Wait() && token.Error() != nil {
+		log.Fatalf("ERROR: Failed to subscribe to topic '%s': %v", topicAudioStream, token.Error())
+	}
+
+	log.Println("Go MQTT Gateway is ready.")
+	log.Printf("Connected to MQTT broker at %s", mqttBroker)
+	log.Printf("Subscribed to audio topic: %s", topicAudioStream)
+
+	select {}
+}
+
+--- END OF FILE /home/cagedbird/Projects/asr_go_service/main.go ---
+
+
+--- START OF FILE /home/cagedbird/Projects/asr_go_service/tts_service.go ---
+
+// 文件: tts_service.go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+
+	"github.com/google/uuid"
+	"github.com/gorilla/websocket"
+)
+
+// WebSocket URL保持不变
+const ttsWsURL = "wss://dashscope.aliyuncs.com/api-ws/v1/inference"
+
+// --- 数据结构 (保持不变) ---
+type TTSHeader struct {
+	Action    string `json:"action"`
+	TaskID    string `json:"task_id"`
+	Streaming string `json:"streaming"`
+	Event     string `json:"event,omitempty"`
+}
+
+type TTSParameters struct {
+	Voice      string `json:"voice"`
+	Format     string `json:"format"`
+	SampleRate int    `json:"sample_rate"`
+}
+
+type TTSInput struct {
+	Text string `json:"text"`
+}
+
+type TTSPayload struct {
+	TaskGroup  string         `json:"task_group,omitempty"`
+	Task       string         `json:"task,omitempty"`
+	Function   string         `json:"function,omitempty"`
+	Model      string         `json:"model,omitempty"`
+	Parameters *TTSParameters `json:"parameters,omitempty"`
+	Input      *TTSInput      `json:"input,omitempty"`
+}
+
+type TTSRequest struct {
+	Header  TTSHeader   `json:"header"`
+	Payload *TTSPayload `json:"payload"`
+}
+
+type TTSResponseEvent struct {
+	Header TTSHeader `json:"header"`
+}
+
+// --- 核心函数 (这是我们唯一需要对外暴露的函数) ---
+func textToSpeech(textToSynthesize string) ([]byte, error) {
+	apiKey := os.Getenv("DASHSCOPE_API_KEY")
+	if apiKey == "" {
+		return nil, fmt.Errorf("DASHSCOPE_API_KEY environment variable not set")
+	}
+
+	header := http.Header{"Authorization": {"Bearer " + apiKey}}
+	conn, _, err := websocket.DefaultDialer.Dial(ttsWsURL, header)
+	if err != nil {
+		return nil, fmt.Errorf("failed to dial TTS websocket: %v", err)
+	}
+	defer conn.Close()
+
+	taskID := uuid.New().String()
+	// ★★★ 核心修改：调整参数以匹配单片机的能力 ★★★
+	runTaskCmd := TTSRequest{
+		Header: TTSHeader{Action: "run-task", TaskID: taskID, Streaming: "duplex"},
+		Payload: &TTSPayload{
+			TaskGroup: "audio",
+			Task:      "tts",
+			Function:  "SpeechSynthesizer",
+			Model:     "cosyvoice-v2",
+			Parameters: &TTSParameters{
+				Voice:      "longxiaochun_v2",
+				Format:     "pcm", // 输出PCM，让单片机直接播放
+				SampleRate: 8000, // 必须和单片机的I2S采样率一致
+			},
+			Input: &TTSInput{},
+		},
+	}
+	if err := conn.WriteJSON(runTaskCmd); err != nil {
+		return nil, fmt.Errorf("failed to send TTS run-task: %v", err)
+	}
+
+	// 等待 task-started
+	var taskStarted bool
+	for i := 0; i < 5; i++ {
+		_, message, err := conn.ReadMessage()
+		if err != nil {
+			return nil, fmt.Errorf("error waiting for TTS task-started: %v", err)
+		}
+		var resp TTSResponseEvent
+		if err := json.Unmarshal(message, &resp); err == nil && resp.Header.Event == "task-started" {
+			taskStarted = true
+			break
+		}
+	}
+	if !taskStarted {
+		return nil, fmt.Errorf("did not receive TTS task-started event")
+	}
+
+	// 发送文本
+	continueCmd := TTSRequest{
+		Header:  TTSHeader{Action: "continue-task", TaskID: taskID, Streaming: "duplex"},
+		Payload: &TTSPayload{Input: &TTSInput{Text: textToSynthesize}},
+	}
+	if err := conn.WriteJSON(continueCmd); err != nil {
+		return nil, fmt.Errorf("failed to send TTS continue-task: %v", err)
+	}
+
+	// 发送结束信号
+	finishCmd := TTSRequest{
+		Header:  TTSHeader{Action: "finish-task", TaskID: taskID, Streaming: "duplex"},
+		Payload: &TTSPayload{Input: &TTSInput{}},
+	}
+	if err := conn.WriteJSON(finishCmd); err != nil {
+		return nil, fmt.Errorf("failed to send TTS finish-task: %v", err)
+	}
+
+	// 接收所有音频数据
+	var audioBuffer bytes.Buffer
+	for {
+		msgType, message, err := conn.ReadMessage()
+		if err != nil {
+			if websocket.IsCloseError(err, websocket.CloseNormalClosure) {
+				break
+			}
+			return nil, fmt.Errorf("error reading TTS message: %v", err)
+		}
+		if msgType == websocket.BinaryMessage {
+			audioBuffer.Write(message)
+		} else if msgType == websocket.TextMessage {
+			var resp TTSResponseEvent
+			json.Unmarshal(message, &resp)
+			if resp.Header.Event == "task-finished" {
+				break
+			}
+			if resp.Header.Event == "task-failed" {
+				return nil, fmt.Errorf("TTS task failed: %s", message)
+			}
+		}
+	}
+
+	return audioBuffer.Bytes(), nil
+}
+
+// ★★★ 核心修改：删除了原来的 main 函数 ★★★
+
+// --------------------------------------------------------------------------------
+
+// 	Main 函数 (用于独立测试)
+
+// ----------------------------------------------------------------------
+// func main() {
+// 	log.Println("Starting TTS standalone test...")
+
+// 	// 你可以修改这里的文本来测试不同的内容
+// 	testText := "你好，世界。我是一个语音合成程序，正在测试我的发音是否标准。"
+
+// 	log.Printf("Synthesizing text: \"%s\"\n", testText)
+
+// 	// 调用核心逻辑
+// 	audioData, err := textToSpeech(testText)
+// 	if err != nil {
+// 		log.Fatalf("textToSpeech failed: %v", err)
+// 	}
+// 	outputFile := "output_audio.pcm"
+// 	// 将返回的音频数据写入文件
+// 	err = os.WriteFile(outputFile, audioData, 0644)
+// 	if err != nil {
+// 		log.Fatalf("Failed to write to output file '%s': %v", outputFile, err)
+// 	}
+
+// 	log.Printf("Successfully synthesized audio and saved to %s (%d bytes).\n", outputFile, len(audioData))
+// }
+
+--- END OF FILE /home/cagedbird/Projects/asr_go_service/tts_service.go ---
+
+
+--- START OF FILE /home/cagedbird/Projects/langchain_bl618/src/api/server.py ---
+
+import os
+import sys
+import logging
+import time
+import json
+import dashscope
+import redis
+from typing import Dict, Any, List, Optional, Tuple, cast
+
+# FastAPI and BackgroundTasks
+from fastapi import FastAPI, HTTPException, Depends, status, BackgroundTasks
+
+# --- DashScope SDK and CORRECT Exceptions ---
+from dashscope import Threads, Messages, Runs, Assistants, Run
+from dashscope.common.error import (DashScopeException, RequestFailure, AuthenticationError, InvalidParameter, TimeoutException,
+                                    ServiceUnavailableError, AssistantError)
+import redis.exceptions  # Import Redis exceptions
+
+# Project Modules
+try:
+    from api.models import ChatRequest, ChatResponse
+    from api.auth import verify_api_key
+    from config.config_manager import ConfigManager
+    from infra.chroma_memory import create_chroma_memory_repo, ChromaMemoryRepo
+except ImportError as e:
+    print(f"Error importing modules: {e}")
+    print("Please ensure 'api', 'config', and 'infra' modules (including chroma_memory) are accessible.")
+    sys.exit(1)
+
+# --- 新增导入 ---
+import datetime  # datetime 已存在，确保它在
+import re
+
+# --- 1. Initialize Configuration and Logging ---
+config_manager = ConfigManager()
+config_manager.load_and_init()
+logger = logging.getLogger(__name__)
+
+try:
+    dashscope_api_key = os.getenv("DASHSCOPE_API_KEY")
+    if not dashscope_api_key:
+        raise ValueError("DASHSCOPE_API_KEY environment variable not found after loading .env")
+    dashscope.api_key = dashscope_api_key
+    logger.info("DashScope API key explicitly set from environment variable.")
+except ValueError as e:
+    logger.error(f"API Key configuration error: {e}", exc_info=True)
+    print(f"Error: {e}. Check DASHSCOPE_API_KEY in .env or environment.")
+    sys.exit(1)
+except Exception as e:
+    logger.error(f"Unexpected error during API key setup: {e}", exc_info=True)
+    sys.exit(1)
+
+# --- 2. Initialize Global Dependencies ---
+redis_client_map: Optional[redis.Redis] = None
+ASSISTANT_ID: Optional[str] = None
+memory_repo: Optional[ChromaMemoryRepo] = None
+
+try:
+    ASSISTANT_ID = os.getenv("DASHSCOPE_ASSISTANT_ID")
+    if not ASSISTANT_ID:
+        raise ValueError("DASHSCOPE_ASSISTANT_ID environment variable not set!")
+    logger.info(f"Using Assistant ID: {ASSISTANT_ID}")
+
+    REDIS_URL = os.getenv("REDIS_URL")
+    if not REDIS_URL:
+        raise ValueError("REDIS_URL environment variable not set!")
+
+    try:
+        redis_client_map = redis.StrictRedis.from_url(REDIS_URL, decode_responses=True)
+        redis_client_map.ping()
+        logger.info(f"Redis client for session mapping connected to {REDIS_URL}")
+    except redis.exceptions.ConnectionError as redis_err:
+        logger.error(f"Failed to connect to Redis at {REDIS_URL}: {redis_err}", exc_info=True)
+        raise SystemExit(f"Failed to connect to Redis at {REDIS_URL}: {redis_err}")
+
+    try:
+        memory_repo = create_chroma_memory_repo()
+        logger.info("ChromaDB Memory Repo initialized successfully.")
+    except ImportError:
+        logger.error("ChromaDB Memory Repo modules not found. Memory features unavailable.")
+        memory_repo = None
+    except Exception as chroma_err:
+        logger.error(f"Failed to initialize ChromaDB Memory Repo: {chroma_err}", exc_info=True)
+        memory_repo = None
+
+except ValueError as e:
+    logger.error(f"Configuration error during global dependency initialization: {e}", exc_info=True)
+    print(f"Error: {e}. Check environment variables.")
+    sys.exit(1)
+except Exception as e:
+    logger.error(f"An unexpected error occurred during global dependency initialization: {e}", exc_info=True)
+    sys.exit(1)
+
+# --- 3. 创建 FastAPI 应用实例 ---
+app = FastAPI(
+    title="Cloud Memory AI Backend (Assistant API + Memory)",
+    description="Refactored AI backend using DashScope Assistant API with RAG memory saving and server-time (Beijing Time) injection.",
+    version="2.3.3",  # 版本更新
+)
+logger.info("FastAPI app instance created.")
+
+_SESSION_THREAD_MAP_PREFIX = "session_thread_map:"
+_SESSION_TIMEOUT_SECONDS = 3600 * 24
+
+class SessionStorageError(Exception):
+    pass
+
+def get_thread_id(session_id: str, redis_client: redis.Redis) -> Optional[str]:
+    key = f"{_SESSION_THREAD_MAP_PREFIX}{session_id}"
+    try:
+        retrieved_value = redis_client.get(key)
+        thread_id_val: Optional[str] = cast(Optional[str], retrieved_value)
+
+        if thread_id_val is not None:
+            redis_client.expire(key, _SESSION_TIMEOUT_SECONDS)
+            logger.debug(f"[Session: {session_id}] Retrieved thread_id '{thread_id_val}'")
+            return thread_id_val
+        return None
+    except redis.exceptions.RedisError as e:
+        logger.error(f"[Session: {session_id}] Redis error getting thread_id: {e}", exc_info=True)
+        return None
+
+def store_thread_id(session_id: str, thread_id: str, redis_client: redis.Redis):
+    key = f"{_SESSION_THREAD_MAP_PREFIX}{session_id}"
+    try:
+        redis_client.set(key, thread_id, ex=_SESSION_TIMEOUT_SECONDS)
+        logger.debug(f"[Session: {session_id}] Stored thread_id '{thread_id}' with timeout.")
+    except redis.exceptions.RedisError as e:
+        logger.error(f"[Session: {session_id}] CRITICAL: Redis error storing thread_id '{thread_id}': {e}", exc_info=True)
+        raise SessionStorageError(f"Failed to store session mapping for {session_id}") from e
+
+def get_or_create_thread_id(session_id: str, redis_client: redis.Redis) -> str:
+    thread_id = get_thread_id(session_id, redis_client)
+    if thread_id:
+        return thread_id
+    try:
+        logger.info(f"[Session: {session_id}] Creating new thread.")
+        thread_obj = Threads.create()
+        logger.info(f"[Session: {session_id}] New thread created: {thread_obj.id}")
+        store_thread_id(session_id, thread_obj.id, redis_client)
+        return thread_obj.id
+    except (AssistantError, DashScopeException) as ds_err:
+        logger.error(f"[Session: {session_id}] DashScope API error creating thread: {ds_err}", exc_info=True)
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=f"Failed to create assistant thread: {ds_err}")
+    except SessionStorageError as store_err:
+        logger.critical(f"[Session: {session_id}] Failed to store new thread mapping: {store_err}", exc_info=True)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to save session state.")
+    except Exception as e:
+        logger.error(f"[Session: {session_id}] Unexpected error in get_or_create_thread_id: {e}", exc_info=True)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to initialize conversation thread.")
+
+def add_user_message(thread_id: str, content: str) -> None:
+    try:
+        Messages.create(thread_id=thread_id, role="user", content=content)
+        logger.debug(f"[Thread: {thread_id}] Added user message: '{content[:100]}...'")
+    except (AssistantError, DashScopeException) as ds_err:
+        logger.error(f"[Thread: {thread_id}] DashScope API error adding message: {ds_err}", exc_info=True)
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=f"Failed to add message: {ds_err}")
+    except Exception as e:
+        logger.error(f"[Thread: {thread_id}] Error adding message: {e}", exc_info=True)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to process user message.")
+
+def create_and_start_run(thread_id: str, assistant_id: str) -> Run:
+    try:
+        logger.info(f"[Thread: {thread_id}] Creating Run with assistant {assistant_id}.")
+        run_obj = Runs.create(thread_id=thread_id, assistant_id=assistant_id)
+        logger.debug(f"[Thread: {thread_id}] Run created with ID: {run_obj.id}, Status: {run_obj.status}")
+        return run_obj
+    except (AssistantError, DashScopeException) as ds_err:
+        logger.error(f"[Thread: {thread_id}] DashScope API error creating run: {ds_err}", exc_info=True)
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=f"Failed to start run: {ds_err}")
+    except Exception as e:
+        logger.error(f"[Thread: {thread_id}] Error creating run: {e}", exc_info=True)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to start assistant processing.")
+
+def wait_for_run_completion(thread_id: str, initial_run: Run, timeout: int = 120) -> Run:
+    current_run = initial_run
+    start_time = time.time()
+    run_id = current_run.id
+    request_log_prefix = f"[Thread: {thread_id}, Run: {run_id}]"
+    logger.debug(f"{request_log_prefix} Starting wait loop for run status.")
+
+    while current_run.status in ['queued', 'in_progress']:
+        if time.time() - start_time > timeout:
+            logger.error(f"{request_log_prefix} Run timed out after {timeout} seconds while in status '{current_run.status}'. Attempting to cancel.")
+            try:
+                Runs.cancel(thread_id=thread_id, run_id=run_id)
+                logger.info(f"{request_log_prefix} Cancelled timed-out run.")
+            except Exception as cancel_e:
+                logger.warning(f"{request_log_prefix} Failed to cancel timed-out run: {cancel_e}")
+            raise HTTPException(status_code=status.HTTP_504_GATEWAY_TIMEOUT, detail="Assistant processing timed out.")
+        time.sleep(1)
+        try:
+            current_run = Runs.retrieve(thread_id=thread_id, run_id=run_id)
+            logger.debug(f"{request_log_prefix} Polling Run. Status: {current_run.status}")
+        except (AssistantError, DashScopeException) as ds_err:
+            logger.error(f"{request_log_prefix} DashScope API error retrieving run status: {ds_err}", exc_info=True)
+            detail_msg = f"Failed to get run status: {ds_err}"
+            if isinstance(ds_err, AssistantError) and hasattr(ds_err, 'code') and hasattr(ds_err, 'message'):
+                detail_msg += f" (Code: {ds_err.code}, Msg: {ds_err.message})"
+            raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=detail_msg)
+        except Exception as e:
+            logger.error(f"{request_log_prefix} Unexpected error retrieving run status: {e}", exc_info=True)
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to get assistant run status.")
+    logger.info(f"{request_log_prefix} Run polling finished. Final polled status: {current_run.status}")
+    return current_run
+
+def get_final_reply(thread_id: str) -> Tuple[str, Optional[str]]:
+    request_log_prefix = f"[Thread: {thread_id}]"
+    logger.info(f"{request_log_prefix} Retrieving final message.")
+    try:
+        messages_response = Messages.list(thread_id=thread_id, order='desc', limit=1)
+        if not messages_response.data:
+            logger.error(f"{request_log_prefix} Message list is empty after run completion.")
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Assistant conversation history is empty.")
+
+        latest_message = messages_response.data[0]
+        if latest_message.role != 'assistant' or not latest_message.content:
+            logger.error(f"{request_log_prefix} Latest message is not from assistant or has no content. Role: {latest_message.role}")
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Assistant did not provide a valid final message.")
+
+        assistant_content_json_str = None
+        for content_block in latest_message.content:
+            if getattr(content_block, 'type', None) == 'text':
+                text_object = getattr(content_block, 'text', None)
+                if text_object:
+                    text_value = getattr(text_object, 'value', None)
+                    if isinstance(text_value, str):
+                        assistant_content_json_str = text_value
+                        break
+
+        if assistant_content_json_str is None:
+            logger.error(f"{request_log_prefix} Assistant message {latest_message.id} lacks valid text content block.")
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Assistant response missing text content.")
+
+        logger.debug(f"{request_log_prefix} Raw assistant content (expected JSON string): [{assistant_content_json_str}]")
+
+        try:
+            final_response_json = json.loads(assistant_content_json_str)
+            if not isinstance(final_response_json, dict) or "reply" not in final_response_json:
+                logger.error(
+                    f"{request_log_prefix} CRITICAL: Final assistant content is not a dict with 'reply' key. Content: [{assistant_content_json_str}]")
+                raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                                    detail="Assistant failed to format response correctly (missing reply key or not a dict).")
+
+            reply_text = final_response_json.get("reply", "")
+            memory_to_save = None
+
+            if final_response_json.get("memory_flag", False) is True:
+                content = final_response_json.get("memory_content")
+                if isinstance(content, str) and content.strip():
+                    memory_to_save = content
+                    logger.info(f"{request_log_prefix} Memory content found to save: '{memory_to_save[:100]}...'")
+                else:
+                    logger.warning(f"{request_log_prefix} memory_flag was true, but memory_content was empty or invalid.")
+
+            return reply_text, memory_to_save
+
+        except json.JSONDecodeError:
+            logger.error(f"{request_log_prefix} CRITICAL: Assistant final content was NOT valid JSON! Content: [{assistant_content_json_str}]")
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                                detail="Assistant failed to generate valid response format (JSONDecodeError).")
+        except Exception as parse_e:
+            logger.error(f"{request_log_prefix} Error processing final message JSON: {parse_e}", exc_info=True)
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error parsing final assistant response.")
+
+    except (AssistantError, DashScopeException) as ds_err:
+        logger.error(f"{request_log_prefix} DashScope API error listing messages: {ds_err}", exc_info=True)
+        detail_msg = f"Failed to get final response: {ds_err}"
+        if isinstance(ds_err, AssistantError) and hasattr(ds_err, 'code') and hasattr(ds_err, 'message'):
+            detail_msg += f" (Code: {ds_err.code}, Msg: {ds_err.message})"
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=detail_msg)
+    except Exception as e:
+        logger.error(f"{request_log_prefix} Error listing messages: {e}", exc_info=True)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to retrieve final response.")
+
+def _task_save_memory_from_json(
+    session_id: str,
+    memory_content: str,
+    memory_repo_instance: Optional[ChromaMemoryRepo],
+):
+    request_log_prefix = f"[Session: {session_id}] [BackgroundTask]"
+    if memory_repo_instance is None:
+        logger.error(f"{request_log_prefix} Memory repo instance is None, cannot save memory.")
+        return
+    if not memory_content or not isinstance(memory_content, str) or not memory_content.strip():
+        logger.debug(f"{request_log_prefix} No valid memory content string provided or content is empty.")
+        return
+
+    try:
+        items_to_remember = [item.strip() for item in memory_content.split('；') if item.strip()]
+        if not items_to_remember:
+            logger.debug(f"{request_log_prefix} No items extracted from memory content: '{memory_content}'")
+            return
+
+        logger.info(f"{request_log_prefix} Saving {len(items_to_remember)} memory items to RAG.")
+        memory_repo_instance.add_memories(items_to_remember, session_id=session_id)
+        logger.info(f"{request_log_prefix} Successfully saved {len(items_to_remember)} memory items.")
+    except AttributeError:
+        logger.error(f"{request_log_prefix} memory_repo_instance is missing 'add_memories' method or is None?")
+    except Exception as e:
+        logger.error(
+            f"{request_log_prefix} Failed to save memory items from JSON content '{memory_content[:100]}...': {e}",
+            exc_info=True,
+        )
+
+def handle_tool_calls(
+        thread_id: str,
+        run: Run,  # 当前处于 requires_action 状态的 Run 对象
+        memory_repo_instance: Optional[ChromaMemoryRepo],  # 传入初始化的 memory_repo
+        session_id: str  # 传入 session_id 用于 ChromaDB 查询
+) -> Run:
+    """
+    处理 Run requires_action 状态，执行必要的工具调用（目前仅 search_memory）
+    并提交结果，返回提交后获取的新的 Run 对象。
+    如果处理失败，则抛出 HTTPException。
+    """
+    run_id = run.id
+    request_log_prefix = f"[Session: {session_id}, Thread: {thread_id}, Run: {run_id}]"  # 日志前缀
+    logger.info(f"{request_log_prefix} Run requires action. Handling tool calls...")
+
+    tool_outputs = []  # 准备提交给 API 的输出列表
+
+    # 健壮地访问 tool_calls 列表
+    required_actions = getattr(run, 'required_action', None)
+    submit_outputs_obj = getattr(required_actions, 'submit_tool_outputs', None)
+    tool_calls_list = getattr(submit_outputs_obj, 'tool_calls', [])
+
+    if not tool_calls_list:
+        logger.warning(f"{request_log_prefix} 'requires_action' state but no tool_calls found in run object.")
+        # 这种情况不应发生，但以防万一，可以尝试取消或返回错误
+        raise HTTPException(status_code=500, detail="Assistant required action but provided no tool calls.")
+
+    for tool_call in tool_calls_list:
+        # 确保 tool_call 是我们期望的类型并且有 function 属性
+        if getattr(tool_call, 'type', None) != 'function' or not hasattr(tool_call, 'function'):
+            logger.warning(f"{request_log_prefix} Skipping non-function tool call: {tool_call}")
+            continue
+
+        func_name = getattr(tool_call.function, 'name', None)
+        func_args_str = getattr(tool_call.function, 'arguments', '{}')  # 默认为空 JSON 对象字符串
+        tool_call_id = getattr(tool_call, 'id', None)
+
+        if not func_name:  #  <--- 这是你原始代码中对 func_name 的检查
+            logger.error(f"{request_log_prefix} Received tool call with missing name or id: {tool_call}")  # 你原始代码中没有检查 tool_call_id 是否为空
+            continue  # 跳过格式错误的工具调用
+
+        logger.info(f"{request_log_prefix} Processing tool call: ID={tool_call_id}, Name='{func_name}', Args='{func_args_str}'")
+
+        output_content: Optional[str] = None  # 工具执行结果的字符串形式 (JSON)
+        func_args: Dict[str, Any] = {}  # 确保 func_args 总是已定义
+
+        try:
+            func_args = json.loads(func_args_str)
+        except json.JSONDecodeError:
+            logger.error(f"{request_log_prefix} Failed to parse JSON arguments for {func_name} (ID: {tool_call_id}): {func_args_str}")
+            output_content = json.dumps({"error": "Invalid JSON arguments received."})
+
+        # --- 执行 search_memory 工具 ---
+        if output_content is None and func_name == "search_memory":
+            if memory_repo_instance:  # 检查 memory_repo 是否成功初始化
+                query = func_args.get("query")
+                k_arg = func_args.get("k", 3)  # 从参数获取k，默认3
+                try:
+                    k = int(k_arg)  # 转换为整数
+                except (ValueError, TypeError):
+                    logger.warning(f"{request_log_prefix} Invalid 'k' value '{k_arg}' for search_memory. Defaulting to 3.")
+                    k = 3
+
+                if isinstance(query, str) and query.strip():
+                    logger.info(f"{request_log_prefix} Executing search_memory(query='{query}', k={k})")
+                    try:
+                        search_results: List[str] = memory_repo_instance.get_memory(
+                            query=query,
+                            session_id=session_id,  # 使用传入的 session_id
+                            k=k)
+                        # Assistant API 要求 output 是字符串，我们将结果列表转为 JSON 字符串
+                        output_content = json.dumps(search_results, ensure_ascii=False)
+                        logger.info(f"{request_log_prefix} search_memory returned {len(search_results)} results.")
+                        logger.debug(f"{request_log_prefix} search_memory raw output: {output_content[:300]}...")
+                    except Exception as mem_e:
+                        logger.error(f"{request_log_prefix} Error executing search_memory query='{query}': {mem_e}", exc_info=True)
+                        output_content = json.dumps({"error": f"Failed to search memory: {str(mem_e)}"})
+                else:
+                    logger.warning(f"{request_log_prefix} 'search_memory' called with invalid 'query': {query}")
+                    output_content = json.dumps({"error": "'query' argument is required and must be a non-empty string."})
+            else:
+                logger.error(f"{request_log_prefix} 'search_memory' called but memory_repo is not available!")
+                output_content = json.dumps({"error": "Memory repository (RAG) is not available."})
+
+        # --- （未来可以添加处理其他工具的 elif func_name == "..." 逻辑） ---
+        elif output_content is None:  # 如果前面的 if/elif 都没有处理这个 func_name
+            logger.warning(f"{request_log_prefix} Received unhandled function call: '{func_name}'")
+            output_content = json.dumps({"error": f"Function '{func_name}' is not implemented."})
+
+        # logger.info(f"{request_log_prefix} Preparing to submit tool outputs: {tool_outputs}") # 这行日志在你原始代码中这个位置没有
+
+        # 将处理结果（或错误信息）添加到输出列表
+        tool_outputs.append({
+            "tool_call_id": tool_call_id,
+            "output":
+            output_content if output_content is not None else json.dumps({"error": "Tool execution failed unexpectedly."}),  # 确保 output 总是一个字符串
+        })
+        # logger.info(f"{request_log_prefix} Preparing to submit tool outputs: {tool_outputs}") # 这行日志在你原始代码中这个位置没有
+
+        # --- 单个 tool_call 处理结束 ---
+
+    # --- 循环结束后，提交所有工具的输出 ---
+    if not tool_outputs:
+        logger.warning(f"{request_log_prefix} No valid tool calls found or processed in requires_action state.")
+        # 如果没有合法的工具调用需要提交，可能也需要取消 Run 或报错
+        raise HTTPException(status_code=500, detail="Failed to process required actions: No valid tool calls.")
+
+    logger.info(f"{request_log_prefix} Submitting {len(tool_outputs)} tool outputs.")
+    try:
+        # 调用 submit_tool_outputs 并返回新的 run 对象
+        new_run = Runs.submit_tool_outputs(thread_id=thread_id, run_id=run_id, tool_outputs=tool_outputs)
+        logger.debug(f"{request_log_prefix} Tool outputs submitted successfully. New run status: {new_run.status}")
+        return new_run
+    except (AssistantError, DashScopeException) as submit_e:
+        logger.error(f"{request_log_prefix} DashScope API error submitting tool outputs: {submit_e}", exc_info=True)
+        detail = f"Failed to submit tool results: {submit_e}"
+        if isinstance(submit_e, AssistantError): detail += f" (Code: {submit_e.code}, Msg: {submit_e.message})"  # 你原始代码中没有这行判断和拼接
+        raise HTTPException(status_code=503, detail=detail)  # 你原始代码中 detail 直接是 f"Failed to submit tool results: {submit_e}"
+    except Exception as e:
+        logger.error(f"{request_log_prefix} Unexpected error submitting tool outputs: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Error submitting tool results.")
+
+def clean_ai_response(ai_reply: str) -> str:
+    pattern = r"(?i)^\s*\[[^\]]*?:[^\]]*?\]\s*\n?"
+    cleaned_reply = re.sub(pattern, "", ai_reply, count=1)
+    return cleaned_reply
+
+@app.post(
+    "/chat",
+    response_model=ChatResponse,
+    dependencies=[Depends(verify_api_key)],
+    summary="Process chat using Assistant API (RAG Enabled, Server Beijing Time Injection)",
+    tags=["Chat"],
+)
+async def chat_endpoint(request: ChatRequest, background_tasks: BackgroundTasks):
+    session_id = request.session_id
+    user_message_content = request.user_message
+    current_run_obj: Optional[Run] = None
+
+    request_log_prefix = f"[Session: {session_id}]"
+    logger.info(
+        f"{request_log_prefix} Received chat request. User message: '{user_message_content[:100]}...'. Client Provided Timestamp (for logging): {request.client_timestamp_utc}"
+    )
+
+    if redis_client_map is None or ASSISTANT_ID is None:
+        logger.critical(f"{request_log_prefix} CRITICAL: Service configuration error: Redis or Assistant ID not initialized at request time.")
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Service is not properly configured.")
+
+    thread_id: Optional[str] = None
+    reply_text: str = "抱歉，处理您的请求时遇到内部问题。"
+    memory_to_save: Optional[str] = None
+
+    try:
+        thread_id = get_or_create_thread_id(session_id, redis_client_map)
+        request_log_prefix = f"[Session: {session_id}, Thread: {thread_id}]"
+
+        # --- 获取服务器当前北京时间（UTC+8）并注入 ---
+        beijing_tz = datetime.timezone(datetime.timedelta(hours=8), name='Asia/Shanghai')
+        now_utc = datetime.datetime.now(datetime.timezone.utc)
+        now_beijing = now_utc.astimezone(beijing_tz)
+        server_current_beijing_time_str = now_beijing.isoformat()
+
+        time_prefix = f"[Current Beijing Time (UTC+8): {server_current_beijing_time_str}]"
+        final_message_to_llm = f"{time_prefix}\nUser: {user_message_content}"
+
+        logger.info(f"{request_log_prefix} Using Beijing time. Message to LLM: '{final_message_to_llm[:170]}...'")
+        add_user_message(thread_id, final_message_to_llm)
+
+        current_run_obj = create_and_start_run(thread_id, ASSISTANT_ID)
+        request_log_prefix = f"[Session: {session_id}, Thread: {thread_id}, Run: {current_run_obj.id}]"
+
+        max_loops = 5
+        loop_count = 0
+        while loop_count < max_loops:
+            loop_count += 1
+            logger.info(f"{request_log_prefix} Entering run processing loop #{loop_count}")
+
+            current_run_obj = wait_for_run_completion(thread_id, current_run_obj)
+
+            if current_run_obj.status == 'requires_action':
+                logger.info(f"{request_log_prefix} Run requires action, calling handle_tool_calls.")
+                current_run_obj = handle_tool_calls(thread_id, current_run_obj, memory_repo, session_id)
+                continue
+            elif current_run_obj.status == 'completed':
+                logger.info(f"{request_log_prefix} Run completed, getting final reply.")
+                reply_text, memory_to_save = get_final_reply(thread_id)
+                break
+            elif current_run_obj.status in ['failed', 'cancelled', 'expired']:
+                error_message_base = f"Assistant run {current_run_obj.id} did not complete successfully."
+                final_status = current_run_obj.status
+                error_detail = f"Final Status: {final_status}"
+                if current_run_obj.last_error:
+                    try:
+                        last_err_code = getattr(current_run_obj.last_error, 'code', 'N/A')
+                        last_err_msg = getattr(current_run_obj.last_error, 'message', 'N/A')
+                        error_detail += f". Code: {last_err_code}, Msg: {last_err_msg}"
+                    except AttributeError:
+                        error_detail += f". Last Error: {str(current_run_obj.last_error)}"
+                logger.error(f"{request_log_prefix} {error_message_base} {error_detail}")
+                raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Assistant processing failed ({final_status}).")
+            else:
+                logger.error(f"{request_log_prefix} Run ended with unexpected status: {current_run_obj.status}")
+                raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                                    detail=f"Assistant processing ended with unexpected status: {current_run_obj.status}")
+
+        if loop_count >= max_loops:
+            logger.error(f"{request_log_prefix} Exceeded maximum processing loops ({max_loops}). Current run status: {current_run_obj.status}")
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Processing loop limit exceeded.")
+
+        if memory_to_save:
+            if memory_repo:
+                logger.info(f"{request_log_prefix} Scheduling background task to save memory: '{memory_to_save[:100]}...'")
+                background_tasks.add_task(
+                    _task_save_memory_from_json,
+                    session_id,
+                    memory_to_save,
+                    memory_repo,
+                )
+            else:
+                logger.warning(f"{request_log_prefix} Assistant provided memory, but memory_repo is unavailable. Memory not saved.")
+
+        cleaned_reply_text_val = reply_text
+        if isinstance(reply_text, str):
+            original_ai_reply_for_log = reply_text[:150]
+            cleaned_reply_text_after_func = clean_ai_response(reply_text)
+            if reply_text != cleaned_reply_text_after_func:
+                logger.info(f"{request_log_prefix} Original AI reply for cleaning: '{original_ai_reply_for_log}...'")
+                logger.info(f"{request_log_prefix} Cleaned AI reply after func: '{cleaned_reply_text_after_func[:150]}...'")
+            else:
+                logger.debug(
+                    f"{request_log_prefix} AI reply did not require cleaning by clean_ai_response: '{cleaned_reply_text_after_func[:150]}...'")
+            cleaned_reply_text_val = cleaned_reply_text_after_func
+        else:
+            logger.warning(f"{request_log_prefix} reply_text from get_final_reply was not a string: {type(reply_text)}. Converting to string.")
+            cleaned_reply_text_val = str(reply_text)
+
+        final_display_reply = cleaned_reply_text_val.strip().replace('\n', ' ')
+        logger.info(f"{request_log_prefix} Returning final response to client: '{final_display_reply[:100]}...'")
+        return ChatResponse(ai_response=final_display_reply, session_id=session_id)
+
+    except HTTPException as http_exc:
+        log_detail = str(http_exc.detail)
+        thread_id_available_for_check = isinstance(thread_id, str)
+        condition_for_prefix = (request_log_prefix not in log_detail and (not thread_id_available_for_check or thread_id not in log_detail))
+        if condition_for_prefix:
+            logger.error(f"{request_log_prefix} HTTP Exception: {http_exc.status_code} - {log_detail}", exc_info=False)
+        else:
+            logger.error(f"HTTP Exception: {http_exc.status_code} - {log_detail}", exc_info=False)
+        raise
+    except SessionStorageError as session_err:
+        logger.error(f"{request_log_prefix} Session storage error: {session_err}", exc_info=True)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed processing session state.")
+    except Exception as e:
+        run_id_for_log = current_run_obj.id if current_run_obj else "N/A"
+        logger.error(f"{request_log_prefix} Unexpected error in endpoint. Run ID (if available): {run_id_for_log}. Error: {e}", exc_info=True)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error encountered.")
+
+@app.get("/", tags=["Health"])
+async def read_root():
+    return {
+        "status": "ok",
+        "message": "Welcome to the Cloud Memory AI Backend! (Assistant API Refactored with Server Beijing Time)",
+        "version": app.version
+    }
+
+if __name__ == "__main__":
+    import uvicorn
+    host = os.getenv("HOST", "0.0.0.0")
+    port = int(os.getenv("PORT", "8000"))
+    reload_flag_str = os.getenv("RELOAD", "False").lower()
+    reload_flag = True if reload_flag_str == "true" else False
+
+    root_logger_instance = logging.getLogger()
+    if not root_logger_instance.hasHandlers() or root_logger_instance.level == logging.NOTSET:
+        uvicorn_log_level_name = 'info'
+        if root_logger_instance.level == logging.NOTSET:
+            logger.warning("Root logger level is NOTSET. Uvicorn log level will default to 'info'. "
+                           "Consider configuring the root logger if you need different Uvicorn log levels.")
+    else:
+        uvicorn_log_level_name = logging.getLevelName(root_logger_instance.level).lower()
+
+    logger.info(f"Starting Uvicorn server on http://{host}:{port} (Reload: {reload_flag}) with log level '{uvicorn_log_level_name}'")
+
+    uvicorn.run(
+        "api.server:app",
+        host=host,
+        port=port,
+        reload=reload_flag,
+        log_level=uvicorn_log_level_name,
+    )
+
+--- END OF FILE /home/cagedbird/Projects/langchain_bl618/src/api/server.py ---
+
+--- END OF AISTUDIO CODE SYNC BUNDLE ---

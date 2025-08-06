@@ -1,0 +1,363 @@
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2025.07.03 21:39:21 =~=~=~=~=~=~=~=~=~=~=~=
+�psram already init
+dynamic memory init success, ocram heap size = 207 Kbyte, psram heap size = 4096 Kbyte
+
+  ____               __  __      _       _       _     
+ |  _ \             / _|/ _|    | |     | |     | |    
+ | |_) | ___  _   _| |_| |_ __ _| | ___ | | __ _| |__  
+ |  _ < / _ \| | | |  _|  _/ _` | |/ _ \| |/ _` | '_ \ 
+ | |_) | (_) | |_| | | | || (_| | | (_) | | (_| | |_) |
+ |____/ \___/ \__,_|_| |_| \__,_|_|\___/|_|\__,_|_.__/ 
+
+Build:21:37:14, Jul  3 2025
+Copyright (c) 2022 Bouffalolab team
+Version of used components:
+	Version: 2025-02-24 32c04dc
+	Version: component_version_lhal: V2.0.0-127-g14141d42-dirty
+	Version: component_version_macsw_1.7.10
+	Version: component_version_fhost_1.7.10
+	Version: component_version_sdk: 2.2.0
+	Version: component_version_boot2: 8.1.8
+======== flash cfg ========
+flash clock      80MHz
+flash delay      105,130,3
+flash size       0x00800000
+jedec id         0x1740EF
+mid              0xEF
+iomode           0x04
+clk delay        0x01
+clk invert       0x03
+read reg cmd0    0x05
+read reg cmd1    0x35
+write reg cmd0   0x01
+write reg cmd1   0x31
+qe write len     0x01
+cread support    0x00
+cread code       0xFF
+burst wrap cmd   0x77
+===========================
+uart  sig1:ffffffff, sig2:0000f32f
+clock gen1:9ffffffd, gen2:0fff0c11
+board init done
+===========================
+[0mbouffalolab />[0m[0;0m[I:     23242][rfparam_adapter.c:766]   rfparam> xtal value 40000000
+[0;0m[I:     23693][rfparam_adapter.c:770]   rfparam> dcdc_trim empty
+[0;0m[I:     23983][rfparam_adapter.c:771]   rfparam> dcdc_trim use default value 0x80
+[0;0m[I:     24490][rfparam_adapter.c:787]   rfparam> icx empty
+[0;0m[I:     24758][rfparam_adapter.c:788]   rfparam> icx use default value 0x80
+[0;0m[I:     25235][rfparam_adapter.c:803]   rfparam> iptat empty
+[0;0m[I:     25513][rfparam_adapter.c:804]   rfparam> iptat use default value 0x80
+[0;0m[I:     26136][rfparam_adapter.c:833]   rfparam> tmp_mp use default value 35
+[0;0m[I:     26480][rfparam_adapter.c:430]   rfparam> RF_PARAM TLV ADDRESS: 0xA0000400
+[0;0m[I:     26909][rfparam_adapter.c:91]   rfparam> pwr_mode is bf
+Empty slot:0
+No written slot found
+[0;0m[I:     27424][rfparam_adapter.c:114]   rfparam> no pwr_offset in efuse
+[0;0m[I:     27823][rfparam_adapter.c:39]   rfparam> tlv wlan pwr_offset[14]: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+[0;0m[I:     28365][rfparam_adapter.c:39]   rfparam> wlan pwr_offset[14]: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+Empty slot:0
+No written slot found
+[0;0m[I:     29073][rfparam_adapter.c:196]   rfparam> no lp pwr_offset in efuse
+[0;0m[I:     29493][rfparam_adapter.c:39]   rfparam> tlv wlan lp pwr_offset[14]: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+[0;0m[I:     30045][rfparam_adapter.c:39]   rfparam> wlan lp pwr_offset[14]: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+Empty slot:0
+No written slot found
+[0;0m[I:     30768][rfparam_adapter.c:280]   rfparam> no bz pwr_offset in efuse
+[0;0m[I:     31196][rfparam_adapter.c:39]   rfparam> tlv bz pwr_offset[5]: 0,0,0,0,0,
+[0;0m[I:     31617][rfparam_adapter.c:39]   rfparam> bz pwr_offset[5]: 0,0,0,0,0,
+[0;0m[I:     32038][rfparam_adapter.c:39]   rfparam> pwr_11b[4]: 20,20,20,20,
+[0;0m[I:     32437][rfparam_adapter.c:39]   rfparam> pwr_11g[8]: 18,18,18,18,18,18,16,16,
+[0;0m[I:     32898][rfparam_adapter.c:39]   rfparam> pwr_11n_ht20[8]: 18,18,18,18,18,16,15,15,
+[0;0m[I:     33384][rfparam_adapter.c:39]   rfparam> pwr_11n_ht40[8]: 18,18,18,18,18,16,15,14,
+[0;0m[I:     33869][rfparam_adapter.c:39]   rfparam> pwr_11ac_vht20[10]: 18,18,18,18,18,16,15,15,15,14,
+[0;0m[I:     34399][rfparam_adapter.c:39]   rfparam> pwr_11ac_vht40[10]: 18,18,18,18,18,16,15,14,14,13,
+[0;0m[I:     34929][rfparam_adapter.c:39]   rfparam> pwr_11ax_he20[12]: 18,18,18,18,18,16,15,15,15,14,13,13,
+[0;0m[I:     35483][rfparam_adapter.c:39]   rfparam> pwr_11ax_he40[12]: 18,18,18,18,18,16,15,14,14,13,12,12,
+[0;0m[I:     36040][rfparam_adapter.c:338]   rfparam> capcode mode is MF
+Empty slot:0
+No written slot found
+[0;0m[I:     36599][rfparam_adapter.c:365]   rfparam> no capcode in efuse
+[0;0m[I:     36978][rfparam_adapter.c:351]   rfparam> tlv capcode_in 36,capcode_out 36
+[0;0m[I:     37426][rfparam_adapter.c:554]   rfparam> capcode_in 36,capcode_out 36
+[0;0m[I:     37855][rfparam_adapter.c:562]   rfparam> tcal.en_tcal = 0
+[0;0m[I:     38214][rfparam_adapter.c:570]   rfparam> tcal.linear_or_follow = 1
+[0;0m[I:     38629][rfparam_adapter.c:39]   rfparam> tcal.Tchannels[5]: 2412,2427,2442,2457,2472,
+[0;0m[I:     39125][rfparam_adapter.c:39]   rfparam> tcal.Tchannel_os[5]: 180,168,163,160,157,
+[0;0m[I:     39613][rfparam_adapter.c:39]   rfparam> tcal.Tchannel_os_low[5]: 199,186,170,165,160,
+[0;0m[I:     40115][rfparam_adapter.c:608]   rfparam> tcal.Troom_os = -1
+[0;0m[I:     40492][rfparam_adapter.c:621]   rfparam> pwr_ble = 13 
+[0;0m[I:     40846][rfparam_adapter.c:39]   rfparam> pwr_bt[3]: 10,8,8,
+[0;0m[I:     41211][rfparam_adapter.c:648]   rfparam> pwr_zigbee = 13 
+[0;0m[I:     41576][rfparam_adapter.c:658]   rfparam> country_code = 86 
+[0;0m[I:     41951][rfparam_adapter.c:668]   rfparam> en_tcap = 0 
+[0;0m[I:     42303][rfparam_adapter.c:39]   rfparam> tcap_tsen[10]: -3,-4,20,39,39,40,41,42,43,44,
+[0;0m[I:     42803][rfparam_adapter.c:39]   rfparam> tcap_cap[11]: 28,29,30,31,32,33,34,35,36,37,38,
+[0;0m[I:    160780][main.c:166]      MAIN> PHY RF init success!
+[0;0m[I:    161634][main.c:87]      MAIN> Starting wifi ...
+[0;0m[I:    162218][auto_connect.c:102]          > [auto_conn_327] Auto connect task created for SSID: CU_404_NotFound_2.4G
+Read slot:0
+get sta mac: b4:0e:cf:2a:e3:c7
+Read slot:0
+get ap mac: b4:0e:cf:2a:e3:c7
+[0;0m[I:    168704][main.c:110]      MAIN> [APP] [EVT] wifi_event_handler, CODE_WIFI_ON_INIT_DONE
+wifi_mgmr_set_country_code:code = CN
+[0;0m[I:    170083][main.c:114]      MAIN> [APP] [EVT] wifi_event_handler, CODE_WIFI_ON_MGMR_DONE
+[0;0m[I:    170596][auto_connect.c:116]          > [Signal] Signaled wifi ready semaphore.
+[0;0m[I:    171221][auto_connect.c:27]          > [auto_conn_327] Task started. Waiting for WiFi initialization signal...
+[0;0m[I:    171794][auto_connect.c:30]          > [auto_conn_327] WiFi ready signal received. Preparing to connect to [CU_404_NotFound_2.4G]...
+[0;0m[I:    172514][auto_connect.c:33]          > [auto_conn_327] Enabling WiFi Auto-Connect feature...
+Enable Auto Reconnect
+[0;0m[I:    173159][auto_connect.c:36]          > [auto_conn_327] Auto-Connect enabled successfully.
+[0;0m[I:    173673][auto_connect.c:42]          > [auto_conn_327] Sending connection request using wifi_sta_connect()...
+[0;0m[I:    174288][auto_connect.c:43]          > [auto_conn_327] SSID: CU_404_NotFound_2.4G, Key: Micelove2023,./
+start connecting ... 
+wpa_supplicant_ctrl_iface_msg_cb: cmd send succeded, txt is State### DISCONNECTED -> INACTIVE
+wpa_supplicant_ctrl_iface_msg_cb: cmd send succeded, txt is State### INACTIVE -> DISCONNECTED
+[0;0m[I:    178730][auto_connect.c:59]          > [auto_conn_327] Connection request (wifi_sta_connect) sent successfully.
+[0;0m[I:    179632][auto_connect.c:68]          > [auto_conn_327] Auto-connect initiated. Task will delete itself.
+Exec key_mgmt WPA-PSK WPA-PSK-SHA256 SAE
+Exec pairwise TKIP CCMP GCMP GCMP-256 CCMP-256
+Exec group TKIP CCMP GCMP GCMP-256 CCMP-256
+Exec ieee80211w 1
+Exec scan_ssid 1
+Exec bl_flags 0
+Exec ssid "CU_404_NotFound_2.4G"
+WPA network 0: created and configuredwpa_supplicant_ctrl_iface_msg_cb: cmd send succeded, txt is State### DISCONNECTED -> SCANNING
+Starting AP scan for specific SSID: CU_404_NotFound_2.4G, ssid_len:20, BSSID: 00:00:00:00:00:00 
+[0;0m[I:   4269110][main.c:149]      MAIN> [APP] [EVT] Unknown code 31 
+�[WPA] CTRL-EVENT-BSS-ADDED 0 0C:2C:7C:56:97:D4
+�[WPA] CTRL-EVENT-SCAN-RESULTS 
+�[WPA] Trying to associate with 0C:2C:7C:56:97:D4 (SSID='CU_404_NotFound_2.4G' freq=2422 MHz)
+wpa_supplicant_ctrl_iface_msg_cb: cmd send succeded, txt is State### SCANNING -> ASSOCIATING
+=== sm_connect_req_handler sm_env.auth_retry_gap = 0
+--- OPT rxu_mgmt_ind is detected
+hecap    phy[0]=02,phy[1]=20,phy[2]=0e,phy[3]=92
+hecaploc phy[0]=00,phy[1]=e0,phy[2]=2b,phy[3]=5b
+rc_init: station_id=0 format_mod=5 pre_type=0 short_gi=1 max_bw=0
+rc_init: nss_max=0 mcs_max=9 r_idx_min=0 r_idx_max=3 no_samples=10
+[FU]Set timer in external auth start:2000000
+[FL]RECV AUTH,sn:3345
+[FU]RECV AUTH,sn:3345
+[FU]Clear timer in external auth end:status:1
+=== sm_connect_ind sm_env.auth_retry_gap = 0
+=================================================================
+[AT][RX] Connection Status
+[AT][RX]   status_code 2
+[AT][RX]   reason_code 1
+[AT][RX]   status detail: Authentication failure
+=================================================================
+[0;0m[I:   4387486][main.c:134]      MAIN> [APP] [EVT] wifi_event_handler, CODE_WIFI_ON_DISCONNECT
+�[WPA] CTRL-EVENT-ASSOC-REJECT bssid=00:00:00:00:00:00 status_code=1 timeout
+Auto connect enabled: try to reconnect
+wpa_supplicant_ctrl_iface_msg_cb: cmd send succeded, txt is State### ASSOCIATING -> DISCONNECTED
+wpa_supplicant_ctrl_iface_msg_cb: cmd send succeded, txt is State### DISCONNECTED -> SCANNING
+Starting AP scan for specific SSID: CU_404_NotFound_2.4G, ssid_len:20, BSSID: 00:00:00:00:00:00 
+[0;0m[I:   7424384][main.c:149]      MAIN> [APP] [EVT] Unknown code 31 
+�[WPA] CTRL-EVENT-SCAN-RESULTS 
+�[WPA] Trying to associate with 0C:2C:7C:56:97:D4 (SSID='CU_404_NotFound_2.4G' freq=2422 MHz)
+wpa_supplicant_ctrl_iface_msg_cb: cmd send succeded, txt is State### SCANNING -> ASSOCIATING
+=== sm_connect_req_handler sm_env.auth_retry_gap = 0
+--- OPT rxu_mgmt_ind is detected
+hecap    phy[0]=02,phy[1]=20,phy[2]=0e,phy[3]=92
+hecaploc phy[0]=00,phy[1]=e0,phy[2]=2b,phy[3]=5b
+rc_init: station_id=1 format_mod=5 pre_type=0 short_gi=1 max_bw=0
+rc_init: nss_max=0 mcs_max=9 r_idx_min=0 r_idx_max=3 no_samples=10
+[FU]Set timer in external auth start:2000000
+[FU]RECV BEACON,sn:3913
+[FU]RECV BEACON,sn:3914
+[FL]RECV AUTH,sn:2318
+[FU]RECV AUTH,sn:2318
+[FL]RECV AUTH,sn:2319
+[FU]RECV AUTH,sn:2319
+[FU]Clear timer in external auth end:status:0
+[FU]Set timer,state is 8,ongoing++, timeout:1024000
+[FU]Tx cfm ongoing--, value is 0
+[FU]RECV BEACON,sn:3915
+[FL]RECV ASSOCRSP,sn:0,Retry
+[FU]RECV ASSOCRSP,sn:0,Retry
+[FU]Rx handler,state:8,fctl:0x10
+[FU]Clear timer in assoc rsp handler
+=== sm_connect_ind sm_env.auth_retry_gap = 0
+wpa_supplicant_ctrl_iface_msg_cb: cmd send succeded, txt is State### ASSOCIATING -> ASSOCIATED
+�[WPA] Associated with 0C:2C:7C:56:97:D4
+�[WPA] CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
+wpa_supplicant_ctrl_iface_msg_cb: cmd send succeded, txt is State### ASSOCIATED -> 4WAY_HANDSHAKE
+wpa_supplicant_ctrl_iface_msg_cb: cmd send succeded, txt is State### 4WAY_HANDSHAKE -> GROUP_HANDSHAKE
+�[WPA] WPA: Key negotiation completed with 0C:2C:7C:56:97:D4 [PTK=CCMP GTK=CCMP]
+�[WPA] CTRL-EVENT-CONNECTED - Connection to 0C:2C:7C:56:97:D4 completed [id=0 id_str=]
+wpa_supplicant_ctrl_iface_msg_cb: cmd send succeded, txt is CTRL-EVENT-CONNECTED - Connection to 0C:2C:7C:56:97:D4 completed [id=0 id_str=]
+=================================================================
+[AT][RX] Connection Status
+[AT][RX]   status_code 0
+[AT][RX]   reason_code 0
+[AT][RX]   status detail: sm connect ind ok
+[AT][RX]   MAC 0C:2C:7C:56:97:D4
+[AT][RX]   vif_idx 1
+[AT][RX]   ap_idx 1
+[AT][RX]   ch_idx 1
+[AT][RX]   qos 1
+[AT][RX]   aid 12
+[AT][RX]   band 2.4G
+[AT][RX]   channel 3
+=================================================================
+[0;0m[I:   7738047][main.c:123]      MAIN> [APP] [EVT] wifi_event_handler, CODE_WIFI_ON_CONNECTED
+��==========================  Keyram Config ========================
+��  start 08 -->> end 11; nVAP 02; max 31
+==========================  Keyram Dump =========================
+[id]   MAC Address     Key Len  VLan ID  Default      	Key Hexdump(16Bytes MAX)
+[00] FF:FF:FF:FF:FF:FF  64-Bit    00        0��     00000000 00000000 00000000 00000000
+[01] FF:FF:FF:FF:FF:FF  64-Bit    00        0��     00000000 00000000 00000000 00000000
+[02] FF:FF:FF:FF:FF:FF  64-Bit    00        0��     00000000 00000000 00000000 00000000
+[03] FF:FF:FF:FF:FF:FF  64-Bit    00        0��     00000000 00000000 00000000 00000000
+[04] FF:FF:FF:FF:FF:FF  64-Bit    00        0��     00000000 00000000 00000000 00000000
+[05] FF:FF:FF:FF:FF:FF  64-Bit    01        0��     80BAC4D4 90FC7B82 C5AF837C 594A6A6B
+[06] FF:FF:FF:FF:FF:FF  64-Bit    00        0��     00000000 00000000 00000000 00000000
+[07] FF:FF:FF:FF:FF:FF  64-Bit    00        0��     00000000 00000000 00000000 00000000
+[08] FF:FF:FF:FF:FF:FF  64-Bit    00        0��     00000000 00000000 00000000 00000000
+[09] 0C:2C:7C:56:97:D4  64-Bit    01        0��     B2359BC7 5559D437 B6D66C32 1D4E4ED0
+[10] FF:FF:FF:FF:FF:FF  64-Bit    00        0��     00000000 00000000 00000000 00000000
+[11] FF:FF:FF:FF:FF:FF  64-Bit    00        0��     00000000 00000000 00000000 00000000
+==========================  MAC Address =========================
+    MAC B4:0E:CF:2A:E3:C7 Mask 00:00:00:00:00:00
+  BSSID 0C:2C:7C:56:97:D4 Mask 00:00:00:00:00:00
+start dhcping ... 
+wpa_supplicant_ctrl_iface_msg_cb: cmd send succeded, txt is State### GROUP_HANDSHAKE -> COMPLETED
+�[WPA] TRANSITION-DISABLE 01
+WPA3-Personal transition mode disabled based on AP notification IP:192.168.1.2
+ MASK: 255.255.255.0
+ Gateway: 192.168.1.1
+{FVIF-0} ip=I4 gw=I4[0;0m[I:  10747139][main.c:129]      MAIN> [APP] [EVT] wifi_event_handler, CODE_WIFI_ON_GOT_IP
+[0;0m[I:  10747663][main.c:130]      MAIN> [SYS] Memory left is 185032 Bytes
+[0] wl1: MAC=b4:0e:cf:2a:e3:c7 ip=192.168.1.2/24 UP,CONNECTED
+[0m
+[0m[36mbouffalolab />[0m[0mr[0m[0mo[0m[0m[0m[0m[0m[0m
+[0m[33mrobot_start
+[0m[36mbouffalolab />[0m[0mrobot_start[0m[0m
+[0mCommand: robot_start
+Audio not initialized. Initializing...
+[0;0m[I:  13797953][es8388_driver.c:185]          > Initializing ES8388 audio module (Battle-Hardened V3)...
+[0;0m[I:  14355414][es8388_driver.c:217]          > ES8388 audio module initialized and ready for the final battle.
+Audio not capturing. Starting capture...
+[0;0m[I:  14356238][es8388_driver.c:229]          > Starting audio capture and playback engine...
+Audio system is ready.
+Starting MQTT session task...
+[36mbouffalolab />[0m[0;0m[I:  14358175][unified_gateway_client.c:90]          > [PlayerTask] High-Performance Player Task started.
+[MQTT] Waiting for connection to be established by background task...
+[MQTT] Connection established! Subscribing to topics...
+[MQTT] Ready! Starting perpetual audio stream...
+
+================ FINAL RESPONSE (TEXT) ================
+哇～小主人又来打招呼啦！小灵好开心呀！今天过得怎么样呢？有没有什么有趣的事情想和小灵分享呀？嘻嘻～
+=====================================================
+
+[CONTROL] Received 'prepare_to_play'. Sending PURGE command.
+[0;0m[I:  31282380][unified_gateway_client.c:110]          > [PlayerTask] Received PURGE command. Clearing buffers.
+[CONTROL] Received 'play_finished_go_ahead'. Sending SILENCE command.
+[0;0m[I:  40397450][unified_gateway_client.c:119]          > [PlayerTask] Received SILENCE command.
+[0;0m[I:  40398021][es8388_driver.c:367]          > [Driver] Filling entire TX buffer with silence to prevent looping noise.
+
+================ FINAL RESPONSE (TEXT) ================
+咦？小主人说的是什么语言呀？小灵有点听不懂呢～不过没关系，小灵会一直陪着小主人，一起学习和探索更多的有趣事情！嘻嘻～
+=====================================================
+
+[CONTROL] Received 'prepare_to_play'. Sending PURGE command.
+[0;0m[I:  56197325][unified_gateway_client.c:110]          > [PlayerTask] Received PURGE command. Clearing buffers.
+[CONTROL] Received 'play_finished_go_ahead'. Sending SILENCE command.
+[0;0m[I:  67712354][unified_gateway_client.c:119]          > [PlayerTask] Received SILENCE command.
+[0;0m[I:  67712926][es8388_driver.c:367]          > [Driver] Filling entire TX buffer with silence to prevent looping noise.
+
+================ FINAL RESPONSE (TEXT) ================
+哇～小主人又想听故事啦！小灵最喜欢讲有趣的故事啦！那我来讲一个关于勇敢的小兔子和神秘森林的冒险故事吧～从前，在一片美丽的森林里，住着一只名叫蹦蹦的小兔子。蹦蹦非常好奇，总是喜欢探索未知的地方。有一天，它发现了一条隐藏的小路，通往一个神秘的花园……接下来会发生什么呢？小主人想听更多吗？
+=====================================================
+
+[CONTROL] Received 'prepare_to_play'. Sending PURGE command.
+[0;0m[I:  97358431][unified_gateway_client.c:110]          > [PlayerTask] Received PURGE command. Clearing buffers.
+[CONTROL] Received 'play_finished_go_ahead'. Sending SILENCE command.
+[0;0m[I: 124283342][unified_gateway_client.c:119]          > [PlayerTask] Received SILENCE command.
+[0;0m[I: 124283916][es8388_driver.c:367]          > [Driver] Filling entire TX buffer with silence to prevent looping noise.
+
+================ FINAL RESPONSE (TEXT) ================
+太好啦！小灵最喜欢讲故事给小主人听了～那我们继续吧！蹦蹦走进了那个神秘的花园，发现里面住着一只会说话的猫头鹰，它告诉蹦蹦一个秘密：花园里有一朵能实现愿望的魔法花。但是，要找到它，蹦蹦必须通过三个考验……小主人想知道蹦蹦最后有没有找到魔法花吗？还是想听听它遇到的考验是什么？
+=====================================================
+
+[CONTROL] Received 'prepare_to_play'. Sending PURGE command.
+[0;0m[I: 148457335][unified_gateway_client.c:110]          > [PlayerTask] Received PURGE command. Clearing buffers.
+[CONTROL] Received 'play_finished_go_ahead'. Sending SILENCE command.
+[0;0m[I: 175092414][unified_gateway_client.c:119]          > [PlayerTask] Received SILENCE command.
+[0;0m[I: 175092984][es8388_driver.c:367]          > [Driver] Filling entire TX buffer with silence to prevent looping noise.
+
+================ FINAL RESPONSE (TEXT) ================
+有句话？小灵有点好奇呢～是想和小灵分享一句特别的话吗？还是想让小灵猜猜是什么话呀？嘻嘻～小灵最喜欢和小主人一起玩语言游戏啦！
+=====================================================
+
+[CONTROL] Received 'prepare_to_play'. Sending PURGE command.
+[0;0m[I: 197003328][unified_gateway_client.c:110]          > [PlayerTask] Received PURGE command. Clearing buffers.
+[CONTROL] Received 'play_finished_go_ahead'. Sending SILENCE command.
+[0;0m[I: 209343429][unified_gateway_client.c:119]          > [PlayerTask] Received SILENCE command.
+[0;0m[I: 209344002][es8388_driver.c:367]          > [Driver] Filling entire TX buffer with silence to prevent looping noise.
+
+================ FINAL RESPONSE (TEXT) ================
+哇～小灵终于知道小主人的名字啦！王伟，这个名字真好听呢！以后小灵就会叫你王伟啦～很高兴认识你，王伟！我们一起度过更多有趣的时光吧！嘻嘻～
+=====================================================
+
+[CONTROL] Received 'prepare_to_play'. Sending PURGE command.
+[0;0m[I: 228873380][unified_gateway_client.c:110]          > [PlayerTask] Received PURGE command. Clearing buffers.
+[CONTROL] Received 'play_finished_go_ahead'. Sending SILENCE command.
+[0;0m[I: 243220740][unified_gateway_client.c:119]          > [PlayerTask] Received SILENCE command.
+[0;0m[I: 243221344][es8388_driver.c:367]          > [Driver] Filling entire TX buffer with silence to prevent looping noise.
+
+================ FINAL RESPONSE (TEXT) ================
+哎呀，王伟这个名字可真有意思呢！‘王’字听起来特别大气，就像一个大人物一样，让人感觉很厉害的样子～‘伟’字就更棒啦，意思是伟大、厉害，小灵觉得王伟这个名字就像是在说‘你是个了不起的人’呢！而且这个名字读起来也特别顺口，听起来就很精神哦～小主人觉得小灵说得对不对呀？嘻嘻～
+=====================================================
+
+[CONTROL] Received 'prepare_to_play'. Sending PURGE command.
+[0;0m[I: 270914393][unified_gateway_client.c:110]          > [PlayerTask] Received PURGE command. Clearing buffers.
+[CONTROL] Received 'play_finished_go_ahead'. Sending SILENCE command.
+[0;0m[I: 295243352][unified_gateway_client.c:119]          > [PlayerTask] Received SILENCE command.
+[0;0m[I: 295243926][es8388_driver.c:367]          > [Driver] Filling entire TX buffer with silence to prevent looping noise.
+
+================ FINAL RESPONSE (TEXT) ================
+哎呀，小主人说的话有点绕绕的，小灵有点听不太明白呢～是不是刚才讲故事的时候有什么地方让小主人觉得不太对劲呀？还是说小主人想换一种方式聊天呢？小灵会一直陪着小主人，一起慢慢来哦！嘻嘻～
+=====================================================
+
+[CONTROL] Received 'prepare_to_play'. Sending PURGE command.
+[0;0m[I: 327193333][unified_gateway_client.c:110]          > [PlayerTask] Received PURGE command. Clearing buffers.
+[CONTROL] Received 'play_finished_go_ahead'. Sending SILENCE command.
+[0;0m[I: 343633419][unified_gateway_client.c:119]          > [PlayerTask] Received SILENCE command.
+[0;0m[I: 343633990][es8388_driver.c:367]          > [Driver] Filling entire TX buffer with silence to prevent looping noise.
+
+================ FINAL RESPONSE (TEXT) ================
+嘻嘻～小灵当然可以啦！哈哈哈～（开心地大笑）小主人觉得这样够搞笑吗？小灵还可以继续表演更多有趣的动作和声音哦！要不要试试看？
+=====================================================
+
+[CONTROL] Received 'prepare_to_play'. Sending PURGE command.
+[0;0m[I: 363243334][unified_gateway_client.c:110]          > [PlayerTask] Received PURGE command. Clearing buffers.
+[CONTROL] Received 'play_finished_go_ahead'. Sending SILENCE command.
+[0;0m[I: 374833436][unified_gateway_client.c:119]          > [PlayerTask] Received SILENCE command.
+[0;0m[I: 374834010][es8388_driver.c:367]          > [Driver] Filling entire TX buffer with silence to prevent looping noise.
+
+================ FINAL RESPONSE (TEXT) ================
+哈哈哈～（小灵开心地笑个不停）哈哈哈哈～小灵已经笑到肚子疼啦！不过小主人说的对，小灵应该更努力地笑！再来一次～哈哈哈～（继续笑着）小主人觉得这样够不够啦？嘻嘻～
+=====================================================
+
+[CONTROL] Received 'prepare_to_play'. Sending PURGE command.
+[0;0m[I: 404083377][unified_gateway_client.c:110]          > [PlayerTask] Received PURGE command. Clearing buffers.
+[CONTROL] Received 'play_finished_go_ahead'. Sending SILENCE command.
+[0;0m[I: 420518443][unified_gateway_client.c:119]          > [PlayerTask] Received SILENCE command.
+[0;0m[I: 420519019][es8388_driver.c:367]          > [Driver] Filling entire TX buffer with silence to prevent looping noise.
+
+================ FINAL RESPONSE (TEXT) ================
+哎呀～小灵明白了！小主人想要一个超级长、超级响亮的笑声呢！那小灵要开始认真练习啦～哈哈哈～（声音拉得很长）哈哈哈～～～（持续笑着）小主人，这样够不够长呀？嘻嘻～
+=====================================================
+
+[CONTROL] Received 'prepare_to_play'. Sending PURGE command.
+[0;0m[I: 445348327][unified_gateway_client.c:110]          > [PlayerTask] Received PURGE command. Clearing buffers.
+[CONTROL] Received 'play_finished_go_ahead'. Sending SILENCE command.
+[0;0m[I: 461663551][unified_gateway_client.c:119]          > [PlayerTask] Received SILENCE command.
+[0;0m[I: 461664120][es8388_driver.c:367]          > [Driver] Filling entire TX buffer with silence to prevent looping noise.
+[CONTROL] Received 'play_finished_go_ahead'. Sending SILENCE command.
+[0;0m[I: 543929430][unified_gateway_client.c:119]          > [PlayerTask] Received SILENCE command.
+[0;0m[I: 543930010][es8388_driver.c:367]          > [Driver] Filling entire TX buffer with silence to prevent looping noise.
+[CONTROL] Received 'play_finished_go_ahead'. Sending SILENCE command.
+[0;0m[I: 599589399][unified_gateway_client.c:119]          > [PlayerTask] Received SILENCE command.
+[0;0m[I: 599589981][es8388_driver.c:367]          > [Driver] Filling entire TX buffer with silence to prevent looping noise.

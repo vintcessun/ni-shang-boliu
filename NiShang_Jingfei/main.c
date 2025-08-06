@@ -3,6 +3,8 @@
 #include "rtos.h"
 
 #define DBG_TAG "MAIN"
+#include "audio.h"
+#include "auto_connect.h"
 #include "hall.h"
 #include "http.h"
 #include "lcd_task.h"
@@ -19,9 +21,10 @@ bool WIFI_CONNECTED;
 int main(void) {
 	board_init();
 
-	lcd_main();
-	hall_main();
+	audio_main();
 	http_main();
+
+	auto_connect_init("HONOR", "8888888888");
 
 	vTaskStartScheduler();
 

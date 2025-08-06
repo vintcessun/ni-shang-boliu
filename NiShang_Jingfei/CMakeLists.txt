@@ -16,6 +16,7 @@ sdk_add_include_directories(./http/include)
 
 target_sources(app PRIVATE
                    ./http/src/main.c
+                   ./http/src/auto_connect.c
                    )
 
 sdk_add_include_directories(./lcd/include)
@@ -30,6 +31,28 @@ target_sources(app PRIVATE
                    ./rtos/src/main.c
                    )
 
+
+sdk_add_include_directories(./audio/include)
+
+target_sources(app PRIVATE
+                   ./audio/src/main.c
+                   )
+
+sdk_add_include_directories(./audio_es8388/include)
+
+target_sources(app PRIVATE
+                   ./audio_es8388/src/es8388_driver.c
+                   )
+
+sdk_add_include_directories(./websocket/include)
+
+target_sources(app PRIVATE
+                   ./websocket/src/main.c
+                   ./websocket/src/base64_encode.c
+                   ./websocket/src/base64_decode.c
+                   ./websocket/src/sha1.c
+                   )
+
 sdk_set_main_file(main.c)
 
-project(nishang_jingfei)
+project(nishang)

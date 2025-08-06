@@ -1,0 +1,21 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 19,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "riscv64-unknown-elf",
+      "description": "Use custom GCC toolchain",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "/opt/toolchain_gcc_t-head_linux/bin/riscv64-unknown-elf-gcc",
+        "CMAKE_CXX_COMPILER": "/opt/toolchain_gcc_t-head_linux/bin/riscv64-unknown-elf-g++",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    }
+  ]
+}
