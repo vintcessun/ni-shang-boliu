@@ -1,0 +1,3 @@
+[submodule "ni_shang_manage"]
+	path = ni_shang_manage
+	url = https://github.com/vintcessun/ni_shang_manage.git
