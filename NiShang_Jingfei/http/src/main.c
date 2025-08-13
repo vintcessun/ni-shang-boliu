@@ -79,7 +79,7 @@ static void start_audio_task(void *p) {
 		"E5%85%A8%E5%88%B0%E5%8F%B3%E5%B2%B8%EF%BC%8C%E6%B2%A1%E8%AE%A9%E5%B0%"
 		"8F%E5%9D%8F%E8%9B%8B%E6%8D%A3%E4%B9%B1%EF%BC%8C%E5%B0%B1%E8%B5%A2%E5%"
 		"95%A6%EF%BC%81%E5%BF%AB%E6%9D%A5%E6%83%B3%E6%83%B3%E6%80%8E%E4%B9%88%"
-		"E5%AE%89%E6%8E%92%E5%90%A7%EF%BD%9E");
+		"E5%AE%89%E6%8E%92%E5%90%A7%EF%BD%9E");	 //*/
 	START_PLAY_FINISHED = true;
 	vTaskDelete(NULL);
 }
@@ -95,12 +95,15 @@ static void wifi_connected_task(void *p) {
 		bflb_mtimer_delay_ms(1000);
 	}
 
+	es8388_audio_start_capture();
 	xTaskCreate(start_audio_task, (char *)"start_audio_task", 2048, NULL,
 				tskIDLE_PRIORITY + 1, NULL);
 	while (!START_PLAY_FINISHED) {
 		bflb_mtimer_delay_ms(1000);
 	}
 
+	// stt_main();
+	bflb_mtimer_delay_ms(1000);
 	hall_main();
 	lcd_main();
 	WIFI_CONNECTED = true;
@@ -159,13 +162,13 @@ int http_get(const char *url, uint8_t *response, size_t max_len) {
 	LOG_I("[HTTP] Starting request to: %s\n", url);
 
 	int len = strlen(url);
-	char host[128], *path = (char *)malloc(len);
+	char host[128], *path = (char *)pvPortMalloc(len);
 	int port = 80;
 	char *p1, *p2;
 	struct hostent *server;
 	struct sockaddr_in serv_addr;
 	int sockfd, n;
-	char *request = (char *)malloc(len + 500);
+	char *request = (char *)pvPortMalloc(len + 500);
 
 	// 解析URL，假设格式为 http://host/path
 	if (strncmp(url, "http://", 7) == 0) {
@@ -234,6 +237,9 @@ int http_get(const char *url, uint8_t *response, size_t max_len) {
 		close(sockfd);
 		return -1;
 	}
+
+	vPortFree(path);
+	vPortFree(request);
 
 	// 接收响应
 	LOG_I("[HTTP] Starting to receive response...\n");

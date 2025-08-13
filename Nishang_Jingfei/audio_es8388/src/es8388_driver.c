@@ -5,6 +5,7 @@
 #include <semphr.h>
 #include <string.h>
 
+#include "FreeRTOS.h"
 #include "bflb_dma.h"
 #include "bflb_gpio.h"
 #include "bflb_i2c.h"
@@ -23,6 +24,11 @@ static struct bflb_device_s *i2s0_dev;
 static struct bflb_device_s *dma0_ch0_dev;	// TX
 static struct bflb_device_s *dma0_ch1_dev;	// RX
 
+// RX (录音) 相关的定义 (保持不变，工作得很好)
+#define RX_BUFFER_SIZE 12800
+static uint8_t *rx_audio_buffer;
+static SemaphoreHandle_t rx_buffer_ready_sem = NULL;
+
 // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 //              ★★★ 播放逻辑 - 全新、硬核、防抖动的多块缓冲机制 ★★★
 // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -35,7 +41,7 @@ static struct bflb_device_s *dma0_ch1_dev;	// RX
 #define TX_BUFFER_SIZE (TX_DMA_BLOCK_SIZE * TX_DMA_BLOCK_NUM)
 
 // 这是我们真正的物理环形缓冲区，DMA将从这里循环读取数据
-static uint8_t tx_audio_buffer[TX_BUFFER_SIZE] __attribute__((aligned(4)));
+static uint8_t *tx_audio_buffer;
 
 // ★★★ 核心武器：计数信号量 ★★★
 // 这个信号量代表了应用程序“可以填充”的空闲块的数量。
@@ -77,7 +83,13 @@ static void dma0_ch0_tx_isr_callback(void *arg) {
 	}
 }
 
-static void dma0_ch1_rx_isr_callback(void *arg) {}
+static void dma0_ch1_rx_isr_callback(void *arg) {
+	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+	if (rx_buffer_ready_sem != NULL) {
+		xSemaphoreGiveFromISR(rx_buffer_ready_sem, &xHigherPriorityTaskWoken);
+		portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+	}
+}
 
 // --- 内部辅助函数 ---
 static int audio_i2s_gpio_init(void) {
@@ -108,10 +120,19 @@ static void audio_mclk_out_init(void) {
 }
 
 static int audio_i2s_dma_init(void) {
+	rx_audio_buffer = pvPortAlignedMalloc(sizeof(uint8_t) * RX_BUFFER_SIZE, 4);
+	tx_audio_buffer = pvPortAlignedMalloc(sizeof(uint8_t) * TX_BUFFER_SIZE, 4);
+	if (rx_audio_buffer == NULL) {
+		LOG_E("ES8388 Init Malloc Aligned Failed");
+	}
+
 	// ★★★ DMA LLI (链表) 设置需要改变，以支持块状循环传输 ★★★
 	static struct bflb_dma_channel_lli_pool_s tx_llipool[TX_DMA_BLOCK_NUM];
 	static struct bflb_dma_channel_lli_transfer_s
 		tx_transfers[TX_DMA_BLOCK_NUM];
+
+	static struct bflb_dma_channel_lli_pool_s rx_llipool[10];  // RX部分保持不变
+	static struct bflb_dma_channel_lli_transfer_s rx_transfers[1];
 
 	struct bflb_i2s_config_s i2s_cfg = {
 		.bclk_freq_hz = 16000 * 16 * 2,	 // 确保与TTS服务生成的采样率一致
@@ -160,14 +181,12 @@ static int audio_i2s_dma_init(void) {
 	bflb_dma_channel_irq_attach(dma0_ch1_dev, dma0_ch1_rx_isr_callback, NULL);
 
 	// RX DMA 设置 (保持不变)
-	/*
 	rx_transfers[0].src_addr = (uint32_t)DMA_ADDR_I2S_RDR;
 	rx_transfers[0].dst_addr = (uint32_t)rx_audio_buffer;
-	rx_transfers[0].nbytes = sizeof(rx_audio_buffer);
+	rx_transfers[0].nbytes = RX_BUFFER_SIZE * sizeof(uint8_t);
 	uint32_t num_lli_rx = bflb_dma_channel_lli_reload(dma0_ch1_dev, rx_llipool,
 													  10, rx_transfers, 1);
 	bflb_dma_channel_lli_link_head(dma0_ch1_dev, rx_llipool, num_lli_rx);
-	//*/
 
 	// ★★★ TX DMA 设置 (全新，核心！) ★★★
 	// 我们不再是一次性传输整个大缓冲区，而是创建 N
@@ -216,6 +235,10 @@ int es8388_audio_init(void) {
 		return -1;
 	}
 	tx_write_block_idx = 0;
+
+	if (rx_buffer_ready_sem == NULL) {
+		rx_buffer_ready_sem = xSemaphoreCreateBinary();
+	}
 
 	memset(tx_audio_buffer, 0, TX_BUFFER_SIZE);
 	bflb_l1c_dcache_clean_range((void *)tx_audio_buffer, TX_BUFFER_SIZE);
@@ -281,6 +304,32 @@ void es8388_audio_deinit(void) {
 
 audio_module_state_t es8388_audio_get_state(void) {
 	return current_audio_state;
+}
+
+int es8388_audio_get_data(uint8_t *buffer, uint32_t buffer_size,
+						  uint32_t *out_len, TickType_t timeout_ticks) {
+	if (out_len) {
+		*out_len = 0;
+	}
+	if (current_audio_state != AUDIO_STATE_CAPTURING) {
+		return -1;
+	}
+	if (!buffer || buffer_size == 0) {
+		return -2;
+	}
+	if (xSemaphoreTake(rx_buffer_ready_sem, timeout_ticks) == pdTRUE) {
+		uint32_t len_to_copy =
+			(buffer_size < RX_BUFFER_SIZE) ? buffer_size : RX_BUFFER_SIZE;
+		bflb_l1c_dcache_invalidate_range((void *)rx_audio_buffer,
+										 RX_BUFFER_SIZE);
+		memcpy(buffer, rx_audio_buffer, len_to_copy);
+		if (out_len) {
+			*out_len = len_to_copy;
+		}
+		return 0;
+	} else {
+		return -3;
+	}
 }
 
 // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

@@ -29,6 +29,7 @@ sdk_add_include_directories(./rtos/include)
 
 target_sources(app PRIVATE
                    ./rtos/src/main.c
+                   ./rtos/src/aligned_malloc.c
                    )
 
 
@@ -51,6 +52,19 @@ target_sources(app PRIVATE
                    ./websocket/src/base64_encode.c
                    ./websocket/src/base64_decode.c
                    ./websocket/src/sha1.c
+                   )
+
+
+sdk_add_include_directories(./i2c/include)
+
+target_sources(app PRIVATE
+                   ./i2c/src/i2c.c
+                   )
+
+sdk_add_include_directories(./pwm/include)
+
+target_sources(app PRIVATE
+                   ./pwm/src/main.c
                    )
 
 sdk_set_main_file(main.c)

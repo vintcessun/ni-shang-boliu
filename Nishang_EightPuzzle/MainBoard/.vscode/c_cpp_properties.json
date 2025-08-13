@@ -1,0 +1,41 @@
+{
+    "configurations": [
+        {
+            "name": "BL616",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/components/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/drivers/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/components/ai/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/components/crypto/**", 
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/components/fs/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/components/graphics/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/components/libc/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/components/lzma/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/components/mm/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/components/net/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/components/os/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/components/shell/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/components/usb/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/components/utils/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/components/wireless/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/drivers/lhal/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/drivers/rfparam/**",
+                "${workspaceFolder}/../../bouffalo_sdk_vmg0/drivers/soc/**",
+                "${workspaceFolder}/../../toolchain_gcc_t-head_windows/riscv64-unknown-elf/include/**"
+            ],
+            "defines": [
+                "CHIP=bl616",
+                "BOARD=bl616dk",
+                "CONFIG_DEBUG=y"
+            ],
+            "compilerPath": "${workspaceFolder}/../../toolchain_gcc_t-head_windows/bin/riscv64-unknown-elf-gcc.exe",
+            "cStandard": "gnu99",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "gcc-x64",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json"
+        }
+    ],
+    "version": 4
+}

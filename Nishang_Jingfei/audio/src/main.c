@@ -30,7 +30,7 @@ int audio_main(void) {
 }
 
 void play_audio(char *encode_str) {
-	char *url = (char *)malloc(strlen(encode_str) + 500);
+	char *url = (char *)pvPortMalloc(strlen(encode_str) + 500);
 	sprintf(url, BASE_WS(tts) "?data=%s&chunk_size=%d", encode_str,
 			BUFFER_SIZE);
 
@@ -44,6 +44,8 @@ void play_audio(char *encode_str) {
 		return;
 	}
 
+	vPortFree(url);
+
 	// 2. 连接到WebSocket服务器
 	printf("连接到 %s:%d%s...\n", client.host, client.port, client.path);
 	if (!websocket_connect(&client)) {
@@ -51,8 +53,6 @@ void play_audio(char *encode_str) {
 		return;
 	}
 	printf("连接成功！\n");
-
-	es8388_audio_start_capture();
 
 	char *message = "START";
 
@@ -70,7 +70,7 @@ void play_audio(char *encode_str) {
 	while (1) {
 		// 4. 主动接收消息（阻塞方式）
 		ws_opcode_t opcode;
-		LOG_I("等待接收消息...\n");
+		// LOG_I("等待接收消息...\n");
 
 		int recv_len = websocket_recv(&client, buffer, BUFFER_SIZE, &opcode);
 		if (recv_len > 0) {
@@ -86,7 +86,7 @@ void play_audio(char *encode_str) {
 					LOG_I("收到开始音频请求\n");
 				}
 			} else if (opcode == WS_OPCODE_BINARY) {
-				LOG_I("收到二进制消息 (长度: %d)\n", recv_len);
+				// LOG_I("收到二进制消息 (长度: %d)\n", recv_len);
 				es8388_audio_play(buffer, BUFFER_SIZE);
 				continue;
 			} else if (opcode == WS_OPCODE_CLOSE) {
@@ -102,7 +102,6 @@ void play_audio(char *encode_str) {
 
 	// 5. 关闭连接
 	websocket_close(&client);
+	es8388_audio_fill_silence();
 	LOG_I("连接已关闭\n");
-
-	es8388_audio_stop_capture();
 }

@@ -50,3 +50,7 @@ i2c_16_bit实现了手工1转16然后能够正常使用
 ## 8.putchar_getchar文件夹实现获得串口数据并且发送到串口
 
 ## 9.peripherals\spi\spi_dma_fixed实现spi两个板子传输信息
+
+## 10.peripherals\pwm_v2\pwm_software实现软件pwm
+
+## 11.peripherals\pwm_v2\pwm_software_40实现软件pwm并且加在一转40上面

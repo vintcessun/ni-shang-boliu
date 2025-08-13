@@ -10,25 +10,21 @@ typedef uint32_t u32;
 typedef bool bit;
 
 // 硬件配置（根据BL616G0板子实际布线修改）
-#define GPIO_EXP_ADDR 0x40	// PCA9698默认地址
+#define GPIO_EXP_ADDR 0x40	// PCA9555默认地址
 
 // 寄存器定义（遵循芯片手册）
 #define REG_INPUT_BASE 0x00	  // 输入寄存器起始地址
-#define REG_CONFIG_BASE 0x18  // 配置寄存器起始地址
-#define REG_OUTPUT_BASE 0x08  // 输出寄存器起始地址
-#define REG_MSK_BASE 0x20
+#define REG_CONFIG_BASE 0x06  // 配置寄存器起始地址
+#define REG_OUTPUT_BASE 0x02  // 输出寄存器起始地址
 
 // 错误码定义（与BL616错误处理风格一致）
 #define ETIMEDOUT 116
 #define EINVAL 22
 
-// 40路GPIO分组（5组×8路）
+// 16路GPIO分组（2组×8路）
 typedef enum {
 	GPIO_BANK0 = 0,	 // 0-7
 	GPIO_BANK1,		 // 8-15
-	GPIO_BANK2,		 // 16-23
-	GPIO_BANK3,		 // 24-31
-	GPIO_BANK4,		 // 32-39
 	GPIO_BANK_MAX
 } gpio_bank_t;
 
@@ -40,11 +36,12 @@ static struct bflb_device_s *gpio;
 #define SCL_PIN GPIO_PIN_14	 // 用户确认SCL=14
 #define nack gpio_read(SDA_PIN)
 #define Delay_5us() bflb_mtimer_delay_us(5)
+#define GPIO_CFG GPIO_OUTPUT | GPIO_PULLUP | GPIO_DRV_1
 
 bool gpio_read(uint8_t pin) {
 	bflb_gpio_deinit(gpio, pin);
 	bool ret = bflb_gpio_read(gpio, pin);
-	bflb_gpio_init(gpio, pin, GPIO_OUTPUT | GPIO_PULLDOWN | GPIO_DRV_1);
+	bflb_gpio_init(gpio, pin, GPIO_CFG);
 	return ret;
 }
 
@@ -183,8 +180,8 @@ int i2c_gpio_expander_init() {
 	// 配置GPIO为输出模式
 	printf("Configuring I2C pins - SDA:GPIO%d, SCL:GPIO%d\r\n",
 		   SDA_PIN - GPIO_PIN_0, SCL_PIN - GPIO_PIN_0);
-	bflb_gpio_init(gpio, SDA_PIN, GPIO_OUTPUT | GPIO_PULLDOWN | GPIO_DRV_1);
-	bflb_gpio_init(gpio, SCL_PIN, GPIO_OUTPUT | GPIO_PULLDOWN | GPIO_DRV_1);
+	bflb_gpio_init(gpio, SDA_PIN, GPIO_CFG);
+	bflb_gpio_init(gpio, SCL_PIN, GPIO_CFG);
 
 	bflb_gpio_set(gpio, SDA_PIN);
 	bflb_gpio_set(gpio, SCL_PIN);
@@ -195,11 +192,11 @@ int i2c_gpio_expander_init() {
 
 /**
  * 读取所有GPIO口状态(改进版)
- * @param states 输出参数，40个GPIO的状态数组(0/1)
+ * @param states 输出参数，16个GPIO的状态数组(0/1)
  * @return 0成功，其他为错误码
  */
-int i2c_gpio_read_all(uint8_t states[40]) {
-	uint8_t input_data[5] = {0};  // 存储5个bank的输入数据
+int i2c_gpio_read_all(uint8_t states[16]) {
+	uint8_t input_data[2] = {0};  // 存储2个bank的输入数据
 
 	for (int i = 0; i < GPIO_BANK_MAX; i++) {
 		if (!IRcvStr(GPIO_EXP_ADDR, REG_INPUT_BASE + i, input_data + i, 1))
@@ -216,7 +213,7 @@ int i2c_gpio_read_all(uint8_t states[40]) {
 
 	// 调试输出
 	printf("GPIO状态: ");
-	for (int i = 0; i < 40; i++) {
+	for (int i = 0; i < 16; i++) {
 		printf("%d", states[i]);
 		if ((i + 1) % 8 == 0) printf(" ");	// 每8位加空格分隔
 	}
@@ -227,28 +224,30 @@ int i2c_gpio_read_all(uint8_t states[40]) {
 
 // 思修电子工作室功能复刻
 int main(void) {
-	uint8_t All_ctrl[1] = {0x80};
-	uint8_t Select_Mode[1] = {0x12};
-	uint8_t GPIO_H[1] = {0xff};
-	uint8_t GPIO_L[1] = {0x00};
-	uint8_t states[40] = {0};
+	u8 buff1[1] = {0x00};  // 设置输出结构端口状态数组
+	u8 buff2[1] = {0xFF};  // 设置I/O端口状态数组2
+	u8 buff3[1] = {0x00};  // 设置I/O端口状态数组3
 
 	if (i2c_gpio_expander_init() != 0) {
 		printf("初始化失败\r\n");
 		while (1);
 	}
-
-	// printf("Configuring PCA9698 registers...\r\n");
-	if (!ISendStr(GPIO_EXP_ADDR, 0X2A, Select_Mode, 1))
-		printf("Failed to write 0x2A!\r\n");
-	// if (!ISendStr(GPIO_EXP_ADDR, 0X29, All_ctrl, 1))
-	//	printf("Failed to write 0x29!\r\n");
-	// if (!ISendStr(GPIO_EXP_ADDR, 0X28, GPIO_H, 1))
-	//	printf("Failed to write 0x28!\r\n");
-
-	printf("Starting main loop...\r\n");
+	while (!ISendStr(GPIO_EXP_ADDR, 0x06, buff1, 1))  // 配置输出结构端口寄存器0
+		printf("Send data to 0x06 Failed\n");
+	while (!ISendStr(GPIO_EXP_ADDR, 0x07, buff1, 1))  // 配置输出结构端口寄存器1
+		printf("Send data to 0x07 Failed\n");
 	while (1) {
-		i2c_gpio_read_all(states);
-		bflb_mtimer_delay_ms(100);
+		printf("Set all gpio to high\n");
+		if (!ISendStr(GPIO_EXP_ADDR, 0x02, buff2, 1))  // A端口推挽输出高电平
+			printf("Send data to 0x02 Failed\n");
+		if (!ISendStr(GPIO_EXP_ADDR, 0x03, buff2, 1))  // B端口推挽输出高电平
+			printf("Send data to 0x03 Failed\n");
+		bflb_mtimer_delay_ms(1000);	 // 延迟100ms
+		printf("Set all gpio to low\n");
+		if (!ISendStr(GPIO_EXP_ADDR, 0x02, buff3, 1))  // A端口推挽输出高电平
+			printf("Send data to 0x02 Failed\n");
+		if (!ISendStr(GPIO_EXP_ADDR, 0x03, buff3, 1))  // B端口推挽输出高电平
+			printf("Send data to 0x03 Failed\n");
+		bflb_mtimer_delay_ms(1000);	 // 延迟100ms
 	}
 }

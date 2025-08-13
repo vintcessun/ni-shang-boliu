@@ -1,0 +1,53 @@
+{
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-vscode.cpptools",
+    "C_Cpp.intelliSenseEngine": "default",
+    "C_Cpp.default.compileCommands": "build/compile_commands.json",
+    "C_Cpp.default.cStandard": "gnu99",
+    "C_Cpp.default.cppStandard": "gnu++11",
+    "C_Cpp.default.intelliSenseMode": "gcc-arm",
+    "cmake.configureOnOpen": true,
+    "files.associations": {
+        "*.py": "python",
+        "*.h": "c",
+        "*.inc": "c",
+        "typeindex": "c",
+        "typeinfo": "c",
+        "random": "c",
+        "any": "c",
+        "bit": "c",
+        "charconv": "c",
+        "codecvt": "c",
+        "compare": "c",
+        "condition_variable": "c",
+        "cstddef": "c",
+        "forward_list": "c",
+        "list": "c",
+        "string": "c",
+        "optional": "c",
+        "rope": "c",
+        "future": "c",
+        "limits": "c",
+        "memory": "c",
+        "new": "c",
+        "ranges": "c",
+        "functional": "c",
+        "regex": "c"
+    },
+    "C_Cpp.default.defines": [
+        "__BL616__",
+        "ARCH_RISCV", 
+        "CONFIG_CPU_E907",
+        "CONFIG_CHIP_BL616",
+        "__attribute__(x)="
+    ],
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/https/include",
+        "${env:BL_SDK_PATH}/driver/ble/include",
+        "${env:BL_SDK_PATH}/driver/ble/ble_lib/inc"
+    ],
+    "[c]": {
+        "editor.defaultFormatter": "ms-vscode.cpptools"
+    }
+}

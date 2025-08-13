@@ -3,6 +3,7 @@
 #include "hall.h"
 #include "http.h"
 #define DBG_TAG "HALL"
+#include "i2c40.h"
 #include "log.h"
 #include "rtos.h"
 
@@ -25,11 +26,19 @@ extern int lr;
 extern char route[20];
 extern bool WIFI_CONNECTED;
 
+uint8_t gpio_cache[40];
+
 void read_hall_sensor() {
-	for (int i = 25; i <= 32; i++) {
-		gpio_data[get_gpio_pos(i)] = !bflb_gpio_read(gpio, i);
-		// LOG_I("[HALL] GPIO %d state: %x\n", i, gpio_data[i-25]);
+	if (i2c_gpio_read_all(gpio_cache) < 0) {
+		// LOG_W("读取霍尔错误\n");
+		return;
 	}
+	for (int i = 0; i < 8; i++) {
+		gpio_data[i] = gpio_cache[i] == 0;
+	}
+	LOG_D("Data: %d%d%d%d%d%d%d%d\n", gpio_data[0], gpio_data[1], gpio_data[2],
+		  gpio_data[3], gpio_data[4], gpio_data[5], gpio_data[6], gpio_data[7]);
+	bflb_mtimer_delay_ms(50);
 }
 
 static void hall_update_task(void *p) {
@@ -40,11 +49,10 @@ static void hall_update_task(void *p) {
 	while (strlen(route) < 16) {
 		bflb_mtimer_delay_ms(1000);
 	}
-	LOG_I("[HTTP] Hall Sync Task Start");
-	char base_url[100] = BASE_URL(hall?route=);
-	sprintf(base_url, "%s%s&data=", base_url, route);
+	LOG_I("[HTTP] Hall Sync Task Start\n");
+	char base_url[100] = {0};
+	sprintf(base_url, BASE_URL(hall) "?route=%s&data=", route);
 	char url[100] = {0};
-	strcpy(url, base_url);
 	char response[500] = {0};
 	bool gpio_data_last[8] = {0};
 	while (1) {
@@ -54,10 +62,9 @@ static void hall_update_task(void *p) {
 		}
 		if (dirty) {
 			LOG_I("[SYS] Memory left is %d Bytes\n", kfree_size());
-			strcpy(url, base_url);
-			for (int i = 0; i < 8; i++) {
-				sprintf(url, "%s%d,", url, gpio_data[i]);
-			}
+			sprintf(url, "%s%d,%d,%d,%d,%d,%d,%d,%d", base_url, gpio_data[0],
+					gpio_data[1], gpio_data[2], gpio_data[3], gpio_data[4],
+					gpio_data[5], gpio_data[6], gpio_data[7]);
 			LOG_D("[HALL] Hall Heart To %s\n", url);
 			http_get(url, response, 500);
 			LOG_D("[HALL] Hall Update Response: %s\n", response);
@@ -266,14 +273,14 @@ static void hall_task(void *pvParameters) {
 
 int hall_main(void) {
 	// 硬件初始化(只执行一次)
-	gpio = bflb_device_get_by_name("gpio");
-	LOG_I("[HALL] Initializing GPIO25-32 as input...\n");
+	// i2c_gpio_init();
 
 	// 配置GPIO25-32为输入模式
-	for (int i = 25; i <= 32; i++) {
-		bflb_gpio_init(gpio, i,
-					   GPIO_INPUT | GPIO_PULLDOWN | GPIO_SMT_EN | GPIO_DRV_0);
-	}
+	// for (int i = 25; i <= 32; i++) {
+	//	bflb_gpio_init(gpio, i,
+	//				   GPIO_INPUT | GPIO_PULLDOWN | GPIO_SMT_EN |
+	// GPIO_DRV_0);
+	//}
 
 	// 创建霍尔传感器任务
 
@@ -285,20 +292,11 @@ int hall_main(void) {
 
 	// 创建霍尔监听网络服务
 
-	TaskHandle_t hall_task_network_handle =
-		create_hall_network_task(hall_network_task, NULL);
-	if (hall_task_network_handle == NULL) {
-		LOG_E("[HALL] Error: Failed to create hall network task\n");
-		return -1;
-	}  //*/
+	xTaskCreate(hall_network_task, "HALL_NETWORK_TASK", 1024, NULL,
+				tskIDLE_PRIORITY + 1, NULL);
 
-	TaskHandle_t hall_task_sync =
-		xTaskCreate(hall_update_task, "HALL_SYNC_TASK", 1024 * 4, NULL,
-					tskIDLE_PRIORITY + 1, NULL);
-	if (hall_task_sync == NULL) {
-		LOG_E("[HALL] Error: Failed to create hall sync task\n");
-		return -1;
-	}  //*/
+	xTaskCreate(hall_update_task, "HALL_SYNC_TASK", 1024, NULL,
+				tskIDLE_PRIORITY + 1, NULL);
 
 	return 0;
 }

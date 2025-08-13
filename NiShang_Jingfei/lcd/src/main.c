@@ -24,7 +24,21 @@ touch_coord_t touch_max_point = {
 	.coord_y = 320,
 };
 
-uint8_t response[500];
+uint8_t response[10240];
+
+static void src2tgt_task(void *p) {
+	sg_src_down();
+	bflb_mtimer_delay_ms(500);
+	sg_target_up();
+	vTaskDelete(NULL);
+}
+
+static void tgt2src_task(void *p) {
+	sg_target_down();
+	bflb_mtimer_delay_ms(500);
+	sg_src_up();
+	vTaskDelete(NULL);
+}
 
 static void lcd_task(void *pvParameters) {
 	lcd_draw_rectangle(85, 145, 155, 175, 0xFFFF);
@@ -67,10 +81,17 @@ static void lcd_task(void *pvParameters) {
 								route, j[2] + j[1], f[2] + f[1], j[0], f[0],
 								j[1], f[1], lr);
 					}
-					http_get(url, response, 500);
+					http_get(url, response, 10240);
 					sprintf(url,"%s%s&data=%s",BASE_URL(direction?route=),route,response);
-					http_get(url, response, 500);
+					http_get(url, response, 10240);
 					audio_play(response);
+					if (!lr) {
+						xTaskCreate(src2tgt_task, (char *)"src2tgt", 1024, NULL,
+									tskIDLE_PRIORITY + 5, NULL);
+					} else {
+						xTaskCreate(tgt2src_task, (char *)"tgt2src", 1024, NULL,
+									tskIDLE_PRIORITY + 5, NULL);
+					}
 					lr = !lr;
 				}
 				int cnt = 0;

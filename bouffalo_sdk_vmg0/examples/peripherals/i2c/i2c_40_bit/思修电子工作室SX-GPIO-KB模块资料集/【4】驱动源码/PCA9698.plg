@@ -1,0 +1,21 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\Administrator\Desktop\思修电子工作室SX-GPIO-KB模块资料集\【4】驱动源码\PCA9698.uvproj
+Project File Date:  10/28/2019
+
+<h2>Output:</h2>
+Rebuild target 'Target 1'
+compiling main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_ISENDBYTE?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_IRCVBYTE?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_IRCVSTR?MAIN
+Program Size: data=25.2 xdata=0 code=1066
+creating hex file from "PCA9698"...
+"PCA9698" - 0 Error(s), 3 Warning(s).

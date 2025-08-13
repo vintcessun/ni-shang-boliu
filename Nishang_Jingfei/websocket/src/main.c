@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define DBG_TAG "WEBSOCKET"
+#include "log.h"
 #include "websocket.h"
 
 #define GUID "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
@@ -38,7 +40,7 @@ static bool parse_url(const char *url, char *host, uint16_t *port,
 
 	// 设置默认端口和路径
 	*port = 80;
-	*path = malloc(2);	// 分配最小空间给"/"
+	*path = pvPortMalloc(2);  // 分配最小空间给"/"
 	if (*path == NULL) {
 		return false;
 	}
@@ -85,7 +87,7 @@ static bool parse_url(const char *url, char *host, uint16_t *port,
 				free(*path);
 			}
 			// 分配足够空间存储路径(包括null终止符)
-			*path = malloc(path_len + 1);
+			*path = pvPortMalloc(path_len + 1);
 			if (*path == NULL) {
 				return false;
 			}
@@ -185,6 +187,7 @@ bool websocket_connect(websocket_client_t *client) {
 	client->state = WS_STATE_CONNECTING;
 
 	// 创建TCP socket
+	// LOG_I("创建 TCP socket\n");
 	client->socket_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (client->socket_fd < 0) {
 		strcpy(client->error_msg, "Failed to create socket");
@@ -193,6 +196,7 @@ bool websocket_connect(websocket_client_t *client) {
 	}
 
 	// 解析主机名到IP地址
+	// LOG_I("解析主机名到IP地址\n");
 	struct hostent *host_entry = gethostbyname(client->host);
 	if (!host_entry) {
 		strcpy(client->error_msg, "Failed to resolve host");
@@ -203,6 +207,7 @@ bool websocket_connect(websocket_client_t *client) {
 	}
 
 	// 设置服务器地址
+	// LOG_I("设置服务器地址\n");
 	struct sockaddr_in server_addr;
 	memset(&server_addr, 0, sizeof(server_addr));
 	server_addr.sin_family = AF_INET;
@@ -218,6 +223,7 @@ bool websocket_connect(websocket_client_t *client) {
 	}
 
 	// 连接到服务器
+	// LOG_I("连接到服务器\n");
 	if (connect(client->socket_fd, (struct sockaddr *)&server_addr,
 				sizeof(server_addr)) < 0) {
 		sprintf(client->error_msg, "Failed to connect to %s:%d", client->host,
@@ -229,11 +235,14 @@ bool websocket_connect(websocket_client_t *client) {
 	}
 
 	// 生成客户端密钥
+	// LOG_I("生成客户端密钥\n");
 	char client_key[256];
 	generate_websocket_key(client_key);
 
 	// 构建握手请求
-	char *handshake_request = (char *)malloc(strlen(client->path) + 600);
+	// LOG_I("构建握手请求\n");
+	char *handshake_request =
+		(char *)pvPortMallocStack(strlen(client->path) + 600);
 	sprintf(handshake_request,
 			"GET %s HTTP/1.1\r\n"
 			"%s"
@@ -245,6 +254,7 @@ bool websocket_connect(websocket_client_t *client) {
 			client->path, host_header, client_key);
 
 	// 发送握手请求
+	// LOG_I("发送握手请求\n");
 	if (send(client->socket_fd, handshake_request, strlen(handshake_request),
 			 0) <= 0) {
 		strcpy(client->error_msg, "Failed to send handshake");
@@ -254,7 +264,10 @@ bool websocket_connect(websocket_client_t *client) {
 		return false;
 	}
 
+	vPortFreeStack(handshake_request);
+
 	// 接收服务器响应
+	// LOG_I("接收服务器响应\n");
 	char response[HTTP_RESPONSE_BUFFER_SIZE];
 	int bytes_read =
 		recv(client->socket_fd, response, HTTP_RESPONSE_BUFFER_SIZE - 1, 0);
@@ -268,6 +281,7 @@ bool websocket_connect(websocket_client_t *client) {
 	response[bytes_read] = '\0';
 
 	// 验证握手响应
+	// LOG_I("验证握手响应\n");
 	if (!verify_handshake_response(response, client_key)) {
 		strcpy(client->error_msg, "Handshake verification failed");
 		closesocket(client->socket_fd);
@@ -277,13 +291,20 @@ bool websocket_connect(websocket_client_t *client) {
 	}
 
 	// 握手成功，标记为已连接
+	// LOG_I("握手成功，标记为已连接\n");
 	client->state = WS_STATE_CONNECTED;
 	return true;
 }
 
 int websocket_send(websocket_client_t *client, ws_opcode_t opcode,
 				   const void *data, size_t len) {
-	if (!client || !websocket_is_connected(client) || !data || len == 0) {
+	if (!client || !websocket_is_connected(client)) {
+		LOG_E("连接已断开\n");
+		return -1;
+	}
+
+	if (!data || len == 0) {
+		LOG_E("没有要发送的数据\n");
 		return -1;
 	}
 
@@ -322,12 +343,14 @@ int websocket_send(websocket_client_t *client, ws_opcode_t opcode,
 
 	// 发送头部（必须确保发送成功）
 	if (send(client->socket_fd, header, header_len, 0) != header_len) {
+		LOG_E("发送头部失败\n");
 		return -1;
 	}
 
 	// 应用掩码并发送数据（非阻塞方式）
-	uint8_t *masked_data = (uint8_t *)malloc(len);
+	uint8_t *masked_data = (uint8_t *)pvPortMallocStack(len * sizeof(uint8_t));
 	if (!masked_data) {
+		LOG_E("分配masked_data失败\n");
 		return -1;
 	}
 
@@ -335,9 +358,10 @@ int websocket_send(websocket_client_t *client, ws_opcode_t opcode,
 		masked_data[i] = ((uint8_t *)data)[i] ^ mask[i % 4];
 	}
 
-	// 非阻塞发送，使用MSG_DONTWAIT标志
-	int bytes_sent = send(client->socket_fd, masked_data, len, MSG_DONTWAIT);
-	free(masked_data);
+	// 阻塞发送
+	int bytes_sent = send(client->socket_fd, masked_data, len, 0);
+
+	vPortFreeStack(masked_data);
 
 	// 返回-1表示需要重试，其他情况返回实际发送的字节数
 	if (bytes_sent < 0 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
@@ -350,7 +374,7 @@ int websocket_recv(websocket_client_t *client, void *buffer, size_t max_len,
 				   ws_opcode_t *opcode) {
 	if (!client || !websocket_is_connected(client) || !buffer || max_len == 0 ||
 		!opcode) {
-		printf("连接已关闭\n");
+		LOG_E("连接已关闭\n");
 		return -1;
 	}
 
@@ -363,7 +387,7 @@ int websocket_recv(websocket_client_t *client, void *buffer, size_t max_len,
 	// 读取第一个字节（FIN和操作码）
 	bytes_read = recv(client->socket_fd, &first_byte, 1, 0);
 	if (bytes_read != 1) {
-		printf("读取FIN失败\n");
+		LOG_E("读取FIN失败\n");
 		return -1;
 	}
 
@@ -372,14 +396,14 @@ int websocket_recv(websocket_client_t *client, void *buffer, size_t max_len,
 
 	// 检查操作码是否有效
 	if (*opcode != WS_OPCODE_TEXT && *opcode != WS_OPCODE_BINARY) {
-		printf("不支持的消息格式\n");
+		LOG_E("不支持的消息格式\n");
 		return -1;	// 仅支持文本和二进制帧
 	}
 
 	// 读取第二个字节（掩码和 payload长度）
 	bytes_read = recv(client->socket_fd, &second_byte, 1, 0);
 	if (bytes_read != 1) {
-		printf("掩码和payload长度读取失败\n");
+		LOG_E("掩码和payload长度读取失败\n");
 		return -1;
 	}
 
@@ -390,14 +414,14 @@ int websocket_recv(websocket_client_t *client, void *buffer, size_t max_len,
 	if (len_field == 126) {
 		uint16_t extended_len;
 		if (recv(client->socket_fd, &extended_len, 2, 0) != 2) {
-			printf("继续读取短payload长度失败\n");
+			LOG_E("继续读取短payload长度失败\n");
 			return -1;
 		}
 		payload_len = ntohs(extended_len);
 	} else if (len_field == 127) {
 		uint64_t extended_len;
 		if (recv(client->socket_fd, &extended_len, 8, 0) != 8) {
-			printf("继续读取长payload长度失败\n");
+			LOG_E("继续读取长payload长度失败\n");
 			return -1;
 		}
 		payload_len = ntohll(extended_len);
@@ -407,29 +431,28 @@ int websocket_recv(websocket_client_t *client, void *buffer, size_t max_len,
 
 	// 检查缓冲区是否足够
 	if (payload_len > max_len) {
-		printf("缓冲区不足: 需要 %d 字节, 只有 %d 字节\n", payload_len,
-			   max_len);
+		LOG_E("缓冲区不足: 需要 %d 字节, 只有 %d 字节\n", payload_len, max_len);
 		return -2;
 	}
 
 	// 读取掩码（如果有）
 	if (masked) {
 		if (recv(client->socket_fd, mask, 4, 0) != 4) {
-			printf("读取掩码失败\n");
+			LOG_E("读取掩码失败\n");
 			return -1;
 		}
 	}
 
 	// 检查FIN标志，确保是完整帧
 	if (!fin_flag) {
-		printf("分帧消息不支持\n");
+		LOG_E("分帧消息不支持\n");
 		return -1;	// 不支持分帧消息
 	}
 
 	// 读取帧数据
 	bytes_read = recv(client->socket_fd, buffer, payload_len, 0);
 	if (bytes_read != (int)payload_len) {
-		printf("读取帧数据异常\n");
+		LOG_E("读取帧数据异常\n");
 		// 读取并丢弃剩余数据
 		size_t remaining = payload_len - bytes_read;
 		while (remaining > 0) {
@@ -469,7 +492,7 @@ void websocket_close(websocket_client_t *client) {
 
 	// 释放动态分配的path内存
 	if (client->path) {
-		free(client->path);
+		vPortFree(client->path);
 		client->path = NULL;
 	}
 
