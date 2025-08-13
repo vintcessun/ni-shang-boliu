@@ -82,7 +82,7 @@ static void lcd_task(void *pvParameters) {
 								j[1], f[1], lr);
 					}
 					http_get(url, response, 10240);
-					sprintf(url,"%s%s&data=%s",BASE_URL(direction?route=),route,response);
+					sprintf(url,"%s%s&data=",BASE_URL(direction?route=),route,response);
 					http_get(url, response, 10240);
 					audio_play(response);
 					if (!lr) {
